@@ -25,18 +25,26 @@
       }
     }
     //this function is not a page, it handles requests by specific cairo_pattern_get_surface(pattern)
-    public static function makeSubMenu()
-    {
-      print "<a href=''>";
-    }
-
-    public static function makeMenu()
+    public static function makeMenu($subMenu = 0)
     {
       //print each menu value in array
-      foreach ( MenusController::$displayNames['Menu'] as $name){
-        print "<a href=''>$name</a><br>";
+      if ($subMenu = 0){
+        foreach ( MenusController::$displayNames['Menu'] as $name){
+          print "<a href='?controller=menus&action=subMenu'>$name</a><br>";
+        }
       }
-
+      else {
+        foreach ( MenusController::$displayNames[$subMenu] as $name){
+          print "<a href='?controller=menus&action=subMenu'>$name</a><br>";
+        }
+      }
+    }
+    public static function subMenu(){
+      if (isset($_POST['subMenuName']))
+      {
+        $_SESSION['subMenuName'] = $_POST['subMenuName'];
+      }
+      MenusController::makeMenu($displayNames[$_SESSION['subMenuName']]);
     }
     public static function mainMenu()
     {
