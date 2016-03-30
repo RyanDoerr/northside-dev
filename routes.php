@@ -2,13 +2,21 @@
 	function call($controller, $action) {
 	//Pull in the file that matches the controller name
 		require_once('controllers/' . $controller .  '_controller.php');
-	//Create new instance of that controller
+	//Here is where we create many different controller objects
+	/*
+	PagesController: Creates a basic page object
+	ReportsController: Creates a basic ReportsController object
+
+	Each basic object must have an entry in the $controllers array, and have corresponding actions
+	Controllers and Actions are sent in <a> tags as $_GET variables
+	*/
 		switch($controller) {
 			case 'pages' :
 				$controller = new PagesController();
 			break;
-			case 'database'  :
-				$controller = new DatabaseController();
+
+			case 'reports' :
+				$controller = new ReportsController();
 			break;
 		}
 
@@ -18,7 +26,8 @@
 
 	//just a list of the controllers we have and their actiones
 	$controllers = array('pages' => ['login', 'error', 'menu','success', 'startSession', 'verify'], 
-						 'database'  => ['show', 'error']);
+						 'database'  => ['show', 'error'],
+						 'reports' => []);
 
 	//Check if action and controller are allowed
 	//with failure redirect to error page
