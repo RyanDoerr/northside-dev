@@ -27,13 +27,12 @@
 
 			$user = Authentication::verify($_SESSION['employee_id'], $_SESSION['password_hash']);
 
-			//echo $user;
-
+			//verify user integrity
 			if ($user){
-				echo '<br>MISSION SUCCESS :) ACCESS GRANTED!<br>';
+				return true;
 			}
 			else{
-				echo 'Access DENIED.';
+				return false;
 			}
 
 		}
@@ -44,8 +43,11 @@
 		}
 		public function menu()
 		{
-			PagesController::verify();
-			require_once('views/pages/menu.php');
-		}
+			if (PagesController::verify())
+			{
+				header('Location:?controller=menus&action=mainMenu');
+			}
 
+		}
+	
 	}

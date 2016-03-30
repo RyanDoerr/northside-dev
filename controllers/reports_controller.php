@@ -31,6 +31,8 @@
 					break;
 			}
 		}
+
+	//This function is not a page, and handles requests by specific page functions
 		public function makeReport()
 		{
 

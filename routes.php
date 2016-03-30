@@ -6,6 +6,7 @@
 	/*
 	PagesController: Creates a basic page object
 	ReportsController: Creates a basic ReportsController object
+	FormsController: Creates a basic FormsController object
 
 	Each basic object must have an entry in the $controllers array, and have corresponding actions
 	Controllers and Actions are sent in <a> tags as $_GET variables
@@ -18,16 +19,27 @@
 			case 'reports' :
 				$controller = new ReportsController();
 			break;
+
+			case 'forms' :
+				$controller = new FormsController();
+			break;
+
+			case 'menus' :
+				$controller = new MenusController();
+			break;
 		}
 
 		//call the action
 		$controller->{ $action }();
 	}
 
-	//just a list of the controllers we have and their actiones
+	//just a list of the controllers we have and their actions
+	//actions are "pages", but also functions that might be needed within the page class
+	//for example startSession is not a page, but is included on pages to keep a user's session alive
 	$controllers = array('pages' => ['login', 'error', 'menu','success', 'startSession', 'verify'], 
-						 'database'  => ['show', 'error'],
-						 'reports' => []);
+						 'reports' => [],
+						 'forms' => [],
+						 'menus' => ['mainMenu']);
 
 	//Check if action and controller are allowed
 	//with failure redirect to error page
