@@ -36,7 +36,8 @@
           if ((isset($_GET['subMenu'])) && $_GET['subMenu']== $menuItem){
             print "<nav class='subnavbar'>";
             foreach ( MenusController::$subMenuNames[$menuItem] as $subMenuItem){
-              print "&nbsp;&nbsp;&nbsp;&nbsp<a href='?controller=menus&action=subMenu&subMenu=$subMenuItem'>$subMenuItem</a>";
+
+              print "&nbsp;&nbsp;&nbsp;&nbsp<a href='?controller=".strtolower($menuItem)."&action=".strtolower(str_replace(' ', '', $subMenuItem))."'>$subMenuItem</a>";
             }
             print "<nav class='subnavbar'>";
           }

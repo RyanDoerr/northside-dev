@@ -27,6 +27,10 @@
 			case 'menus' :
 				$controller = new MenusController();
 			break;
+			//Group Page Controllers
+			case 'order' :
+				$controller = new OrdersController();
+			break;
 		}
 
 		//call the action
@@ -36,10 +40,11 @@
 	//just a list of the controllers we have and their actions
 	//actions are "pages", but also functions that might be needed within the page class
 	//for example startSession is not a page, but is included on pages to keep a user's session alive
-	$controllers = array('pages' => ['login', 'error', 'menu','success', 'startSession', 'verify'], 
-						 'reports' => [],
-						 'forms' => [],
-						 'menus' => ['mainMenu', 'subMenu']);
+	$controllers = array('pages' 	=> ['login', 'error', 'menu','success', 'startSession', 'verify'], 
+						 'reports' 	=> [],
+						 'forms' 	=> [],
+						 'menus' 	=> ['mainMenu', 'subMenu'],
+						 'order'	=> ['enterorder'] );
 
 	//Check if action and controller are allowed
 	//with failure redirect to error page

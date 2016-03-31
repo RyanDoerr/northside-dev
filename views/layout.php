@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 	<html>
 		<head>
+		<script src="jquery.js"></script>
 		</head>
 		<body>
 			<header>
