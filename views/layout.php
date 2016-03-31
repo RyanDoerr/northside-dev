@@ -23,7 +23,7 @@ Team Members: Matthew Doerr, Alexander Hornick, Mikayla Webber, Tiasha Gray-Rame
 			<?php require_once('routes.php'); ?>
 
 			<footer>
-				&copy; Copyright Codist Technologies 2016 
+				&copy; Copyright Codist Technologies <?php echo date("Y"); ?>
 			</footer>
 		</body>
 	</html>
