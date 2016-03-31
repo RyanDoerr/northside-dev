@@ -8,16 +8,16 @@
                    'inventoryCraftsFirst'       => ['Craft ID', 'Craft Name', 'Current Price', 'Quantity'],
                    'inventoryReturnsFirst'      => ['Item ID', 'Item Name', 'Order ID', 'Quantity', 'Current Price'],
                    //Sales English Field Names
-                   'OrderSalesFirst'          => ['Sale ID','Employee Name','Sale Date','Subtotal','Tax Amount','Total Cost'],
-                   'OrderCustomFirst'         => ['Custom Order ID', 'Order ID', 'Employee Name', 'Order Date', 'Estimated Price', 'Total Price'],
-                   'OrderGiftFirst'         => ['Gift Order ID','Employee Name','Sale Date','Subtotal','Tax Amount','Total Cost'],
+                   'OrderSalesFirst'            => ['Sale ID','Employee Name','Sale Date','Subtotal','Tax Amount','Total Cost'],
+                   'OrderCustomFirst'           => ['Custom Order ID', 'Order ID', 'Employee Name', 'Order Date', 'Estimated Price', 'Total Price'],
+                   'OrderGiftFirst'             => ['Gift Order ID','Employee Name','Sale Date','Subtotal','Tax Amount','Total Cost'],
                    //View Sale Order
-                   'OrderSalesView'         =>['Item ID', 'Item Name', 'Item Price', 'Quantity'],
-                   'OrderCustomView'          =>['Material ID', 'Material Name', 'Unit Price'],
+                   'OrderSalesView'             =>['Item ID', 'Item Name', 'Item Price', 'Quantity'],
+                   'OrderCustomView'            =>['Material ID', 'Material Name', 'Unit Price'],
 
                          );
 
-    public $displayNames = 
+   // public $displayNames = 
     public function session($set)
     {
       switch($set)

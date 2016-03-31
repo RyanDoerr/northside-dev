@@ -1,3 +1,5 @@
 <?php
-	MenusController::makeMenu(MenusController::displayNames['menu']);
+	MenusController::makeMenu(MenusController::$displayNames['Menu']);
+
+	//MenusController::$displayNames['Menu']
 ?>

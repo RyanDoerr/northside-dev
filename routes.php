@@ -39,7 +39,7 @@
 	$controllers = array('pages' => ['login', 'error', 'menu','success', 'startSession', 'verify'], 
 						 'reports' => [],
 						 'forms' => [],
-						 'menus' => ['mainMenu']);
+						 'menus' => ['mainMenu', 'subMenu']);
 
 	//Check if action and controller are allowed
 	//with failure redirect to error page
