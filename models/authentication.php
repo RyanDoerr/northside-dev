@@ -10,11 +10,18 @@ class Authentication
 
 	public static function verify($employee_id, $password) {
 		$dbpassword_hash = false;
-		$db = Db::getInstance();
-		$query = "SELECT password_hash FROM user WHERE employee_id = '$employee_id'";
-		$req = $db->query($query);
-		$result = $req->fetch();
-		if ($result['password_hash'] == $password){
+
+		//$db = Db::getInstance();
+		//$query = "SELECT password_hash FROM user WHERE employee_id = '$employee_id'";
+		//$req = $db->query($query);
+		//$result = $req->fetch();
+		$table = 'user';
+		$columns = 'password_hash';
+		//$where = 
+		$database = databaseConnection::getInstance();
+		$datas = $database->select($table, $columns, ['employee_id' => $employee_id]);
+		var_dump($datas);
+		if ($datas[0] == $password){
 			$dbpassword_hash = true;
 		}
 		return $dbpassword_hash;

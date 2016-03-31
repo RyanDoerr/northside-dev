@@ -1,5 +1,25 @@
 <?php
-	class Db {
+//include medoo library
+require 'lib/medoo.php';
+/*
+$database = new medoo([
+	'database_type' => 'mysql',
+	'database_name' => '4750',
+	'server'		=> 'localhost',
+	'username'		=> 'root',
+	'password'		=> '',
+	'charset'		=> 'utf8'
+	]);
+*/
+
+
+
+
+
+
+
+
+	class databaseConnection {
 		private static $instance = NULL;
 
 		private function __construct() {}
@@ -10,12 +30,20 @@
 		{
 //Load Database Configuration File as Array
 
+
 //Attempt Connection		
 			if (!isset(self::$instance)) {
-				$pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
-				self::$instance = new PDO('mysql:host=localhost;dbname=4750','root','', $pdo_options);
+			databaseConnection::$instance = new medoo([
+				'database_type' => 'mysql',
+				'database_name' => '4850',
+				'server'		=> 'localhost',
+				'username'		=> 'root',
+				'password'		=> '',
+				'charset'		=> 'utf8'
+			]);
 			}
 			return self::$instance;
 		}
 	}
 	////fghjfghjfghjfghjfghj
+
