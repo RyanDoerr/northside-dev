@@ -2,7 +2,7 @@
 	class OrdersController 
 	{
 
-//This will insert sessionstart into necessary pages
+									//This will insert sessionstart into necessary pages
 									//This may have to switch to a switch statement for efficiency reasons, but for now let's go with it.
 									//Inventory English Field Names
 		public static $displayNames = array('inventoryMaterialsFirst' 			=> ['Material ID', 'Material Name', 'Quantity', 'Unit Price'], 
@@ -64,8 +64,9 @@
 			print "</div>";
 			//Get the value out of the radio button
 			$jQueryScript = "<script>
-
+				$(document).ready(function(){
 								$('input[type=button]').click(function(){
+									
 									var ordertypejs = $('input[name=ordertype]:checked').val();
 									switch (ordertypejs){
 										case 'sale':
@@ -79,10 +80,69 @@
 										break;
 
 									}
+									
+									
+									//$('label').css('color', 'red');
+								
+				
+								
+								
 								});
+								
+								
+									
+				
+								
+							});
 							</script>";
 			echo $jQueryScript;
 
 		}
+		
+		
+	
+		public function drawForm($saleType)
+		{
+			if($saleType == 'sale')
+			{	
+				//$query = 'SELECT item_name FROM item';
+				echo "<script>
+				
+				
+				$(document).ready(function(){
+						$('input[type=button]').click(function(){
+							$( '#selectItems' ).clone().insertAfter( '#selectItems' );	
+							
+						});
+								
+								
+				});
+						
+					</script>";
+					
+					
+				print "<h3>Sale Order</h3>
+				
+				
+				<form>
+				<label id='selectItems'>Select Items
+				<select>
+					<option value='<?php echo volvo;'>Volvo</option>
+				</select>
+				<label>Quantity</label><input type='text' name=''/><br> 
+				</label>
+				<input type='button' value='Add Item +'/>
+				<br><br>
+				<input type='button' value='Cancel'/> <input type='button' value='Next'/>
+				</form>
+				
+				
+				
+				
+				";
+				
+			}
+		}
+		
 
 }
