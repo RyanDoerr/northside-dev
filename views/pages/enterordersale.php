@@ -1,2 +1,4 @@
+<?php
+print "Oh you picked a sale order.";
 
-Oh you picked a sale order.
+?>
