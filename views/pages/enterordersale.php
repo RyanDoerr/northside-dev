@@ -7,9 +7,3 @@ OrdersController::drawForm('sale');
 
 ?>
 
-=======
-<?php
-print "Oh you picked a sale order.";
-
-?>
->>>>>>> origin/development
