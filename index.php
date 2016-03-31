@@ -1,6 +1,4 @@
 <?php 
-// mikayla was here :)
-//Alex was also here :)
 //Here we start the session for the user.
 //Here is our DB include
 	require_once('connection.php');
