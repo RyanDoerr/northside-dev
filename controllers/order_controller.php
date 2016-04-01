@@ -99,13 +99,11 @@
 
 		}
 		
-		
 	
-		public function drawForm($saleType)
+		public function drawForm($orderType)
 		{
-			if($saleType == 'sale')
+			if($orderType == 'sale')
 			{	
-				//$query = 'SELECT item_name FROM item';
 				echo "<script>
 				
 				
@@ -114,8 +112,16 @@
 							$( '#selectItems' ).clone().insertAfter( '#selectItems' );	
 							
 						});
+
 								
-								
+						$( 'form' ).submit(function( event ) {
+							//var fields = $(':input').serializeArray();
+							
+							
+							
+							//console.log( $( this ).serializeArray() );
+							//event.preventDefault();
+						});		
 				});
 						
 					</script>";
@@ -127,13 +133,172 @@
 				<form>
 				<label id='selectItems'>Select Items
 				<select>
-					<option value='<?php echo volvo;'>Volvo</option>
+					<option name = 'item' value='Item 1'>Item 1</option>
+					<option name = 'item2' value='Item 2'>Item 2</option>
 				</select>
-				<label>Quantity</label><input type='text' name=''/><br> 
+				<label>Quantity</label><input type='text' name='quantity'/><br> 
 				</label>
 				<input type='button' value='Add Item +'/>
 				<br><br>
-				<input type='button' value='Cancel'/> <input type='button' value='Next'/>
+				<input type='button' value='Cancel'/> <input type='submit' value='Next'/>
+				</form>
+				
+				
+				
+				
+				";
+				
+			}
+			
+			
+			else if($orderType == 'gift')
+			{
+				echo "
+				
+				<script>
+				
+				
+				$(document).ready(function(){
+						$('input[type=button]').click(function(){
+							$( '#selectItems' ).clone().insertAfter( '#selectItems' );	
+							
+						});
+
+								
+						$( 'form' ).submit(function( event ) {
+							//var fields = $(':input').serializeArray();
+							
+							
+							
+							//console.log( $( this ).serializeArray() );
+							//event.preventDefault();
+						});		
+				});
+						
+					</script>";
+					
+					
+				print "<h3>Gift Order</h3>
+				
+				
+				<form>
+				<label id='selectItems'>Select Items
+				<select>
+					<option name = 'item' value='Item 1'>Item 1</option>
+					<option name = 'item2' value='Item 2'>Item 2</option>
+				</select>
+				<label>Quantity</label><input type='text' name='quantity'/><br> 
+				</label>
+				<input type='button' value='Add Item +'/>
+				<br><br>
+				
+				<h3>Customer Info</h3>
+				
+				<label>First Name <input type='text' name='firstName'></label><br>
+				<label>Last Name <input type='text' name='lastName'></label><br>
+				<label>Address Line 1 <input type='text' name='addressLine1'></label><br>
+				<label>Address Line 2 <input type='text' name='addressLine2'></label><br>
+				<label>Address Type </label>
+				<select>
+					<option name = 'house' value='House'>House</option>
+					<option name = 'apartment' value='Apartment'>Apartment</option>
+				</select><br>
+				<label>City <input type='text' name='city'></label><br>
+				<label>State <input type='text' name='state'></label><br>
+				<label>Zip <input type='text' name='zip'></label><br>
+				<label>P.O. Box <input type='text' name='pobox'></label><br>
+				
+				<h3>Recipient Info</h3>
+				
+				<label>First Name <input type='text' name='recfirstName'></label><br>
+				<label>Last Name <input type='text' name='reclastName'></label><br>
+				<label>Address Line 1 <input type='text' name='recaddressLine1'></label><br>
+				<label>Address Line 2 <input type='text' name='recaddressLine2'></label><br>
+				<label>Address Type </label>
+				<select>
+					<option name = 'rechouse' value='House'>House</option>
+					<option name = 'recapartment' value='Apartment'>Apartment</option>
+				</select><br>
+				<label>City <input type='text' name='reccity'></label><br>
+				<label>State <input type='text' name='recstate'></label><br>
+				<label>Zip <input type='text' name='reczip'></label><br>
+				<label>P.O. Box <input type='text' name='recpobox'></label><br>
+
+				
+				
+				
+				
+				<input type='button' value='Cancel'/> <input type='submit' value='Next'/>
+				
+				
+				
+				</form>
+				
+				
+				
+				
+				";
+				
+			}
+			
+			else if($orderType == 'custom')
+			{
+					echo "<script>
+				
+				
+				$(document).ready(function(){
+						$('input[type=button]').click(function(){
+							$( '#selectItems' ).clone().insertAfter( '#selectItems' );	
+							
+						});
+
+								
+						$( 'form' ).submit(function( event ) {
+							//var fields = $(':input').serializeArray();
+							
+							
+							
+							//console.log( $( this ).serializeArray() );
+							//event.preventDefault();
+						});		
+				});
+						
+					</script>";
+					
+					
+				print "<h3>Custom Order</h3>
+				
+				
+				<form>
+				<label id='selectItems'>Select Materials to be used:
+				<select>
+					<option name = 'material'>Material 1</option>
+					<option name = 'material'>Material 2</option>
+				</select>
+				<label>Quantity</label><input type='text' name='quantity'/><br> 
+				</label>
+				<input type='button' value='Add New'/>
+				<br><br>
+				<label>Custom Craft Comments <input type='textfield' name='comment'></label>
+				<br>
+				<label>Estimated Minimum Price needed for Profit: <input type='text'></label><br>
+				<h3>Customer Info</h3>
+				
+				<label>First Name <input type='text' name='firstName'></label><br>
+				<label>Last Name <input type='text' name='lastName'></label><br>
+				<label>Address Line 1 <input type='text' name='addressLine1'></label><br>
+				<label>Address Line 2 <input type='text' name='addressLine2'></label><br>
+				<label>Address Type </label>
+				<select>
+					<option name = 'house' value='House'>House</option>
+					<option name = 'apartment' value='Apartment'>Apartment</option>
+				</select><br>
+				<label>City <input type='text' name='city'></label><br>
+				<label>State <input type='text' name='state'></label><br>
+				<label>Zip <input type='text' name='zip'></label><br>
+				<label>P.O. Box <input type='text' name='pobox'></label><br>
+				
+				<input type='button' value='Cancel'/> <input type='submit' value='Next'/>
 				</form>
 				
 				

@@ -1,2 +1,7 @@
+<?php
 
-Oh you picked a gift order.
+include('../../controllers/order_controller.php');
+OrdersController::drawForm('gift');
+
+?>
+
