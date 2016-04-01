@@ -1,8 +1,9 @@
+
 <?php
+	//require_once('models/dataBaseModel.php');
 	class OrdersController 
 	{
-
-									//This will insert sessionstart into necessary pages
+							//This will insert sessionstart into necessary pages
 									//This may have to switch to a switch statement for efficiency reasons, but for now let's go with it.
 									//Inventory English Field Names
 		public static $displayNames = array('inventoryMaterialsFirst' 			=> ['Material ID', 'Material Name', 'Quantity', 'Unit Price'], 
@@ -99,6 +100,17 @@
 
 		}
 		
+		public function submitForm()
+		{
+			require('models/order.php');
+			$model = new Order();
+			Order::selectStuff();
+			
+			$address = $_POST['addressLine1'];
+			$quantity = $_POST['quantity'];
+			echo $address;
+			echo $quantity . ' qty';
+		}
 	
 		public function drawForm($orderType)
 		{
@@ -270,7 +282,7 @@
 				print "<h3>Custom Order</h3>
 				
 				
-				<form>
+				<form action = '?controller=order&action=submitForm' method='post'>
 				<label class='selectItems'>Select Materials to be used:
 				<select>
 					<option name = 'material'>Material 1</option>
@@ -311,8 +323,40 @@
 		}
 		
 
-}
 
+		//find order page action
+		public function findorder()
+		{
+			require_once('views/pages/findorder.php');
+			$xxx = 'xxxxxx';
+			$formidnames = ['Customer Name:', 'Order Date:', 'Items Charged:', 'Total:'];
+
+			foreach($formidnames as $formidname)
+			{
+				print $formidname.'&nbsp&nbsp.&nbsp.&nbsp'.$xxx.'<br>';
+			}
+
+
+		}
+		//look up order page action
+		public function lookuporder()
+		{
+		//make array for form id names
+			$formidnames = ['Order ID','Customer Name','Order Date'];
+		//function lookuporder()
+			require('views/pages/lookuporder.php');
+		//print all form fields 
+			print "<form action='?controller=order&action=findorder' method='post'>";
+			foreach ($formidnames as $formidname){
+		  		print $formidname;
+		  		print "<input type='text' name='filter'><br>";
+  			}
+  			print "<input type='submit' value='Find Order'>";
+			print "<input type='button' value='Cancel'>";
+			print "</form>";
+		}
+
+}
 
 //	require_once('models/dataBaseModel.php');
 /*	class OrdersController 
@@ -405,3 +449,4 @@
 
 }
 */
+

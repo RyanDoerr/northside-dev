@@ -49,5 +49,9 @@
 			}
 
 		}
+		public function errors()
+		{
+			include('views/pages/error.php');
+		}
 	
 	}

@@ -1,40 +1,32 @@
 <?php
-class DatabaseModel
+class Order
 {
+	public function selectStuff()
+	{
+		echo "selectStuff was called";
+	}
+	
+}
+
+/*
 	private $employee_id;
 	private $password;
 
 	public function __construct($employee_id, $password){}
 
-	//handles dropdown box for items and materials
-	public static function dropdown($case)
+	public static function dropdownItemQuery()
 	{
 		//Select name from item where item id is not in craft or materials
 		$database = dataBaseConnection::getInstance();
-		switch($case){
-		case 'item':
-			$dataset = $database->select("item", "item.name");
-		
-		break;
-		//select item.item_name where item.item_id == material.item_id
-		case 'material':
-			$dataset = $database->select("item", "item.name", ["item.item_id" => $database->select("material","item_id")]);
-		break;
-		}
+		$dataset = $database->select("item", "item.name",   [ 
+																"AND" => [
+																"item.item_id[!]" => $database->select("craft", "item_id"),
+																"item.item_id[!]" => $database->select("material", "item_id")
+																]
+															]);
 		return $dataset;
+
 	}
-	//handles dropdown box for suppliers
-	public static function dropdownSuppliers($supplier_id)
-	{
-		$database = dataBaseConnection::getInstance();
-		$dataset = $database->select("item", "item.name", [		"AND" => [
-																	  "item.item_id" => $database->select("material","item_id"),
-																	  "material.supplier_id" => $supplier_id
-																	  ]
-															 ]);
-		return $dataset;
-	}
-	
 	public static function outputDatabase($arrayOfTables, $password) 
 	{
 		$database = databaseConnection::getInstance();
@@ -53,4 +45,4 @@ class DatabaseModel
 
 
 	}
-}
+}*/
