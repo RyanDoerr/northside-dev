@@ -1,12 +1,21 @@
-body {
-  background: #F7F6CE no-repeat center center fixed;
-  font-family: ""Lucida Sans Unicode", "Lucida Grande", sans-serif";
-/* IE Fallback */
-background: rgba(247, 246, 206, 206);
-width: 100%;
-height: 100%;
+body { 
+/****************************
+Body styles. Centers and fixes
+the content and sets the font
+family, width, height.
+****************************/
+	background: #F7F6CE no-repeat center center fixed;
+	font-family: ""Lucida Sans Unicode", "Lucida Grande", sans-serif";
+	/* IE Fallback */
+	background: rgba(247, 246, 206, 206);
+	width: 100%;
+	height: 100%;
 }
 .loginPage {
+/****************************
+Settings for the class 
+loginPage
+****************************/
   position: absolute;
   top: 50%;
   left: 50%;
@@ -66,7 +75,10 @@ height: 100%;
 .loginPage button:hover {
   background: #369cb8;
 }
-
+/****************************
+Settings for the login 
+button
+****************************/
 .button {
   border-radius: 4px;
   background-color: #0088BB;
@@ -104,4 +116,58 @@ height: 100%;
 .button:hover span:after {
   opacity: 1;
   right: 0;
+}
+/****************************
+Below is the div class button
+styling
+****************************/
+.blueButton {
+	-moz-box-shadow:inset 0px -3px 7px 0px #29bbff;
+	-webkit-box-shadow:inset 0px -3px 7px 0px #29bbff;
+	box-shadow:inset 0px -3px 7px 0px #29bbff;
+	background-color:#0088BB;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+	border:1px solid #0088BB;
+	display:inline-block;
+	cursor:pointer;
+	color:#fff;
+	font-family:Arial;
+	font-size:15px;
+	padding:9px 23px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #263666;
+}
+.blueButton:hover {
+	background-color:#369cb8;
+}
+.blueButton:active {
+	position:relative;
+	top:1px;
+}
+.redButton {
+	-moz-box-shadow:inset 0px -3px 7px 0px #8a2a21;
+	-webkit-box-shadow:inset 0px -3px 7px 0px #8a2a21;
+	box-shadow:inset 0px -3px 7px 0px #8a2a21;
+	background-color:#c62d1f;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+	border:1px solid #d02718;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	padding:9px 23px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #810e05;
+}
+.redButton:hover {
+	background-color:#f24437;
+}
+.redButton:active {
+	position:relative;
+	top:1px;
 }
