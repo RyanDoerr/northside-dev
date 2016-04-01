@@ -83,9 +83,40 @@
 								});
 							</script>";
 			echo $jQueryScript;
-			$testDatabaseObject = dataBaseModel::dropDownItemQuery();
-			var_dump($testDatabaseObject);
+			//$testDatabaseObject = dataBaseModel::dropDownItemQuery();
+			//var_dump($testDatabaseObject);
 
+		}
+		//find order page action
+		public function findorder()
+		{
+			require_once('views/pages/findorder.php');
+			$xxx = 'xxxxxx';
+			$formidnames = ['Customer Name:', 'Order Date:', 'Items Charged:', 'Total:'];
+
+			foreach($formidnames as $formidname)
+			{
+				print $formidname.'&nbsp&nbsp.&nbsp.&nbsp'.$xxx.'<br>';
+			}
+
+
+		}
+		//look up order page action
+		public function lookuporder()
+		{
+		//make array for form id names
+			$formidnames = ['Order ID','Customer Name','Order Date'];
+		//function lookuporder()
+			require('views/pages/lookuporder.php');
+		//print all form fields 
+			print "<form action='?controller=order&action=findorder' method='post'>";
+			foreach ($formidnames as $formidname){
+		  		print $formidname;
+		  		print "<input type='text' name='filter'><br>";
+  			}
+  			print "<input type='submit' value='Find Order'>";
+			print "<input type='button' value='Cancel'>";
+			print "</form>";
 		}
 
 }
