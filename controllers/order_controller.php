@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 	class OrdersController 
 	{
@@ -147,7 +146,7 @@
 		
 
 }
-=======
+
 <?php
 	require_once('models/dataBaseModel.php');
 	class OrdersController 
