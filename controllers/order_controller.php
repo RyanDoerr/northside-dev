@@ -149,7 +149,7 @@
 
 
 	require_once('models/dataBaseModel.php');
-	class OrdersController 
+/*	class OrdersController 
 	{
 
 //This will insert sessionstart into necessary pages
@@ -238,4 +238,4 @@
 		}
 
 }
-
+*/
