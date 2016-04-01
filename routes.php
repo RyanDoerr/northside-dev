@@ -44,7 +44,7 @@
 						 'reports' 	=> [],
 						 'forms' 	=> [],
 						 'menus' 	=> ['mainMenu', 'subMenu'],
-						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'submitOrder'] );
+						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'submitFormr'] );
 
 	//Check if action and controller are allowed
 	//with failure redirect to error page
