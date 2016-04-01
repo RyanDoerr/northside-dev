@@ -221,6 +221,17 @@
 
 		}
 		
+		public function submitForm()
+		{
+			require('models/order.php');
+			$model = new Order();
+			Order::selectStuff();
+			
+			$address = $_POST['addressLine1'];
+			$quantity = $_POST['quantity'];
+			echo $address;
+			echo $quantity . ' qty';
+		}
 	
 		public function drawForm($orderType)
 		{
@@ -392,7 +403,7 @@
 				print "<h3>Custom Order</h3>
 				
 				
-				<form>
+				<form action = '?controller=order&action=submitForm' method='post'>
 				<label class='selectItems'>Select Materials to be used:
 				<select>
 					<option name = 'material'>Material 1</option>
