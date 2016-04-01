@@ -147,7 +147,7 @@
 
 }
 
-<?php
+
 	require_once('models/dataBaseModel.php');
 	class OrdersController 
 	{
@@ -238,4 +238,4 @@
 		}
 
 }
->>>>>>> origin/development
+
