@@ -1,4 +1,7 @@
 <?php
-print "Oh you picked a sale order.";
+
+include('../../controllers/order_controller.php');
+OrdersController::drawForm('sale');
 
 ?>
+

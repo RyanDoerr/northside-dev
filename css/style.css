@@ -1,0 +1,173 @@
+body { 
+/****************************
+Body styles. Centers and fixes
+the content and sets the font
+family, width, height.
+****************************/
+	background: #F7F6CE no-repeat center center fixed;
+	font-family: ""Lucida Sans Unicode", "Lucida Grande", sans-serif";
+	/* IE Fallback */
+	background: rgba(247, 246, 206, 206);
+	width: 100%;
+	height: 100%;
+}
+.loginPage {
+/****************************
+Settings for the class 
+loginPage
+****************************/
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: #fff;
+  width: 285px;
+  margin: -140px 0 0 -182px;
+  padding: 40px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  padding-bottom: 3px;
+}
+.loginPage h2 {
+  margin: 0 0 20px;
+  line-height: 1;
+  color: #0088BB;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+}
+.loginPage input {
+  outline: none;
+  display: block;
+  width: 100%;
+  margin: 0 0 20px;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  color: #ccc;
+  font-family: ""Lucida Sans Unicode", "Lucida Grande", sans-serif";
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-wieght: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-transition: 0.2s linear;
+  -moz-transition: 0.2s linear;
+  -ms-transition: 0.2s linear;
+  -o-transition: 0.2s linear;
+  transition: 0.2s linear;
+}
+.loginPage input:focus {
+  color: #333;
+  border: 1px solid #0088BB;
+}
+.loginPage button {
+  cursor: pointer;
+  background: #0088BB;
+  width: 100%;
+  padding: 10px 15px;
+  border: 0;
+  color: #fff;
+  font-family: "Roboto";
+  font-size: 14px;
+  font-weight: 400;
+
+}
+.loginPage button:hover {
+  background: #369cb8;
+}
+/****************************
+Settings for the login 
+button
+****************************/
+.button {
+  border-radius: 4px;
+  background-color: #0088BB;
+  border: none;
+  color: #fff;
+  text-align: center;
+  font-size: 15px;
+  padding: 5px;
+  width: 100px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+/****************************
+Below is the div class button
+styling
+****************************/
+.blueButton {
+	-moz-box-shadow:inset 0px -3px 7px 0px #29bbff;
+	-webkit-box-shadow:inset 0px -3px 7px 0px #29bbff;
+	box-shadow:inset 0px -3px 7px 0px #29bbff;
+	background-color:#0088BB;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+	border:1px solid #0088BB;
+	display:inline-block;
+	cursor:pointer;
+	color:#fff;
+	font-family:Arial;
+	font-size:15px;
+	padding:9px 23px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #263666;
+}
+.blueButton:hover {
+	background-color:#369cb8;
+}
+.blueButton:active {
+	position:relative;
+	top:1px;
+}
+.redButton {
+	-moz-box-shadow:inset 0px -3px 7px 0px #8a2a21;
+	-webkit-box-shadow:inset 0px -3px 7px 0px #8a2a21;
+	box-shadow:inset 0px -3px 7px 0px #8a2a21;
+	background-color:#c62d1f;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+	border:1px solid #d02718;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	padding:9px 23px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #810e05;
+}
+.redButton:hover {
+	background-color:#f24437;
+}
+.redButton:active {
+	position:relative;
+	top:1px;
+}

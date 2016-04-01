@@ -1,2 +1,6 @@
+<?php
 
-Oh you picked a custom order.
+include('../../controllers/order_controller.php');
+OrdersController::drawForm('custom');
+
+?>

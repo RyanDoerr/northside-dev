@@ -14,7 +14,11 @@
 			<?php require_once('routes.php'); ?>
 
 			<footer>
+<<<<<<< HEAD
 		
+=======
+				&copy; Copyright Codist Technologies <?php echo date("Y"); ?>
+>>>>>>> origin/development
 			</footer>
 		</body>
 	</html>
