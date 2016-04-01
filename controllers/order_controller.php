@@ -1,6 +1,6 @@
 
 <?php
-	require_once('models/dataBaseModel.php');
+	//require_once('models/dataBaseModel.php');
 	class OrdersController 
 	{
 							//This will insert sessionstart into necessary pages
