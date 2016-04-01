@@ -109,7 +109,7 @@
 				
 				$(document).ready(function(){
 						$('input[type=button]').click(function(){
-							$( '#selectItems' ).clone().insertAfter( '#selectItems' );	
+							$( '.selectItems' ).first().clone().insertAfter( '.selectItems:last' );	
 							
 						});
 
@@ -131,12 +131,12 @@
 				
 				
 				<form>
-				<label id='selectItems'>Select Items
+				<label class='selectItems'>Select Items
 				<select>
 					<option name = 'item' value='Item 1'>Item 1</option>
 					<option name = 'item2' value='Item 2'>Item 2</option>
 				</select>
-				<label>Quantity</label><input type='text' name='quantity'/><br> 
+				<label>Quantity</label><input type='text' name='quantity' value=1 ><br> 
 				</label>
 				<input type='button' value='Add Item +'/>
 				<br><br>
@@ -153,6 +153,7 @@
 			
 			else if($orderType == 'gift')
 			{
+				
 				echo "
 				
 				<script>
@@ -160,7 +161,7 @@
 				
 				$(document).ready(function(){
 						$('input[type=button]').click(function(){
-							$( '#selectItems' ).clone().insertAfter( '#selectItems' );	
+							$( '.selectItems' ).first().clone().insertAfter( '.selectItems:last' );	
 							
 						});
 
@@ -182,12 +183,12 @@
 				
 				
 				<form>
-				<label id='selectItems'>Select Items
+				<label class='selectItems'>Select Items
 				<select>
 					<option name = 'item' value='Item 1'>Item 1</option>
 					<option name = 'item2' value='Item 2'>Item 2</option>
 				</select>
-				<label>Quantity</label><input type='text' name='quantity'/><br> 
+				<label>Quantity</label><input type='text' name='quantity' value=1><br> 
 				</label>
 				<input type='button' value='Add Item +'/>
 				<br><br>
@@ -248,7 +249,7 @@
 				
 				$(document).ready(function(){
 						$('input[type=button]').click(function(){
-							$( '#selectItems' ).clone().insertAfter( '#selectItems' );	
+							$( '.selectItems' ).first().clone().insertAfter( '.selectItems:last' );	
 							
 						});
 
@@ -270,14 +271,14 @@
 				
 				
 				<form>
-				<label id='selectItems'>Select Materials to be used:
+				<label class='selectItems'>Select Materials to be used:
 				<select>
 					<option name = 'material'>Material 1</option>
 					<option name = 'material'>Material 2</option>
 				</select>
-				<label>Quantity</label><input type='text' name='quantity'/><br> 
+				<label>Quantity</label><input type='text' name='quantity' value=1 <br> 
 				</label>
-				<input type='button' value='Add New'/>
+				<input type='button' id='addNew' value='Add New'/>
 				<br><br>
 				<label>Custom Craft Comments <input type='textfield' name='comment'></label>
 				<br>
