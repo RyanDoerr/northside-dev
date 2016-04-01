@@ -1,29 +1,21 @@
-<style type="text/css">
-    .container {
-        width: 100px;
-        clear: both;
-    }
-    .container input {
-        width: 100%;
-        clear: both;
-    }
-</style>
-You're on the login page.<br><br><br>
-<div class="container">
+<!--
+CSCI 4750
+Group 3 Codist Technologies
+Team: Matthew Doerr, Alexander Hornick, Mikayla Webber, Tiasha Gray-Ramey 
+Includes: The login page for Northside Craft Exchange
+-->
+<div class="loginPage">
+	<header>
+		<h2> Northside Login </h2>
+	</header>
 	<form id="userform" name="userform" method="post" action="?controller=pages&amp;action=menu">
-
-		<label>Username:
-			<input type="text" name="employee_id" id="employee_id" />
-		</label>
-
-		<label><br>Password:
-			<input type="password" name="password_hash" id="password_hash" />
-		</label>
-		<label><br><br>
-			<input type = "submit" name="login" id="login" value="login" />
-		</label>
+		<input placeholder="Username" type="text" name="employee_id" id="employee_id"></input>
+		<input placeholder="Password" type="password" name="password_hash" id="password_hash"></input>
+		<section class="links">
+			<button class="button"><span>LOGIN</span></button>
+			<br><br>
+		</section>
 	</form>
 </div>
+
 <br><br><br><br>
-
-
