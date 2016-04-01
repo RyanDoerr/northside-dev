@@ -276,7 +276,7 @@
 					<option name = 'material'>Material 1</option>
 					<option name = 'material'>Material 2</option>
 				</select>
-				<label>Quantity</label><input type='text' name='quantity' value=1 <br> 
+				<label>Quantity</label><input type='text' name='quantity' value=1> <br> 
 				</label>
 				<input type='button' id='addNew' value='Add New'/>
 				<br><br>
