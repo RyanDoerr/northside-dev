@@ -1,6 +1,7 @@
 <?php
 	class PagesController 
 	{
+		private $employee_id;
 //This will insert sessionstart into necessary pages
 		public function session($set)
 		{
@@ -23,6 +24,7 @@
 			{
 				$_SESSION['employee_id'] = $_POST['employee_id'];
 				$_SESSION['password_hash'] = $_POST['password_hash'];
+				$employee_id = $_SESSION['employee_id']; //new, testing
 			}
 
 			$user = Authentication::verify($_SESSION['employee_id'], $_SESSION['password_hash']);
@@ -53,5 +55,6 @@
 		{
 			include('views/pages/error.php');
 		}
+		
 	
 	}

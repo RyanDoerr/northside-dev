@@ -1,6 +1,5 @@
 
 <?php
-	//require_once('models/dataBaseModel.php');
 	class OrdersController 
 	{
 							//This will insert sessionstart into necessary pages
@@ -18,10 +17,10 @@
 						 			 'OrderCustomView'					=>['Material ID', 'Material Name', 'Unit Price'],
 
 						             );
-		public static $radioButtons = ['Sale', 'Order', 'Gift Order'];
+		public static $radioButtons = ['Sale', 'Custom Order', 'Gift Order'];
 		public static $firstItem = "Sale";
 
-
+		
 
 		public function session($set)
 		{
@@ -59,7 +58,7 @@
 				print ">".$radioButton;
 			}
 
-			print "<br><input type='button' id='loadform' value='Next'>";
+			print "<br><input type='button' class='button' id='loadform' value='Next'>";
 			print "</form>";
 			print "<div id='orderform'>";
 			print "</div>";
@@ -73,7 +72,7 @@
 										case 'sale':
 											$('#orderform').load('views/pages/enterordersale.php');
 										break;
-										case 'order':
+										case 'customorder':
 											$('#orderform').load('views/pages/enterordercustom.php');
 										break;
 										case 'giftorder':
@@ -81,13 +80,6 @@
 										break;
 
 									}
-									
-									
-									//$('label').css('color', 'red');
-								
-				
-								
-								
 								});
 								
 								
@@ -100,225 +92,54 @@
 
 		}
 		
+		
+		
 		public function submitForm()
 		{
-			require('models/order.php');
+			require('models/order.php');   //Get the Orders model
 			$model = new Order();
-			Order::selectStuff();
+			$orderType = $_POST['orderType'];  //Determine if it is a sale, custom order, or gift from the hidden field.
 			
-			$address = $_POST['addressLine1'];
-			$quantity = $_POST['quantity'];
-			echo $address;
-			echo $quantity . ' qty';
-		}
-	
-		public function drawForm($orderType)
-		{
+			
+		
 			if($orderType == 'sale')
-			{	
-				echo "<script>
-				
-				
-				$(document).ready(function(){
-						$('input[type=button]').click(function(){
-							$( '.selectItems' ).first().clone().insertAfter( '.selectItems:last' );	
-							
-						});
-
-								
-						$( 'form' ).submit(function( event ) {
-							//var fields = $(':input').serializeArray();
-							
-							
-							
-							//console.log( $( this ).serializeArray() );
-							//event.preventDefault();
-						});		
-				});
-						
-					</script>";
-					
-					
-				print "<h3>Sale Order</h3>
-				
-				
-				<form>
-				<label class='selectItems'>Select Items
-				<select>
-					<option name = 'item' value='Item 1'>Item 1</option>
-					<option name = 'item2' value='Item 2'>Item 2</option>
-				</select>
-				<label>Quantity</label><input type='text' name='quantity' value=1 ><br> 
-				</label>
-				<input type='button' value='Add Item +'/>
-				<br><br>
-				<input type='button' value='Cancel'/> <input type='submit' value='Next'/>
-				</form>
-				
-				
-				
-				
-				";
-				
+			{
+				$items = $_POST['item'];
+				$quantities = $_POST['quantity'];
+				//Order::insertSale($items, $quantities);
 			}
-			
 			
 			else if($orderType == 'gift')
 			{
-				
-				echo "
-				
-				<script>
-				
-				
-				$(document).ready(function(){
-						$('input[type=button]').click(function(){
-							$( '.selectItems' ).first().clone().insertAfter( '.selectItems:last' );	
-							
-						});
-
-								
-						$( 'form' ).submit(function( event ) {
-							//var fields = $(':input').serializeArray();
-							
-							
-							
-							//console.log( $( this ).serializeArray() );
-							//event.preventDefault();
-						});		
-				});
-						
-					</script>";
-					
-					
-				print "<h3>Gift Order</h3>
-				
-				
-				<form>
-				<label class='selectItems'>Select Items
-				<select>
-					<option name = 'item' value='Item 1'>Item 1</option>
-					<option name = 'item2' value='Item 2'>Item 2</option>
-				</select>
-				<label>Quantity</label><input type='text' name='quantity' value=1><br> 
-				</label>
-				<input type='button' value='Add Item +'/>
-				<br><br>
-				
-				<h3>Customer Info</h3>
-				
-				<label>First Name <input type='text' name='firstName'></label><br>
-				<label>Last Name <input type='text' name='lastName'></label><br>
-				<label>Address Line 1 <input type='text' name='addressLine1'></label><br>
-				<label>Address Line 2 <input type='text' name='addressLine2'></label><br>
-				<label>Address Type </label>
-				<select>
-					<option name = 'house' value='House'>House</option>
-					<option name = 'apartment' value='Apartment'>Apartment</option>
-				</select><br>
-				<label>City <input type='text' name='city'></label><br>
-				<label>State <input type='text' name='state'></label><br>
-				<label>Zip <input type='text' name='zip'></label><br>
-				<label>P.O. Box <input type='text' name='pobox'></label><br>
-				
-				<h3>Recipient Info</h3>
-				
-				<label>First Name <input type='text' name='recfirstName'></label><br>
-				<label>Last Name <input type='text' name='reclastName'></label><br>
-				<label>Address Line 1 <input type='text' name='recaddressLine1'></label><br>
-				<label>Address Line 2 <input type='text' name='recaddressLine2'></label><br>
-				<label>Address Type </label>
-				<select>
-					<option name = 'rechouse' value='House'>House</option>
-					<option name = 'recapartment' value='Apartment'>Apartment</option>
-				</select><br>
-				<label>City <input type='text' name='reccity'></label><br>
-				<label>State <input type='text' name='recstate'></label><br>
-				<label>Zip <input type='text' name='reczip'></label><br>
-				<label>P.O. Box <input type='text' name='recpobox'></label><br>
-
-				
-				
-				
-				
-				<input type='button' value='Cancel'/> <input type='submit' value='Next'/>
-				
-				
-				
-				</form>
-				
-				
-				
-				
-				";
-				
+				$items = $_POST['item'];
+				$quantities = $_POST['quantity'];
+				$firstName = $_POST['firstName'];
+				$lastName = $_POST['lastName'];
+				$addressLine1 = $_POST['addressLine1'];
+			}
+			
+			else {
+				echo 'Submit Form Error';
+			}
+			
+			include('views/pages/confirmOrder.php');
+			}
+	
+		public function drawForm($orderType)
+		{
+			require('../../models/order.php');   //Get the Orders model
+			$model = new Order();
+			
+			if($orderType == 'sale' || $orderType == 'gift')
+			{
+				$dataset = $model->getItems();
+				return $dataset;
 			}
 			
 			else if($orderType == 'custom')
 			{
-					echo "<script>
-				
-				
-				$(document).ready(function(){
-						$('input[type=button]').click(function(){
-							$( '.selectItems' ).first().clone().insertAfter( '.selectItems:last' );	
-							
-						});
-
-								
-						$( 'form' ).submit(function( event ) {
-							//var fields = $(':input').serializeArray();
-							
-							
-							
-							//console.log( $( this ).serializeArray() );
-							//event.preventDefault();
-						});		
-				});
-						
-					</script>";
-					
-					
-				print "<h3>Custom Order</h3>
-				
-				
-				<form action = '?controller=order&action=submitForm' method='post'>
-				<label class='selectItems'>Select Materials to be used:
-				<select>
-					<option name = 'material'>Material 1</option>
-					<option name = 'material'>Material 2</option>
-				</select>
-				<label>Quantity</label><input type='text' name='quantity' value=1> <br> 
-				</label>
-				<input type='button' id='addNew' value='Add New'/>
-				<br><br>
-				<label>Custom Craft Comments <input type='textfield' name='comment'></label>
-				<br>
-				<label>Estimated Minimum Price needed for Profit: <input type='text'></label><br>
-				<h3>Customer Info</h3>
-				
-				<label>First Name <input type='text' name='firstName'></label><br>
-				<label>Last Name <input type='text' name='lastName'></label><br>
-				<label>Address Line 1 <input type='text' name='addressLine1'></label><br>
-				<label>Address Line 2 <input type='text' name='addressLine2'></label><br>
-				<label>Address Type </label>
-				<select>
-					<option name = 'house' value='House'>House</option>
-					<option name = 'apartment' value='Apartment'>Apartment</option>
-				</select><br>
-				<label>City <input type='text' name='city'></label><br>
-				<label>State <input type='text' name='state'></label><br>
-				<label>Zip <input type='text' name='zip'></label><br>
-				<label>P.O. Box <input type='text' name='pobox'></label><br>
-				
-				<input type='button' value='Cancel'/> <input type='submit' value='Next'/>
-				</form>
-				
-				
-				
-				
-				";
-				
+				$dataset = $model->getMaterials();
+				return $dataset;
 			}
 		}
 		
