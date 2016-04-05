@@ -9,8 +9,8 @@ Includes: The login page for Northside Craft Exchange
 		<h2> Northside Login </h2>
 	</header>
 	<form id="userform" name="userform" method="post" action="?controller=pages&amp;action=menu">
-		<input placeholder="Username" type="text" name="employee_id" id="employee_id"></input>
-		<input placeholder="Password" type="password" name="password_hash" id="password_hash"></input>
+		<input placeholder="Username" type="text" required name="employee_id" id="employee_id"></input>
+		<input placeholder="Password" type="password" required name="password_hash" id="password_hash"></input>
 		<section class="links">
 			<button class="button"><span>LOGIN</span></button>
 			<br><br>
