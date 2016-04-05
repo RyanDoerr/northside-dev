@@ -53,5 +53,12 @@
 		{
 			include('views/pages/error.php');
 		}
+		public function stage()
+		{
+			require('models/database.php');
+			require('views/pages/stage.php');
+
+
+		}
 	
 	}
