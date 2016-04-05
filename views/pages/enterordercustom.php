@@ -1,7 +1,7 @@
 <?php
 
 include('../../controllers/order_controller.php');
-$materials = OrdersController::drawForm('custom');
+$materials = OrdersController::getItems('custom');
 
 ?>
 
@@ -21,8 +21,9 @@ $materials = OrdersController::drawForm('custom');
 				</select>
 				<label>Quantity</label><input type='text' name='quantity' value=1> <br> 
 				</label>
-				<input type='button' class="button" id='addNew' value='Add New'/>
+				<input type='button' class="button" id='addNew' value='Add New +'/>
 				<br><br>
+				<label>Name of Custom Craft<input type="text" name="itemName"></label><label>Quantity</label><input type='text' name='itemQuantity' value=1><br>
 				<label>Custom Craft Comments <input type='textfield' name='comment'></label>
 				<br>
 				<label>Estimated Minimum Price needed for Profit: <input type='text'></label><br>

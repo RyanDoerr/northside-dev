@@ -1,7 +1,7 @@
 <?php
 
 include('../../controllers/order_controller.php');
-$dataset = OrdersController::drawForm('gift');
+$dataset = OrdersController::getItems('gift'); //Returns all the items to be used in the <select>
 
 ?>
 
@@ -13,9 +13,10 @@ $dataset = OrdersController::drawForm('gift');
 				<label class='selectItems'>Select Items
 				<select name = 'item[]'>
 					<?php foreach($dataset as $data) { ?>
-					<option><?php echo $data['name']; ?></option>
+					<option value='<?php echo $data['item_id'];?>'><?php echo $data['name']; ?></option>
 					<?php } ?>
 				</select>
+				
 				<label>Quantity</label><input type='text' name='quantity[]' value=1><br> 
 				</label>
 				<input type='button' class="button" value='Add Item +'/>
@@ -25,12 +26,14 @@ $dataset = OrdersController::drawForm('gift');
 				
 				<label>First Name <input type='text' name='firstName'></label><br>
 				<label>Last Name <input type='text' name='lastName'></label><br>
+				<label>Phone Number<input type='text' name='phone'></label><br>
+				<label>Email<input type='text' name='email'></label><br>
 				<label>Address Line 1 <input type='text' name='addressLine1'></label><br>
 				<label>Address Line 2 <input type='text' name='addressLine2'></label><br>
 				<label>Address Type </label>
-				<select>
-					<option name = 'house' value='House'>House</option>
-					<option name = 'apartment' value='Apartment'>Apartment</option>
+				<select name='addressType'>
+					<option>House</option>
+					<option>Apartment</option>
 				</select><br>
 				<label>City <input type='text' name='city'></label><br>
 				<label>State <input type='text' name='state'></label><br>

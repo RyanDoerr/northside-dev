@@ -1,7 +1,7 @@
 <?php
 
 include('../../controllers/order_controller.php');
-$dataset = OrdersController::drawForm('sale');
+$dataset = OrdersController::getItems('sale'); //Returns all the items to be used in the <select>
 
 ?>
 
@@ -13,9 +13,11 @@ $dataset = OrdersController::drawForm('sale');
 				<label class='selectItems'>Select Items
 				<select name = 'item[]'>
 					<?php foreach($dataset as $data) { ?>
-					<option><?php echo $data['name']; ?></option>
+					<option value='<?php echo $data['item_id'];?>'><?php echo $data['name']; ?></option>
 					<?php } ?>
 				</select>
+				
+				
 				<label>Quantity</label><input type='text' name='quantity[]' value=1 ><br> 
 				</label>
 				<input type='button' class='button' value='Add Item +'/>
