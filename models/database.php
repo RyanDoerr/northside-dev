@@ -18,12 +18,19 @@ class DatabaseObject {
 	public function __construct(){
 		$this->database_db = databaseConnection::getInstance();
 	}
-	public function getRecords($columns) {
-		$data_set = $this->database_db->select($this->table, $columns);
-		return $data_set;
+	public function getRecords($columns, $where = "") {
+		$this->columns = $columns;
+		if (!empty($where)){
+			$this->where = $where;
+			$this->data_set = $this->database_db->select($this->table, $columns, $this->where);
+		}
+		else {
+			$this->data_set = $this->database_db->select($this->table, $columns);
+		}
+		return $this->data_set;
 	}
 	public function setRecords($table, $data) {
-		$lastInstertId = $database_db->insert($table, $data);
+		$this->lastInstertId = $database_db->insert($table, $data);
 	}
 	public function display($howMany) {
 	}
@@ -33,6 +40,30 @@ class DatabaseObject {
 	public function get_table($string){
 		return $this->table;
 	}
+	public function drawTable(){
+		//var_dump($this->field_set);
+		$rows = sizeof($this->data_set);
+		$cols = sizeof($this->columns);
+		echo "<table border='1'>";
+
+		//draw header labels
+		foreach($this->columns as $colHeading){
+			echo "<th>";
+			echo str_replace("Id", "ID", ucwords(str_replace("_", " ",$colHeading)));
+			echo "</th>";
+		}
+		//var_dump($this->data_set);
+
+		for ($tr=1; $tr<=$rows; $tr++){
+			echo "<tr>";
+				for($td = 1; $td<=$cols;$td++){
+					//var_dump($cols);
+					echo "<td align='center'>".$this->data_set[$tr-1][$this->columns[$td-1]]."</td>";
+				}
+			echo "</tr>";
+		}
+		echo "</table>";
+	}
 
 }
 class OrderDatabaseObject extends DatabaseObject {
@@ -40,7 +71,7 @@ class OrderDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		//echo 'constructor called';
-		$field_set = array( 'order_id', 'customer_id', 'employee_id', 'order_date',
+		$this->field_set = array( 'order_id', 'customer_id', 'employee_id', 'order_date',
 					   'subtotal', 'tax_amount', 'total_price', 'order_type' );
 		$this->set_table('order');
 	}
