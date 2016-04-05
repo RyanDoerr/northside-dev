@@ -1,6 +1,6 @@
 <?php
 //include medoo library
-require 'lib/medoo.php';
+require_once 'lib/medoo.php';
 /*
 $database = new medoo([
 	'database_type' => 'mysql',
