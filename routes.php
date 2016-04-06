@@ -30,7 +30,13 @@
 			//Group Page Controllers
 			case 'order' :
 				$controller = new OrdersController();
+				break;
+			case 'employees' :
+				$controller = new EmployeesController();
 			break;
+			case 'addresses' :
+				$controller = new AddressesController();
+				break;
 		}
 
 		//call the action
@@ -44,7 +50,10 @@
 						 'reports' 	=> [],
 						 'forms' 	=> [],
 						 'menus' 	=> ['mainMenu', 'subMenu'],
-						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'submitForm'] );
+						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'submitForm','confirm'],
+						'employees' => ['addemployee'],
+						'addresses' => ['']
+						);
 
 	//Check if action and controller are allowed
 	//with failure redirect to error page

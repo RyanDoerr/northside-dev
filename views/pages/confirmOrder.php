@@ -4,17 +4,19 @@
 <?php
 	
 	$index = 0;
-	if($orderType != 'custom') //The gift and sale orders by have their items in result sets.
+	if(self::$orderType != 'custom') //The gift and sale orders by have their items in result sets.
 	{
-		foreach($items as $item)    //Relates each quantity to that particular item.
+		foreach(self::$OrderDetailsColumns['item_id'] as $item)    //Relates each quantity to that particular item.
 		{
-			echo '<tr><td>'.$item.'</td><td>'.$itemPrices[$index].'</td><td>'.$quantities[$index].'</td></tr><br>';
+			echo '<tr><td>'.$item.'</td><td>'.self::$OrderDetailsColumns['item_price'][$index].'</td><td>'.self::$OrderDetailsColumns['qty'][$index].'</td></tr><br>';
 			$index++;
 		}
 		
-		echo '</table><br>Subtotal: $' . number_format($subtotal,2);
-		echo '<br>Tax Amount: $' . number_format($tax_amount,2);
-		echo '<br>Total: $' . number_format($total,2);
+		echo '</table><br>Subtotal: $' . number_format(self::$orderColumns['subtotal'],2);
+		echo '<br>Tax Amount: $' . number_format(self::$orderColumns['tax_amount'],2);
+		echo '<br>Total: $' . number_format(self::$orderColumns['total'],2);
+		
+		self::confirm();
 	}
 	
 	else
@@ -25,7 +27,6 @@
 	}
 
 ?>
-
-<form>
-<input class = 'button redButton' type='button' value='Cancel'/> <input class = 'button blueButton' type='submit' value='Confirm'/>
+<form action="?controller=order&action=confirm" method="post">
+<input  class = 'button redButton' type='button' value='Cancel'/><input class='button blueButton' type='submit' value='Confirm'/>
 </form>
