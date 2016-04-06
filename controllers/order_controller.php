@@ -20,13 +20,79 @@
 		public static $radioButtons = ['Sale', 'Custom Order', 'Gift Order'];
 		public static $firstItem = "Sale";
 		public static $TAX_RATE = 0.095; //To be used in $total calculations.
-
+		public static $orderType;
+		
+		
+		public static $orderColumns = array(
+					'order_id' => NULL,
+					'customer_id' => NULL,
+					'employee_id' => NULL,
+					'order_date' => NULL,
+					'subtotal' => NULL,
+					'tax_amount' => NULL,
+					'total_price' => NULL,
+					'order_type' => NULL
+					);		
+					
+		public static $OrderDetailsColumns = array(
+					'order_id' => NULL,
+					'item_id' => NULL,
+					'item_price' => NULL,
+					'qty' => NULL
+					);
+					
+		public static $GiftOrder = array(
+					'gift_id' => NULL,
+					'order_id' => NULL,
+					'rec_last_name' => NULL,
+					'rec_first_name' => NULL,
+					'address_id' => NULL
+					);		
+					
+		public static $address = array(
+					'address_id' => NULL, 
+					'street_number' => NULL,
+					'street_suffix' => NULL,
+					'street_name' => NULL,
+					'street_type' => NULL,
+					'street_direction' => NULL, 
+					'address_type' => NULL,
+					'address_type_identifier' => NULL,
+					'minor_municipality' => NULL,
+					'major_municipality' => NULL,
+					'governing_district' => NULL,
+					'zip' => NULL,
+					'iso_country_code' => NULL
+		);
+		
+		public static $GiftShipping = array(
+					'ship_id' => NULL, 
+					'address_id' => NULL,
+					'gift_id' => NULL
+		);
+		
+		public static $ShipCost = array(
+					'ship_cost_id' => NULL,
+					'ship_distance' => NULL,
+					'ship_id' => NULL,
+					'shipping_cost' => NULL
+					);	
+		
+		public static $Customer = array(
+					'customer_id' => NULL,
+					'last_name' => NULL,
+					'first_name' => NULL,
+					'phone_number' => NULL,
+					'email' => NULL,
+					'address_id' => NULL
+					);	
 		
 
 		public function session($set)
 		{
-			switch($set)
-			{
+			
+				switch($set)
+				{
 				case 'start':
 					echo 'session_start();';
 					break;
@@ -34,13 +100,13 @@
 				case 'unset':
 					echo 'session_unset();<br>';
 					break;
-			}
+				}
 		}
 
 		//This function is not a page, and handles requests by specific page functions
 		public function enterorder()
 		{
-			require('views/pages/enterorder.php');
+			require_once('views/pages/enterorder.php');
 		}
 
 		public function drawRadioButtons(){
@@ -99,66 +165,80 @@
 		{
 			require('models/order.php');   //Get the Orders model
 			$model = new Order();
-			$orderType = $_POST['orderType'];  //Determine if it is a sale, custom order, or gift from the hidden field.
+			OrdersController::$orderType = $_POST['orderType'];  //Determine if it is a sale, custom order, or gift from the hidden field.
 			
 			
 			//For sale orders, only 2 things need to be grabbed from the POST array: The items and their quantities.
-			if($orderType == 'sale')
+			if(self::$orderType == 'sale')
 			{
-				$items = $_POST['item'];
-				$quantities = $_POST['quantity'];
+				self::$OrderDetailsColumns['item_id'] = $_POST['item'];
+				self::$OrderDetailsColumns['qty'] = $_POST['quantity'];
+				
 				$index = 0;
-				foreach($items as $item) //This will store the current price of the item into a parallel array along with the array of items.
+				foreach(self::$OrderDetailsColumns['item_id'] as $item)
 				{
-					$itemPrices[$index] = $model->getPrice($item);
+					self::$OrderDetailsColumns['item_price'][$index] = $model->getPrice($item);
 					$index++;
 				}
 				
-			
-				$subtotal = OrdersController::calculateSubtotal($itemPrices,$quantities);  //calculates the subtotal based on items and their quantities
-				$tax_amount = $subtotal * self::$TAX_RATE; //Stores the tax amount using the TAX_RATE of this class
-				$total = $subtotal + $tax_amount; //The total price of the order
+				self::$orderColumns['subtotal'] = self::calculateSubtotal(self::$OrderDetailsColumns['item_price'],self::$OrderDetailsColumns['qty']);  //calculates the subtotal based on items and their quantities
+				self::$orderColumns['tax_amount'] = self::$orderColumns['subtotal'] * self::$TAX_RATE;
+				self::$orderColumns['total'] = self::$orderColumns['subtotal'] + self::$orderColumns['tax_amount'];
+				
 				//Order::insertSale($items, $quantities);
 			}
 			
-			else if($orderType == 'gift') //Grab all the fields from the gift order form, then call the Order model.
+			else if(self::$orderType == 'gift') //Grab all the fields from the gift order form, then call the Order model.
 			{
-				$items = $_POST['item'];
-				$quantities = $_POST['quantity'];
-				$firstName = $_POST['firstName'];
-				$lastName = $_POST['lastName'];
-				$addressLine1 = $_POST['addressLine1'];
-				if(isset($_POST['addressLine2']))
-					$addressLine2 = $_POST['addressLine2'];
-				else $addressLine2 = NULL;
-				$addressType = $_POST['addressType'];
-				$city = $_POST['city'];
-				$state = $_POST['state'];
-				$zip = $_POST['zip'];
-				$email = $_POST['email'];
-				$phone = $_POST['phone'];
+				//ITEMS ORDERED, STORED IN ARRAY
+				self::$OrderDetailsColumns['item_id'] = $_POST['item'];
 				
+				//QUANTITIES OF THOSE ITEMS IN A PARALLEL ARRAY
+				self::$OrderDetailsColumns['qty'] = $_POST['quantity'];
+				
+				//GETS THE ITEM PRICES OF ITEMS USING getPrice() FUNCTION. WILL PROBABLY CHANGE THIS FUNCTION?
 				$index = 0;
-				
-				//This will store the current price of the item into a parallel array along with the array of items.
-				foreach($items as $item)
+				foreach(self::$OrderDetailsColumns['item_id'] as $item)
 				{
-					$itemPrices[$index] = $model->getPrice($item); 
+					self::$OrderDetailsColumns['item_price'][$index] = $model->getPrice($item);
 					$index++;
 				}
 				
-				//if(isset($_POST['pobox'])
-				//	$pobox = $_POST['pobox'];
-				$subtotal = OrdersController::calculateSubtotal($itemPrices,$quantities);  //calculates the subtotal based on items and their quantities
-				$tax_amount = $subtotal - $subtotal * self::$TAX_RATE; //Stores the tax amount using the TAX_RATE of this class
-				$total = $subtotal + $tax_amount; //The total price of the order
-				//Order::insertGiftOrder($items,$quantities,$firstName,$lastName,$phone,$email,$addressLine1, $addressType, $city,$state,$zip);
+				//RECIPIENT INFORMATION
+				self::$GiftOrder['rec_last_name'] = $_POST['reclastName'];
+				self::$GiftOrder['rec_first_name'] = $_POST['recfirstName'];
+				
+				//GRAB ADDRESS INFO HERE (2 times, one for customer and for Recipient). Parsing it seems....difficult. E
+				
+				//self::$GiftShipping['address_id']  This address id will have to reference the one that was inserted. Need to figure this out.
+				
+				//GET SHIPPING COST INFO
+				self::$ShipCost['ship_distance'] = 'continental';
+				if(self::$ShipCost['ship_distance'] == 'continental')
+					self::$ShipCost['ship_cost'] = 5.00;
+				else
+					self::$ShipCost['ship_cost'] = 10.00;
+				
+				//GET CUSTOMER INFO
+				self::$Customer['last_name'] = $_POST['lastName'];
+				self::$Customer['first_name'] = $_POST['firstName'];
+				self::$Customer['phone_number'] = $_POST['phone'];
+				self::$Customer['email'] = $_POST['email'];
+				
+				//GET THE SUBTOTAL/TOTAL INFORMATION
+				self::$orderColumns['subtotal'] = self::calculateSubtotal(self::$OrderDetailsColumns['item_price'],self::$OrderDetailsColumns['qty']);  //calculates the subtotal based on items and their quantities
+				self::$orderColumns['tax_amount'] = self::$orderColumns['subtotal'] * self::$TAX_RATE;
+				self::$orderColumns['total'] = self::$orderColumns['subtotal'] + self::$orderColumns['tax_amount'];
+				
 			}
 			
 			else if($orderType == 'custom')
 			{
 				$items = $_POST['itemName']; //Each custom craft will have its own item id and name.
 				$quantities = $_POST['itemQuantity'];
+				$subtotal = $items * $quantities;  //calculates the subtotal based on items and their quantities
+				$tax_amount = $subtotal - $subtotal * self::$TAX_RATE; //Stores the tax amount using the TAX_RATE of this class
+				$total = $subtotal + $tax_amount; //The total price of the order
 				//TO BE CONTINUED....
 			}
 			
@@ -181,6 +261,11 @@
 			
 			
 			return round($subtotal,2);
+		}
+		
+		public function confirm()
+		{
+			//TESTING: echo 'item id: '.self::$OrderDetailsColumns['item_id'][0];
 		}
 	
 		//This function gets all the items/materials to be used in the enterorder pages.
