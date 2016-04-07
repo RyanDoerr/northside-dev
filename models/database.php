@@ -83,28 +83,32 @@ require_once('connection.php');
 */
 class UnicornMagic {
 	protected $magic_relationships = array(
-											["ship_cost"] 			=> 			array("ship_id"),										//1
-											["gift_shipping"]	    => 			array("ship_id", "address_id", "gift_id"),				//2
-											["address"] 			=> 			array("address_id"),									//3
-											["customer"] 			=> 			array("customer_id", "address_id"),						//4
-											["gift_order"] 			=> 			array("order_id", "address_id"),						//5
-											["custom_order"] 		=> 			array("order_id"),										//6
-											["user"] 				=> 			array("employee_id"),									//7
-											["local_vendors"] 		=> 			array("address_id"),									//8
-											["returns_inventory"]	=> 			array("return_id","order_id"),							//9
-											["order"] 				=>			array("order_id","customer_id","employee_id"),			//10
-											["order_details"] 		=> 			array("order_id","item_id"),							//11
-											["item"] 				=>			array("item_id"),										//12
-											["craft"] 				=>			array("item_id", "craft_id"),							//13
-											["craft_materials"]		=>			array("material_id", "craft_id"),						//14
-											["material"]			=>			array("material_id","supplier_id","item_id"),			//15
-											["supplier_order"]		=>			array("supplier_order_id","employee_id","supplier_id"), //16
-											["order_materials"]		=>			array("material_id", "supplier_order_id"),				//17
-											["supplier_discount"]	=>			array("material_id", "supplier_id"),					//18
-											["supplier"]			=>			array("supplier_id", "address_id"),						//19
-											["employee"]			=>			array("employee_id","address_id"),						//20
-											["return_details"]		=>			array("return_id", "item_id")
-											);
+											"ship_cost"	  			=> 			array("ship_id"),										//1
+											"gift_shipping"	 	    => 			array("ship_id", "address_id", "gift_id"),				//2
+											"address" 				=> 			array("address_id"),									//3
+											"customer" 				=> 			array("customer_id", "address_id"),						//4
+											"gift_order" 			=> 			array("order_id", "address_id"),						//5
+											"custom_order" 			=> 			array("order_id"),										//6
+											"user" 					=> 			array("employee_id"),									//7
+											"local_vendors" 		=> 			array("address_id"),									//8
+											"returns_inventory"		=> 			array("return_id","order_id"),							//9
+											"order" 				=>			array("order_id","customer_id","employee_id"),			//10
+											"order_details" 		=> 			array("order_id","item_id"),							//11
+											"item" 					=>			array("item_id"),										//12
+											"craft" 				=>			array("item_id", "craft_id"),							//13
+											"craft_materials"		=>			array("material_id", "craft_id"),						//14
+											"material"				=>			array("material_id","supplier_id","item_id"),			//15
+											"supplier_order"		=>			array("supplier_order_id","employee_id","supplier_id"), //16
+											"order_materials"		=>			array("material_id", "supplier_order_id"),				//17
+											"supplier_discount"		=>			array("material_id", "supplier_id"),					//18
+											"supplier"				=>			array("supplier_id", "address_id"),						//19
+											"employee"				=>			array("employee_id","address_id"),						//20
+											"return_details"		=>			array("return_id", "item_id"));
+	protected $iterator;
+
+	protected function setIterator(){
+		$this->iterator = 0;
+	}
 /*
 // Multiple condition
 	"[>]account" => [
@@ -126,21 +130,34 @@ $database->select("account", "user_name", [
 bool in_array ( mixed $needle , array $haystack [, bool $strict = FALSE ] )
 */
 //todo: array intersect
+ //['[><]gift_order' => ['order_id']] 
 	public function doMagic($table, $where_tables){
 
-		if is_array($where_tables){
+		if (is_array($where_tables)){
 			$i = 0;
 			foreach($where_tables as $where_table){
 				$found_arr[$i] = $this->magic_relationships($where_table);
+
 				if (($i % 2 == 0) && ($i > 0)) {
 					$found_intersect = array_intersect($found_arr[$i], $found_arr[$i-1]);
-					$appended_intersected_columns[$i/2] += [$table.$found_intersect => $where_table.$found_intersect];
+					$appended_intersected_columns[$i/2] += array('[><]'.$table => $found_intersect);
 				}
 				$i++;
 			}
-		$medoo_where = 
-			
+			$anded_appended_intersected_columns = array("AND" => $appended_intersected_columns);
+
 		}
+		else{
+			$found_intersect = array_intersect($this->magic_relationships[$table],$this->magic_relationships[$where_tables]);
+			$appended_intersected_columns = array('[><]'.$where_tables => $found_intersect[0]);
+			//$anded_appended_intersected_columns = array("AND" => $appended_intersected_columns);
+			$anded_appended_intersected_columns = $appended_intersected_columns;
+			//$anded_appended_intersected_columns = array_values($anded_appended_intersected_columns);
+		}
+		//return $anded_appended_intersected_columns;
+		//$anded_appended_intersected_columns = array( "AND" => $anded_appended_intersected_columns);
+		return $anded_appended_intersected_columns;
+
 	}
 }
 
@@ -166,18 +183,45 @@ class DatabaseObject {
 	}
 	public function getRecords($columns, $where = "") {
 		$this->columns = $columns;
-		if (!empty($where)){
-				if ($this->join){
-					$this->where = $where;
-					$this->data_set = $this->database_db->select($this->table, $this->join, $columns, $this->where);
-				}
-			$this->where = $where;
-			$this->data_set = $this->database_db->select($this->table, $columns, $this->where);
+		//echo "<br>"."where array:";
+		//var_dump($this->where);
+		if ($this->where != ""){
+			$where = $this->where;
+			/*
+			echo "<br>";
+			echo "<br>";
+			var_dump($this->table);
+			echo "<br>";
+			echo "<br>";
+			var_dump($columns);
+			echo "<br>";
+			echo "<br>";
+			var_dump($where);
+			//$this->data_set = $this->database_db->select('order', ['[><]gift_order' => ['order_id']] , 'order_id' );
+			*/
+			$this->data_set = $this->database_db->select($this->table, $where, $columns);
+			//$this->data_set = $this->database_db->select($this->table, $columns, $where);
 		}
 		else {
 			$this->data_set = $this->database_db->select($this->table, $columns);
 		}
+		//echo "<br>"."returned data set:";
+		//var_dump($this->data_set);
 		return $this->data_set;
+		
+		
+
+		/*
+		if (!empty($where)){
+				if ($this->join){
+					$this->where = $where;
+					$this->data_set = $this->database_db->select($this->table, $columns, $where);
+				}
+			//$this->where = $where;
+			$this->data_set = $this->database_db->select($this->table, $columns, $where);
+		}
+		*/
+
 	}
 	public function setRecords($table, $data) {
 		$this->lastInstertId = $database_db->insert($table, $data);
@@ -189,6 +233,7 @@ class DatabaseObject {
 	//$stageDBO->setJoin("order_details", "custom_order");
 	// The row author_id from table post is equal the row user_id from table account
 	//"[>]account" => ["author_id" => "user_id"],
+	/*
 	public function setJoin($joinTable, $joinColumn){
 		if ($this->join){
 			$this->joinQuery += array($joinTable, $joinColumn, $joinTable.$joinColumn);
@@ -198,6 +243,7 @@ class DatabaseObject {
 			$this->joinQuery = array($joinTable, $joinColumn, $joinTable.$joinColumn);
 		}
 	}
+	*/
 	public function set_table($string){
 		$this->table = $string;
 	}
@@ -240,9 +286,11 @@ class DatabaseObject {
         `~ `~
 */
 	public function UnicornMagic($where_tables){
-		if ($this->table){
+		if ($this->table != ""){
 			$unicorn = /*summon*/ new UnicornMagic();
-			$unicorn.doMagic($this->table, $join_tables);
+			$where = $unicorn->doMagic($this->table, $where_tables);
+			$this->where = $where;
+			//var_dump($where);
 		}
 	}
 
