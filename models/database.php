@@ -3,7 +3,145 @@
 require_once('connection.php');
 
 //$database_db = databaseConnection::getInstance();
+//Experimental
+// $data = array(
+// 	[0] => array(
+// 		"post_user_id" => "1",
+// 		"account_user_id" => "321"
+// 	),
+// 	[1] => array(
+// 		"post_user_id" => "2",
+// 		"account_user_id" => "322"
+// 	)
+// )
+//This is probably a heavy performance hit, but I'm gonna play with it anyway
+/*
+                             \
+                              \
+                               \\
+                                \\
+                                 >\/7
+                             _.-(6'  \
+                            (=___._/` \
+                                 )  \ |
+                                /   / |
+                               /    > /
+                              j    < _\
+                          _.-' :      ``.
+                          \ r=._\        `.
+                         <`\\_  \         .`-.
+                          \ r-7  `-. ._  ' .  `\
+                           \`,      `-.`7  7)   )
+                            \/         \|  \'  / `-._
+                                       ||    .'
+                                        \\  (
+		                                 >\  >
+                                     ,.-' >.'
+                                    <.'_.''
+                                      <'
+                                                                                   
+                                                                                   
+                                                                                   
+         ,--,               ,--,                                                   
+       ,'_ /|       ,---, ,--.'|               ,---.    __  ,-.      ,---,         
+  .--. |  | :   ,-+-. /  ||  |,               '   ,'\ ,' ,'/ /|  ,-+-. /  |        
+,'_ /| :  . |  ,--.'|'   |`--'_       ,---.  /   /   |'  | |' | ,--.'|'   |        
+|  ' | |  . . |   |  ,"' |,' ,'|     /     \.   ; ,. :|  |   ,'|   |  ,"' |        
+|  | ' |  | | |   | /  | |'  | |    /    / ''   | |: :'  :  /  |   | /  | |        
+:  | | :  ' ; |   | |  | ||  | :   .    ' / '   | .; :|  | '   |   | |  | |        
+|  ; ' |  | ' |   | |  |/ '  : |__ '   ; :__|   :    |;  : |   |   | |  |/         
+:  | : ;  ; | |   | |--'  |  | '.'|'   | '.'|\   \  / |  , ;   |   | |--'          
+'  :  `--'   \|   |/      ;  :    ;|   :    : `----'   ---'    |   |/              
+:  ,      ____'---'       |  ,   /  \   \  /                   '---'               
+ `--`---,'  , `.           ---`-'    `----'                                        
+     ,-+-,.' _ |                        ,--,                                       
+  ,-+-. ;   , ||                      ,--.'|                                       
+ ,--.'|'   |  ;|             ,----._,.|  |,                                        
+|   |  ,', |  ':  ,--.--.   /   /  ' /`--'_       ,---.                            
+|   | /  | |  || /       \ |   :     |,' ,'|     /     \                           
+'   | :  | :  |,.--.  .-. ||   | .\  .'  | |    /    / '                           
+;   . |  ; |--'  \__\/: . ..   ; ';  ||  | :   .    ' /                            
+|   : |  | ,     ," .--.; |'   .   . |'  : |__ '   ; :__                           
+|   : '  |/     /  /  ,.  | `---`-'| ||  | '.'|'   | '.'|                          
+;   | |`-'     ;  :   .'   \.'__/\_: |;  :    ;|   :    :                          
+|   ;/         |  ,     .-./|   :    :|  ,   /  \   \  /                           
+'---'           `--`---'     \   \  /  ---`-'    `----'                            
+      ,----,     ,----..      `-,---,                                              
+    .'   .' \   /   /   \    ,`--.' |    ,---.                                     
+  ,----,'    | /   .     :  /    /  :   /     \                                    
+  |    :  .  ;.   /   ;.  \:    |.' '  /    / '                                    
+  ;    |.'  /.   ;   /  ` ;`----':  | .    ' /                                     
+  `----'/  ; ;   |  ; \ ; |   '   ' ;'    / ;                                      
+    /  ;  /  |   :  | ; | '   |   | ||   :  \                                      
+   ;  /  /-, .   |  ' ' ' :   '   : ;;   |   ``.                                   
+  /  /  /.`| '   ;  \; /  |   |   | ''   ;      \                                  
+./__;      :  \   \  ',  /    '   : |'   |  .\  |                                  
+|   :    .'    ;   :    /     ;   |.'|   :  ';  :                                  
+;   | .'        \   \ .'      '---'   \   \    /                                   
+`---'            `---`                 `---`--`                                    
+                                                                                   
+*/
+class UnicornMagic {
+	protected $magic_relationships = array(
+											["ship_cost"] 			=> 			array("ship_id"),										//1
+											["gift_shipping"]	    => 			array("ship_id", "address_id", "gift_id"),				//2
+											["address"] 			=> 			array("address_id"),									//3
+											["customer"] 			=> 			array("customer_id", "address_id"),						//4
+											["gift_order"] 			=> 			array("order_id", "address_id"),						//5
+											["custom_order"] 		=> 			array("order_id"),										//6
+											["user"] 				=> 			array("employee_id"),									//7
+											["local_vendors"] 		=> 			array("address_id"),									//8
+											["returns_inventory"]	=> 			array("return_id","order_id"),							//9
+											["order"] 				=>			array("order_id","customer_id","employee_id"),			//10
+											["order_details"] 		=> 			array("order_id","item_id"),							//11
+											["item"] 				=>			array("item_id"),										//12
+											["craft"] 				=>			array("item_id", "craft_id"),							//13
+											["craft_materials"]		=>			array("material_id", "craft_id"),						//14
+											["material"]			=>			array("material_id","supplier_id","item_id"),			//15
+											["supplier_order"]		=>			array("supplier_order_id","employee_id","supplier_id"), //16
+											["order_materials"]		=>			array("material_id", "supplier_order_id"),				//17
+											["supplier_discount"]	=>			array("material_id", "supplier_id"),					//18
+											["supplier"]			=>			array("supplier_id", "address_id"),						//19
+											["employee"]			=>			array("employee_id","address_id"),						//20
+											["return_details"]		=>			array("return_id", "item_id")
+											);
+/*
+// Multiple condition
+	"[>]account" => [
+		"author_id" => "user_id",
+		"album.user_id" => "user_id"
+	]
+], [
+	"post.post_id",
+	"post.title",
+	"account.user_id",
+	"account.city",
+	"replyer.user_id",
+	"replyer.city"
+], 
+$database->select("account", "user_name", [
+	"email" => "foo@bar.com"
+]);
+// WHERE email = 'foo@bar.com'
+bool in_array ( mixed $needle , array $haystack [, bool $strict = FALSE ] )
+*/
+//todo: array intersect
+	public function doMagic($table, $where_tables){
+		
+		if is_array($where_tables){
+			$i = 0;
+			foreach($where_tables as $where_table){
+				$found_arr[$i] = $this->magic_relationships($where_table);
+				$i++;
+			}
+			
+		}
+	}
+}
 
+
+
+//end->experiment
 class DatabaseObject {
 	//protected static $database_db;
 	public $database_db;
@@ -47,12 +185,13 @@ class DatabaseObject {
 	// The row author_id from table post is equal the row user_id from table account
 	//"[>]account" => ["author_id" => "user_id"],
 	public function setJoin($joinTable, $joinColumn){
-		$this->join = true;
-		$this->joinQuery = array($joinTable, $joinColumn, $joinTable.$joinColumn);
-
-
-		//('' => , );'"[><]".$joinTable' => ['$joinColumn', '$joinTable.$joinColumn'];
-		//$this->joinQuery = '"[><]'.$joinTable.'" => ["'.$joinColumn.'" => "'.$joinTable.'.'.$joinColumn'"]';
+		if ($this->join){
+			$this->joinQuery += array($joinTable, $joinColumn, $joinTable.$joinColumn);
+		}
+		else {
+			$this->join = true;
+			$this->joinQuery = array($joinTable, $joinColumn, $joinTable.$joinColumn);
+		}
 	}
 	public function set_table($string){
 		$this->table = $string;
@@ -83,6 +222,23 @@ class DatabaseObject {
 			echo "</tr>";
 		}
 		echo "</table>";
+	}
+/*	           _.  
+            ;=',_  
+           S" .--` 
+          sS  \__  
+       __.' ( \--> 
+    _=/    _./-\/  
+   ((\( /-'   -'l  
+    ) |/ \\    
+      \\  \ 
+        `~ `~
+*/
+	public function UnicornMagic($where_tables){
+		if ($this->table){
+			$unicorn = /*summon*/ new UnicornMagic();
+			$unicorn.doMagic($this->table, $join_tables);
+		}
 	}
 
 }
@@ -125,7 +281,13 @@ class AddressDatabaseObject extends DatabaseObject {
 
 	}
 }
+class Customer extends DatabaseObject {
+	function __construct(){
+		parent::__construct();
+		$this->field_set = array('customer_id','last_name','first_name','phone_number','email','address_id');
 
+	}
+}
 
 class DatabaseObjectFactory {
 	public static function build($tableName) {

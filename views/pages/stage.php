@@ -1,8 +1,8 @@
 <?php
 	$stageDBO = DatabaseObjectFactory::build('order');
 	$arr = ['customer_id', 'subtotal'];
-	$joinTable = "customer";
-	$joinColumn = "customer_id";
+	//$joinTable = "customer";
+	//$joinColumn = "customer_id";
 	//$filter = ['order_id[>]' => '6013'];
 	//$stageDBO->setJoin(["[><]order_details" => ["order_id" => "custom_order.order_id"]]);
 	$stageDBO->setJoin($joinTable, $joinColumn);
