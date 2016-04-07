@@ -127,13 +127,18 @@ bool in_array ( mixed $needle , array $haystack [, bool $strict = FALSE ] )
 */
 //todo: array intersect
 	public function doMagic($table, $where_tables){
-		
+
 		if is_array($where_tables){
 			$i = 0;
 			foreach($where_tables as $where_table){
 				$found_arr[$i] = $this->magic_relationships($where_table);
+				if (($i % 2 == 0) && ($i > 0)) {
+					$found_intersect = array_intersect($found_arr[$i], $found_arr[$i-1]);
+					$appended_intersected_columns[$i/2] += [$table.$found_intersect => $where_table.$found_intersect];
+				}
 				$i++;
 			}
+		$medoo_where = 
 			
 		}
 	}
