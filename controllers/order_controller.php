@@ -86,6 +86,15 @@
 					'email' => NULL,
 					'address_id' => NULL
 					);	
+					
+		public static $ReturnItemForm = array(
+					['name'=> 'order_id', 'label' => 'Order ID', 'type' => 'text'],
+					['name'=> 'item_id', 'label' => 'Item ID', 'type' => 'text'],
+					['name'=> 'damaged', 'label' => 'Damaged', 'type' => 'radio'],
+					['name'=> 'damaged', 'label' => 'Not Damaged', 'type' => 'radio'],  
+					['name'=> 'refundable', 'label' => 'Refundable', 'type' => 'radio'],
+					['name'=> 'refundable', 'label' => 'Non-refundable', 'type' => 'radio']
+					);		
 		
 
 		public function session($set)
@@ -322,5 +331,18 @@
 			print "</form>";
 		}
 
+		public function returnorder()
+		{
+			require_once('views/pages/returnItem.php');
+		}
+		
+		public function drawReturnForm()
+		{
+			print "<form>";
+				print "<h4>Return Item</h4>";
+				for($index = 0; $index < count(self::$ReturnItemForm); $index++)
+					print "<label>" . self::$ReturnItemForm[$index]['label'] . " <input type = '". self::$ReturnItemForm[$index]['type'] . "'name = '".self::$ReturnItemForm[$index]['name'] . "'></label><br>";
+			print "</form>";
+		}
 }
 

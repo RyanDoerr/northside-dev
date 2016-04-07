@@ -50,7 +50,7 @@
 						 'reports' 	=> [],
 						 'forms' 	=> [],
 						 'menus' 	=> ['mainMenu', 'subMenu'],
-						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'submitForm','confirm'],
+						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm'],
 						'employees' => ['addemployee'],
 						'addresses' => ['']
 						);
