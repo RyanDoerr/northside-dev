@@ -1,41 +1,38 @@
 <?php
-  class ReportsController 
+  class FormsController 
   {
-//This will insert sessionstart into necessary pages
-                  //This may have to switch to a switch statement for efficiency reasons, but for now let's go with it.
-                  //Inventory English Field Names
-    public $displayNames = array('inventoryMaterialsFirst'      => ['Material ID', 'Material Name', 'Quantity', 'Unit Price'], 
-                   'inventoryCraftsFirst'       => ['Craft ID', 'Craft Name', 'Current Price', 'Quantity'],
-                   'inventoryReturnsFirst'      => ['Item ID', 'Item Name', 'Order ID', 'Quantity', 'Current Price'],
-                   //Sales English Field Names
-                   'OrderSalesFirst'            => ['Sale ID','Employee Name','Sale Date','Subtotal','Tax Amount','Total Cost'],
-                   'OrderCustomFirst'           => ['Custom Order ID', 'Order ID', 'Employee Name', 'Order Date', 'Estimated Price', 'Total Price'],
-                   'OrderGiftFirst'             => ['Gift Order ID','Employee Name','Sale Date','Subtotal','Tax Amount','Total Cost'],
-                   //View Sale Order
-                   'OrderSalesView'             =>['Item ID', 'Item Name', 'Item Price', 'Quantity'],
-                   'OrderCustomView'            =>['Material ID', 'Material Name', 'Unit Price'],
-
-                         );
-
-   // public $displayNames = 
-    public function session($set)
-    {
-      switch($set)
-      {
-        case 'start':
-          echo 'session_start();';
-          break;
-
-        case 'unset':
-          echo 'session_unset();<br>';
-          break;
-      }
-    }
-    //this function is not a page, it handles requests by specific pages
-    public function makeForm()
-    {
-
-
-    }
-
+			public static $AddressForm = array(
+					['element' => 'input','name'=> 'streetNumber', 'label' => 'Street Number', 'type' => 'text'],
+					['element' => 'input','name'=> 'streetName', 'label' => 'Street Name', 'type' => 'text'],
+					['element' => 'input','name'=> 'streetType', 'label' => 'Street Type', 'type' => 'text'],	
+					['element' => 'select','name' => 'addressType', 'options' => ['House', 'Apartment']],					
+					['element' => 'input','name'=> 'city', 'label' => 'City', 'type' => 'text'],  
+					['element' => 'input','name'=> 'state', 'label' => 'State', 'type' => 'text'],
+					['element' => 'input','name'=> 'zip', 'label' => 'Zip', 'type' => 'text'],
+					['element' => 'input','name'=> 'country', 'label' => 'Country', 'type' => 'text'],
+					['element' => 'input','name'=> 'pobox', 'label' => 'P.O. Box', 'type' => 'text'],
+					['element' => 'input','name'=> 'employeeID', 'label' => 'Employee ID', 'type' => 'text'],
+					['element' => 'input','name'=> 'password', 'label' => 'Password', 'type' => 'text']);	
+					
+			public static $EmployeeForm = array(
+					['element' => 'input','name'=> 'accessLevel', 'label' => 'Administrator', 'type' => 'radio'],
+					['element' => 'input','name'=> 'accessLevel', 'label' => 'Sales Employee', 'type' => 'radio'],
+					['element' => 'input','name'=> 'firstName', 'label' => 'First Name', 'type' => 'text'],  
+					['element' => 'input','name'=> 'lastName', 'label' => 'Last Name', 'type' => 'text'],
+					['element' => 'input','name'=> 'hireDate', 'label' => 'Hire Date', 'type' => 'text'],
+					['element' => 'input','name'=> 'phone', 'label' => 'Phone Number', 'type' => 'text'],
+					['element' => 'input','name'=> 'employeeID', 'label' => 'Employee ID', 'type' => 'text'],
+					['element' => 'input','name'=> 'password', 'label' => 'Password', 'type' => 'text'],
+					);		
+					
+			public static $ReturnItemForm = array(
+					['element' => 'input','name'=> 'order_id', 'label' => 'Order ID', 'type' => 'text'],
+					['element' => 'input','name'=> 'item_id', 'label' => 'Item ID', 'type' => 'text'],
+					['element' => 'input','name'=> 'damaged', 'label' => 'Damaged', 'type' => 'radio'],
+					['element' => 'input','name'=> 'damaged', 'label' => 'Not Damaged', 'type' => 'radio'],  
+					['element' => 'input','name'=> 'refundable', 'label' => 'Refundable', 'type' => 'radio'],
+					['element' => 'input','name'=> 'refundable', 'label' => 'Non-refundable', 'type' => 'radio']
+					);		
+		
+						
   }

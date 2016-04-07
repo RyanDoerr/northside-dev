@@ -13,7 +13,7 @@ $materials = OrdersController::getItems('custom');
 				<label class='selectItems'>Select Materials to be used:
 				<select name = 'material[]'>
 					<?php foreach($materials AS $m){ ?>
-						<option><?php echo $m['name'] ?></option>
+						<option value = '<?php $m['material_id'] ?>><?php echo $m['name'] ?></option>
 					<?php
 					}
 					?>

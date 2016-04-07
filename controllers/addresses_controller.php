@@ -2,21 +2,18 @@
 <?php
 	class AddressesController 
 	{
-			public static $AddressForm = array(
-					['name'=> 'streetNumber', 'label' => 'Street Number', 'type' => 'text'],
-					['name'=> 'streetName', 'label' => 'Street Name', 'type' => 'text'],
-					['name'=> 'streetType', 'label' => 'Street Type', 'type' => 'text'],		
-					['name'=> 'city', 'label' => 'City', 'type' => 'text'],  
-					['name'=> 'state', 'label' => 'State', 'type' => 'text'],
-					['name'=> 'zip', 'label' => 'Zip', 'type' => 'text'],
-					['name'=> 'country', 'label' => 'Country', 'type' => 'text'],
-					['name'=> 'pobox', 'label' => 'P.O. Box', 'type' => 'text'],
-					['name'=> 'employeeID', 'label' => 'Employee ID', 'type' => 'text'],
-					['name'=> 'password', 'label' => 'Password', 'type' => 'text'],
-					);		
-					
-			public static $AddressSelect = array(
-					['name' => 'addressType', 'option1' => 'House', 'option2' => 'Apartment']
-			);		
-			
+			/*public static $AddressForm = array(
+					['element' => 'input','name'=> 'streetNumber', 'label' => 'Street Number', 'type' => 'text'],
+					['element' => 'input','name'=> 'streetName', 'label' => 'Street Name', 'type' => 'text'],
+					['element' => 'input','name'=> 'streetType', 'label' => 'Street Type', 'type' => 'text'],	
+					['element' => 'select','name' => 'addressType', 'options' => ['House', 'Apartment']],					
+					['element' => 'input','name'=> 'city', 'label' => 'City', 'type' => 'text'],  
+					['element' => 'input','name'=> 'state', 'label' => 'State', 'type' => 'text'],
+					['element' => 'input','name'=> 'zip', 'label' => 'Zip', 'type' => 'text'],
+					['element' => 'input','name'=> 'country', 'label' => 'Country', 'type' => 'text'],
+					['element' => 'input','name'=> 'pobox', 'label' => 'P.O. Box', 'type' => 'text'],
+					['element' => 'input','name'=> 'employeeID', 'label' => 'Employee ID', 'type' => 'text'],
+					['element' => 'input','name'=> 'password', 'label' => 'Password', 'type' => 'text']);		*/
 	}
+	
+?>

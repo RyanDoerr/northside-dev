@@ -1,22 +1,8 @@
 
 <?php
+	require_once('forms_controller.php');
 	class OrdersController 
 	{
-							//This will insert sessionstart into necessary pages
-									//This may have to switch to a switch statement for efficiency reasons, but for now let's go with it.
-									//Inventory English Field Names
-		public static $displayNames = array('inventoryMaterialsFirst' 			=> ['Material ID', 'Material Name', 'Quantity', 'Unit Price'], 
-						 			 'inventoryCraftsFirst'  			=> ['Craft ID', 'Craft Name', 'Current Price', 'Quantity'],
-						 			 'inventoryReturnsFirst' 			=> ['Item ID', 'Item Name', 'Order ID', 'Quantity', 'Current Price'],
-						 			 //Sales English Field Names
-						 			 'OrderSalesFirst'					=> ['Order ID','Employee Name','Sale Date','Subtotal','Tax Amount','Total Cost'],
-						 			 'OrderCustomFirst'					=> ['Custom Order ID', 'Order ID', 'Employee Name', 'Order Date', 'Estimated Price', 'Total Price'],
-						 			 'OrderGiftFirst'					=> ['Gift Order ID','Employee Name','Sale Date','Subtotal','Tax Amount','Total Cost'],
-						 			 //View Sale Order
-						 			 'OrderSalesView'					=>['Item ID', 'Item Name', 'Item Price', 'Quantity'],
-						 			 'OrderCustomView'					=>['Material ID', 'Material Name', 'Unit Price'],
-
-						             );
 		public static $radioButtons = ['Sale', 'Custom Order', 'Gift Order'];
 		public static $firstItem = "Sale";
 		public static $TAX_RATE = 0.095; //To be used in $total calculations.
@@ -87,15 +73,22 @@
 					'address_id' => NULL
 					);	
 					
-		public static $ReturnItemForm = array(
-					['name'=> 'order_id', 'label' => 'Order ID', 'type' => 'text'],
-					['name'=> 'item_id', 'label' => 'Item ID', 'type' => 'text'],
-					['name'=> 'damaged', 'label' => 'Damaged', 'type' => 'radio'],
-					['name'=> 'damaged', 'label' => 'Not Damaged', 'type' => 'radio'],  
-					['name'=> 'refundable', 'label' => 'Refundable', 'type' => 'radio'],
-					['name'=> 'refundable', 'label' => 'Non-refundable', 'type' => 'radio']
-					);		
-		
+		public static $CustomItem = array(
+					'item_id' => NULL,
+					'qoh' => NULL,
+					'calculated_qoh' => NULL,
+					'name' => NULL,
+					'original_price' => NULL,
+					'current_price' => NULL,
+					'min_price' => NULL
+					);
+					
+		public static $CraftMaterials = array(
+					'craft_id' => NULL,
+					'material_id' => NULL
+					);
+					
+
 
 		public function session($set)
 		{
@@ -241,14 +234,27 @@
 				
 			}
 			
-			else if($orderType == 'custom')
+			else if(self::$orderType == 'custom')
 			{
-				$items = $_POST['itemName']; //Each custom craft will have its own item id and name.
-				$quantities = $_POST['itemQuantity'];
-				$subtotal = $items * $quantities;  //calculates the subtotal based on items and their quantities
-				$tax_amount = $subtotal - $subtotal * self::$TAX_RATE; //Stores the tax amount using the TAX_RATE of this class
-				$total = $subtotal + $tax_amount; //The total price of the order
-				//TO BE CONTINUED....
+				//GET MATERIALS INFORMATION
+				self::$CraftMaterials['material_id'] = $_POST['material'];
+				
+				//GRAB AND INSERT NEW ITEM INTO ITEM AND CRAFT TABLE
+				self::$CustomItem['name'] = $_POST['itemName']; //Each custom craft will have its own item id and name.
+				self::$OrderDetailsColumns['qoh'] = 0;
+				
+				//INSERT INTO THE CRAFT_MATERIALS TABLE USING THE CRAFT ID FROM ABOVE INSERT
+				
+				
+				self::$orderColumns['subtotal'] = $items * $quantities;  //calculates the subtotal based on items and their quantities
+				self::$orderColumns['tax_amount'] = self::$orderColumns['subtotal'] - self::$orderColumns['subtotal'] * self::$TAX_RATE;
+				self::$orderColumns['total'] = self::$orderColumns['subtotal'] + self::$orderColumns['tax_amount']; //The total price of the order
+				
+				//GET CUSTOMER INFORMATION
+				
+				//GET CUSTOM_ORDER INFORMATION
+				
+				//INSERT ALL THE ORDER INFORMATION HERE
 			}
 			
 			else {
@@ -276,6 +282,7 @@
 		{
 			//TESTING: echo 'item id: '.self::$OrderDetailsColumns['item_id'][0];
 		}
+	
 	
 		//This function gets all the items/materials to be used in the enterorder pages.
 		public function getItems($orderType)
@@ -316,11 +323,11 @@
 		//look up order page action
 		public function lookuporder()
 		{
-		//make array for form id names
+			//make array for form id names
 			$formidnames = ['Order ID','Customer Name','Order Date'];
-		//function lookuporder()
-			require('views/pages/lookuporder.php');
-		//print all form fields 
+			//function lookuporder()
+			require_once('views/pages/lookuporder.php');
+			//print all form fields 
 			print "<form action='?controller=order&action=findorder' method='post'>";
 			foreach ($formidnames as $formidname){
 		  		print $formidname;
@@ -340,8 +347,10 @@
 		{
 			print "<form>";
 				print "<h4>Return Item</h4>";
-				for($index = 0; $index < count(self::$ReturnItemForm); $index++)
-					print "<label>" . self::$ReturnItemForm[$index]['label'] . " <input type = '". self::$ReturnItemForm[$index]['type'] . "'name = '".self::$ReturnItemForm[$index]['name'] . "'></label><br>";
+				for($index = 0; $index < count(FormsController::$ReturnItemForm); $index++)
+					print "<label>" . FormsController::$ReturnItemForm[$index]['label'] . " <input type = '". FormsController::$ReturnItemForm[$index]['type'] . "'name = '".FormsController::$ReturnItemForm[$index]['name'] . "'></label><br>";
+			
+			print "<input type='button' class = 'button redButton' value='Cancel'/> <input class='button blueButton' type='submit' value='Next'/>";
 			print "</form>";
 		}
 }
