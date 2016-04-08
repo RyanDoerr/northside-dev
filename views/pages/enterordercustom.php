@@ -2,7 +2,7 @@
 
 include('../../controllers/order_controller.php');
 $materials = OrdersController::getItems('custom');
-
+//OrdersController::DrawForm('custom');
 ?>
 
 <h3>Custom Order</h3>
@@ -13,7 +13,7 @@ $materials = OrdersController::getItems('custom');
 				<label class='selectItems'>Select Materials to be used:
 				<select name = 'material[]'>
 					<?php foreach($materials AS $m){ ?>
-						<option value = '<?php $m['material_id'] ?>><?php echo $m['name'] ?></option>
+						<option value = '<?php $m['material_id'] ?>><?php echo $m['name'] ?>'</option>
 					<?php
 					}
 					?>

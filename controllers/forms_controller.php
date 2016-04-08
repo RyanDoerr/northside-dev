@@ -33,6 +33,11 @@
 					['element' => 'input','name'=> 'refundable', 'label' => 'Refundable', 'type' => 'radio'],
 					['element' => 'input','name'=> 'refundable', 'label' => 'Non-refundable', 'type' => 'radio']
 					);		
+			
+			/*public static $CustomForm = array(
+					['element' => 'input','name'=> 'orderType', 'value' => 'custom', 'type' => 'hidden'],
+					['element' => 'select','name'=> 'material', 'label' => 'Item ID', 'type' => 'text', 'class' => 'selectItems'],
+					['element' => 'input','name'=> 'damaged', 'label' => 'Damaged', 'type' => 'radio'],
+					);*/
 		
-						
   }

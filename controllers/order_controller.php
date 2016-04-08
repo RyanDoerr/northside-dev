@@ -343,6 +343,14 @@
 			require_once('views/pages/returnItem.php');
 		}
 		
+		public function drawForm($orderType)
+		{
+			if($orderType == 'custom')
+			{
+				print "<form action = '?controller=order&action=submitForm' method='post'>";
+			}
+		}
+		
 		public function drawReturnForm()
 		{
 			print "<form>";

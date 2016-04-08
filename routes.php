@@ -34,8 +34,8 @@
 			case 'employees' :
 				$controller = new EmployeesController();
 			break;
-			case 'addresses' :
-				$controller = new AddressesController();
+			case 'inventory' :
+				$controller = new InventoryController();
 				break;
 		}
 
@@ -52,7 +52,6 @@
 						 'menus' 	=> ['mainMenu', 'subMenu'],
 						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm'],
 						'employees' => ['addemployee'],
-						'addresses' => ['']
 						);
 
 	//Check if action and controller are allowed
