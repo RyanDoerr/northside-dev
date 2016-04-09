@@ -89,6 +89,15 @@
 			$suppliers = $stageDBO->getRecords($arr);
 			include('views/pages/addMaterial.php');
 		}
+
+		public static function editMaterial()
+		{
+			//Grab the material id passed by the Edit button
+			$materialID = $_POST['material_id'];
+
+			require_once('views/pages/editMaterial.php');
+
+		}
 		
 			
 			

@@ -14,7 +14,7 @@
 	<label>Quantity</label>
 		<input type='text' name='quantity[]' value=1> <br> 
 	</label>
-		<input type='button' class="button" id='addNew' value='Add New +'/>
+		<input name="otherAdd" type='button' class="button" id='addNew' value='Add New +'/>
 	<br><br>
 	<input type = "hidden" name = "supplier_id" value="<?php echo $supplier_id; ?>">
 	<input type = "button" value="Cancel" class = "button redButton"><input type = "submit" value="Submit" class = "button blueButton">

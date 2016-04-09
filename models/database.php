@@ -13,73 +13,7 @@ require_once('connection.php');
 // 		"account_user_id" => "322"
 // 	)
 // )
-//This is probably a heavy performance hit, but I'm gonna play with it anyway
-/*
-                             \
-                              \
-                               \\
-                                \\
-                                 >\/7
-                             _.-(6'  \
-                            (=___._/` \
-                                 )  \ |
-                                /   / |
-                               /    > /
-                              j    < _\
-                          _.-' :      ``.
-                          \ r=._\        `.
-                         <`\\_  \         .`-.
-                          \ r-7  `-. ._  ' .  `\
-                           \`,      `-.`7  7)   )
-                            \/         \|  \'  / `-._
-                                       ||    .'
-                                        \\  (
-		                                 >\  >
-                                     ,.-' >.'
-                                    <.'_.''
-                                      <'
-                                                                                   
-                                                                                   
-                                                                                   
-         ,--,               ,--,                                                   
-       ,'_ /|       ,---, ,--.'|               ,---.    __  ,-.      ,---,         
-  .--. |  | :   ,-+-. /  ||  |,               '   ,'\ ,' ,'/ /|  ,-+-. /  |        
-,'_ /| :  . |  ,--.'|'   |`--'_       ,---.  /   /   |'  | |' | ,--.'|'   |        
-|  ' | |  . . |   |  ,"' |,' ,'|     /     \.   ; ,. :|  |   ,'|   |  ,"' |        
-|  | ' |  | | |   | /  | |'  | |    /    / ''   | |: :'  :  /  |   | /  | |        
-:  | | :  ' ; |   | |  | ||  | :   .    ' / '   | .; :|  | '   |   | |  | |        
-|  ; ' |  | ' |   | |  |/ '  : |__ '   ; :__|   :    |;  : |   |   | |  |/         
-:  | : ;  ; | |   | |--'  |  | '.'|'   | '.'|\   \  / |  , ;   |   | |--'          
-'  :  `--'   \|   |/      ;  :    ;|   :    : `----'   ---'    |   |/              
-:  ,      ____'---'       |  ,   /  \   \  /                   '---'               
- `--`---,'  , `.           ---`-'    `----'                                        
-     ,-+-,.' _ |                        ,--,                                       
-  ,-+-. ;   , ||                      ,--.'|                                       
- ,--.'|'   |  ;|             ,----._,.|  |,                                        
-|   |  ,', |  ':  ,--.--.   /   /  ' /`--'_       ,---.                            
-|   | /  | |  || /       \ |   :     |,' ,'|     /     \                           
-'   | :  | :  |,.--.  .-. ||   | .\  .'  | |    /    / '                           
-;   . |  ; |--'  \__\/: . ..   ; ';  ||  | :   .    ' /                            
-|   : |  | ,     ," .--.; |'   .   . |'  : |__ '   ; :__                           
-|   : '  |/     /  /  ,.  | `---`-'| ||  | '.'|'   | '.'|                          
-;   | |`-'     ;  :   .'   \.'__/\_: |;  :    ;|   :    :                          
-|   ;/         |  ,     .-./|   :    :|  ,   /  \   \  /                           
-'---'           `--`---'     \   \  /  ---`-'    `----'                            
-      ,----,     ,----..      `-,---,                                              
-    .'   .' \   /   /   \    ,`--.' |    ,---.                                     
-  ,----,'    | /   .     :  /    /  :   /     \                                    
-  |    :  .  ;.   /   ;.  \:    |.' '  /    / '                                    
-  ;    |.'  /.   ;   /  ` ;`----':  | .    ' /                                     
-  `----'/  ; ;   |  ; \ ; |   '   ' ;'    / ;                                      
-    /  ;  /  |   :  | ; | '   |   | ||   :  \                                      
-   ;  /  /-, .   |  ' ' ' :   '   : ;;   |   ``.                                   
-  /  /  /.`| '   ;  \; /  |   |   | ''   ;      \                                  
-./__;      :  \   \  ',  /    '   : |'   |  .\  |                                  
-|   :    .'    ;   :    /     ;   |.'|   :  ';  :                                  
-;   | .'        \   \ .'      '---'   \   \    /                                   
-`---'            `---`                 `---`--`                                    
-                                                                                   
-*/
+
 class UnicornMagic {
 	protected $magic_relationships = array(
 											"ship_cost"	  			=> 			array("ship_id"),										//1
@@ -304,6 +238,15 @@ class GiftOrderDatabaseObject extends OrderDatabaseObject {
 		$this->set_table('gift_order');
 	}
 }
+
+class CustomOrderDatabaseObject extends OrderDatabaseObject {
+	function __construct(){
+		parent::__construct();
+		$this->my_field_set = array('custom_order_id','order_id','comment','price_estimation');
+		$this->set_table('custom_order');
+	}
+}
+
 //base object is no my_field_set
 class AddressDatabaseObject extends DatabaseObject {
 	function __construct(){
@@ -324,6 +267,14 @@ class SupplierDatabaseObject extends DatabaseObject {
 	}
 }
 
+class ItemDatabaseObject extends DatabaseObject {
+	function __construct(){
+		parent::__construct();
+		$this->my_field_set = array('item_id','name');
+		$this->set_table('item');
+	}
+}
+
 class MaterialDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
@@ -332,7 +283,7 @@ class MaterialDatabaseObject extends DatabaseObject {
 	}
 }
 
-class CraftDatabaseObject extends DatabaseObject {
+class CraftDatabaseObject extends ItemDatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->my_field_set = array('craft_id','item_id');

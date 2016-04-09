@@ -1,6 +1,7 @@
 
 <?php
 	require_once('forms_controller.php');
+	require_once('models/database.php');
 	class OrdersController 
 	{
 		public static $radioButtons = ['Sale', 'Custom Order', 'Gift Order'];
@@ -108,58 +109,17 @@
 		//This function is not a page, and handles requests by specific page functions
 		public function enterorder()
 		{
+			$stageDBO = DatabaseObjectFactory::build('item');
+			$arr = ['item_id','name'];
+			$items = $stageDBO->getRecords($arr); 
+
+			$stageDBO = DatabaseObjectFactory::build('material');
+			$arr = ['material_id'];
+			$materials = $stageDBO->getRecords($arr);
+			
 			require_once('views/pages/enterorder.php');
 		}
 
-		public function drawRadioButtons(){
-
-			
-
-			print "<form>";
-
-			foreach(OrdersController::$radioButtons as $radioButton)
-			{
-				print "<input type='radio' name='ordertype' value='".strtolower(str_replace(' ', '', $radioButton))."'";
-				if ($radioButton == OrdersController::$firstItem)
-				{
-					echo "checked";
-				}
-				print ">".$radioButton;
-			}
-
-			print "<br><input type='button' class='button' id='loadform' value='Next'>";
-			print "</form>";
-			print "<div id='orderform'>";
-			print "</div>";
-			//Get the value out of the radio button
-			$jQueryScript = "<script>
-				$(document).ready(function(){
-								$('input[type=button]').click(function(){
-									
-									var ordertypejs = $('input[name=ordertype]:checked').val();
-									switch (ordertypejs){
-										case 'sale':
-											$('#orderform').load('views/pages/enterordersale.php');
-										break;
-										case 'customorder':
-											$('#orderform').load('views/pages/enterordercustom.php');
-										break;
-										case 'giftorder':
-											$('#orderform').load('views/pages/enterordergift.php');
-										break;
-
-									}
-								});
-								
-								
-									
-				
-								
-							});
-							</script>";
-			echo $jQueryScript;
-
-		}
 		
 		
 		//This function grabs all the data from the 3 order forms, and calls the appropriate method in the order model.
@@ -284,27 +244,7 @@
 		}
 	
 	
-		//This function gets all the items/materials to be used in the enterorder pages.
-		public function getItems($orderType)
-		{
-			require('../../models/order.php');   //Get the Orders model
-			$model = new Order();
-			
-			if($orderType == 'sale' || $orderType == 'gift')  //Both sales and gifts use items
-			{
-				$dataset = $model->getItems();
-				return $dataset;
-			}
-			
-			else if($orderType == 'custom')  //Custom orders are made of materials, so this returns a materials result set.
-			{
-				$dataset = $model->getMaterials();
-				return $dataset;
-			}
-		}
 		
-
-
 		//find order page action
 		public function findorder()
 		{
@@ -360,6 +300,46 @@
 			
 			print "<input type='button' class = 'button redButton' value='Cancel'/> <input class='button blueButton' type='submit' value='Next'/>";
 			print "</form>";
+		}
+		
+		public function manageorders()
+		{
+			/*$stageDBO = DatabaseObjectFactory::build('gift_order');
+			$arr = ['gift_id','order_id','rec_last_name', 'rec_first_name'];
+			$gifts = $stageDBO->getRecords($arr);*/
+			
+			$stageDBO = DatabaseObjectFactory::build('order');
+			$arr = ['gift_id', 'order_id', 'rec_last_name','rec_first_name','order_date','last_name','first_name','total_price'];
+			$stageDBO->UnicornMagic('gift_order', 'customer');
+			$gifts = $stageDBO->getRecords($arr);
+			
+			$stageDBO = DatabaseObjectFactory::build('custom_order');
+			$arr = ['custom_order_id','order_id','comment','price_estimation'];
+			$customs = $stageDBO->getRecords($arr);
+			
+			
+			require_once('views/pages/manageorder.php');
+		}
+		
+		public function editGift()
+		{
+			$gift_id = $_POST['gift_id'];
+			$stageDBO = DatabaseObjectFactory::build('gift_order');
+			$stageDBO->UnicornMagic('gift_order', 'customer');
+			$arr = ['gift_id','order_id','rec_last_name', 'rec_first_name'];
+			$gifts = $stageDBO->getRecords($arr);
+			
+			include('views/pages/editGift.php');
+		}
+		
+		public function editCustom()
+		{
+			$custom_order_id = $_POST['custom_id'];
+			$stageDBO = DatabaseObjectFactory::build('custom_order');
+			$arr = ['custom_order_id','order_id','comment', 'rec_first_name'];
+			$gifts = $stageDBO->getRecords($arr);
+			
+			include('views/pages/editGift.php');
 		}
 }
 

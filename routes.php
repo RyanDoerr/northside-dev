@@ -50,8 +50,9 @@
 						 'reports' 	=> [],
 						 'forms' 	=> [],
 						 'menus' 	=> ['mainMenu', 'subMenu'],
-						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm'],
-						'employees' => ['addemployee'],
+						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm','manageorders','editGift'],
+						 'employees' => ['addemployee'],
+						'inventory' => ['ordermaterials', 'getMaterials','submitOrder','InsertOrder','manageinventory','addCraft','addMaterial','editMaterial']
 						);
 
 	//Check if action and controller are allowed
