@@ -1,6 +1,4 @@
-<?php
-
-?>
+<!--This is the page for the Add Craft form, which is located on the Manage Inventory page-->
 <h3>Add Craft</h3>
 <form action = "" method = "post">
 	<label>Craft Name <input type="text" name="craftName"></label><br>
@@ -15,7 +13,7 @@
 	<label>Quantity</label>
 		<input type='text' name='quantity[]' value=1> <br> 
 	</label>
-	<input type='button' class="button" id='addNew' value='Add New +'/><br>
+	<input name = "otherAdd" type='button' class="button" id='addNew' value='Add New +'/><br><!--The name attribute on this input is important for the addItem.js -->
 	
 	<h3>Item Information</h3>
 	<label>Price <input type="text" name="currentPrice"></label><br>
@@ -24,7 +22,6 @@
 	<a href="?controller=inventory&action=manageinventory"><input type = "button" value="Cancel" class = "button redButton"></a>
 
 		
-	<input type = "submit" value="Add" class = "button blueButton">
-</form>
-<script type='text/javascript' src='css/addItem.js'></script>			
+	<input  type = "submit" value="Add" class = "button blueButton">
+</form>		
 		

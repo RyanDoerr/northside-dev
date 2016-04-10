@@ -3,18 +3,7 @@
 	require_once('forms_controller.php');
 	
 	class EmployeesController 
-	{
-			/*public static $EmployeeForm = array(
-					['element' => 'input','name'=> 'accessLevel', 'label' => 'Administrator', 'type' => 'radio'],
-					['element' => 'input','name'=> 'accessLevel', 'label' => 'Sales Employee', 'type' => 'radio'],
-					['element' => 'input','name'=> 'firstName', 'label' => 'First Name', 'type' => 'text'],  
-					['element' => 'input','name'=> 'lastName', 'label' => 'Last Name', 'type' => 'text'],
-					['element' => 'input','name'=> 'hireDate', 'label' => 'Hire Date', 'type' => 'text'],
-					['element' => 'input','name'=> 'phone', 'label' => 'Phone Number', 'type' => 'text'],
-					['element' => 'input','name'=> 'employeeID', 'label' => 'Employee ID', 'type' => 'text'],
-					['element' => 'input','name'=> 'password', 'label' => 'Password', 'type' => 'text'],
-					);		
-			*/		
+	{	
 					
 			public static function addemployee()
 			{

@@ -1,5 +1,4 @@
-<?php ?>
-
+<!--Once a supplier is selected, this screen will show up for them to select the materials-->
 <h3>Order Materials</h3>
 
 <h4>Select Materials</h4>

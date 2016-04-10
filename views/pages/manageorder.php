@@ -1,20 +1,4 @@
-<style>
-#tabs {
-	margin:auto;
-	width:700px;
-}
-</style>
-<link rel="stylesheet" href="jquery-ui/jquery-ui.min.css">
-<script type="text/javascript" src="jquery-ui/jquery-ui.min.js"></script>
-<script>
-  $(function() {
-    $( "#tabs" ).tabs();
-  });
-  </script>
-  
-  
-  
-  <div id="tabs">
+<div id="tabs">
   <ul>
     <li><a href="#tabs-1">Gift Orders</a></li>
     <li><a href="#tabs-2">Custom Orders</a></li>

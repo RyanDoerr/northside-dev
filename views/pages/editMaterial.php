@@ -1,6 +1,4 @@
-<?php
-
-?>
+<!--This page allows the user to edit a material for the Edit button that they clicked for a particular material-->
 <h3>Editing Material ID <?php echo $materialID;?> </h3>
 <form action = "" method = "post">
 	<label>Material Name <input type="text" name="materialName"></label><br>

@@ -1,3 +1,5 @@
+<!--This whole model might just get deleted, but keeping it for now so I can reference some of the queries I used-->
+
 <?php
 class Order
 {

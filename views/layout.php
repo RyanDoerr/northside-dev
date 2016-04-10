@@ -7,6 +7,8 @@
 			<script src="jquery.js"></script>
 			<meta charset="utf-8">
 			<link href="css/main.css" rel="stylesheet" type="text/css">
+
+			<!--These two jquery-ui scripts are used for the tabs widget-->
 			<link rel="stylesheet" href="jquery-ui/jquery-ui.min.css">
 			<script type="text/javascript" src="jquery-ui/jquery-ui.min.js"></script>
 			<script type='text/javascript' src='css/addItem.js'></script>

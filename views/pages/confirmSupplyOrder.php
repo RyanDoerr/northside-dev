@@ -12,17 +12,6 @@
 			}
 			
 		echo '</table><br>';	
-	
-		/*
-		echo '</table><br>Subtotal: $' . number_format(self::$orderColumns['subtotal'],2);
-		echo '<br>Tax Amount: $' . number_format(self::$orderColumns['tax_amount'],2);
-		echo '<br>Total: $' . number_format(self::$orderColumns['total'],2);
-		
-		self::confirm();
-	}
-	
-
-*/
 ?>
 <form action="?controller=inventory&action=InsertOrder" method="post">
 <input  class = 'button redButton' type='button' value='Cancel'/><input class='button blueButton' type='submit' value='Confirm'/>

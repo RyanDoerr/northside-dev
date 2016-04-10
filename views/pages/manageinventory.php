@@ -1,15 +1,5 @@
-<style>
-#tabs {
-	margin:auto;
-	width:700px;
-}
-</style>
 
-
-
-  
-  
-  <div id="tabs">
+<div id="tabs">
   <ul>
     <li><a href="#tabs-1">Materials</a></li>
     <li><a href="#tabs-2">Crafts</a></li>

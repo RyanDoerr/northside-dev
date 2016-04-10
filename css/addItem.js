@@ -1,9 +1,12 @@
 $(document).ready(function(){
-	
+						
+						//Creates the tabs to be used on different pages.
 						$(function() {
 							$( "#tabs" ).tabs();
 							});
-							
+						
+
+						//This adds items or materials on add buttons that are in tabbed pages	
 						$('input[name=add]').click(function(){
 							var activeIndex = $("#tabs").tabs('option', 'active');
 							activeIndex++; //Make it start at 1, not 0
@@ -18,6 +21,7 @@ $(document).ready(function(){
 						});
 
 								
+						//This does nothing yet, but it could be used to validate the data once it is submitted.		
 						$( 'form' ).submit(function( event ) {
 							//var fields = $(':input').serializeArray();
 							
@@ -28,6 +32,7 @@ $(document).ready(function(){
 						});		
 
 
+						//This also adds items or materials, but it is used on pages without tabs.
 						$('input[name=otherAdd]').click(function(){
 							
 							$('.selectItems').first().clone().insertAfter('.selectItems:last');

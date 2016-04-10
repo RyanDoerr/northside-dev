@@ -1,13 +1,4 @@
-<style>
-#tabs {
-	margin:auto;
-	width:700px;
-}
-</style>
-
-
-  
-  
+<!--The enter Order screen was consolidated into one screen with 3 tabs for ease of use.-->
   <div id="tabs">
   <ul>
     <li><a href="#tabs-1">Sale</a></li>
