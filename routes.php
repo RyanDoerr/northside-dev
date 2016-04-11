@@ -50,16 +50,12 @@
 						 'reports' 	=> [],
 						 'forms' 	=> [],
 						 'menus' 	=> ['mainMenu', 'subMenu'],
-<<<<<<< HEAD
-						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'submitForm']
-						 );
-=======
 						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm','manageorders','editGift'],
 						 'employees' => ['addemployee'],
 						'inventory' => ['ordermaterials', 'getMaterials','submitOrder','InsertOrder','manageinventory','addCraft','addMaterial','editMaterial']
 						);
 
->>>>>>> be9fcab15dc115e6abfdbd763cd736315d1cc18f
+
 	//Check if action and controller are allowed
 	//with failure redirect to error page
 
