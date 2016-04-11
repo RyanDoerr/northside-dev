@@ -1,48 +1,111 @@
+<!--This whole model might just get deleted, but keeping it for now so I can reference some of the queries I used-->
+
 <?php
 class Order
 {
-	public function selectStuff()
+	//This function inserts sale orders into the database, as well as all the order details
+	
+	public function getItems()
 	{
-		echo "selectStuff was called";
+		include('../../connection.php');
+		$database = databaseConnection::getInstance(); 
+		$dataset = array();
+		$dataset = $database->select("item", ["name", "item_id", "current_price"], [
+			"LIMIT" => 20,
+			"ORDER" => "name ASC"
+		]);
+		
+		return $dataset;
+	}
+	
+	public function getPrice($item_id)
+	{
+		$database = dataBaseConnection::getInstance(); 
+		$dataset = $database->query('SELECT current_price FROM item WHERE item_id='.$item_id)->fetchAll(); //This query grabs the current price of one item
+		return $dataset[0]['current_price'];  //This returns the current price of the item as a single value instead of a result set.
+	}
+	
+	public function getMaterials()
+	{
+		include('../../connection.php');
+		$database = databaseConnection::getInstance(); 
+		$dataset = array();
+		$dataset = $database->query("SELECT name, material.material_id, item.item_id FROM Material, Item WHERE Material.item_id = Item.item_id
+									ORDER BY name ASC")->fetchAll();
+		return $dataset;
+	}
+	
+	public function insertSale($items, $quantities) 
+	{
+		$database = dataBaseConnection::getInstance(); //connect to database
+		$i = 0;
+		
+		$database->insert("order", [
+			"order_id" => 5002,
+			"employee_id" => 2000,
+			"order_date" => date("F j, Y, g:i a"),
+			"subtotal" => 50.00,
+			"tax_amount" => 5.00,
+			"total_price" => 55.00,
+			"order_type" => 'sale'
+		]);
+		
+		foreach($items as $item)
+		{
+			echo $item;
+			echo 'foreach';
+			$database->insert("order_details", [
+				"order_id" => 5002,
+				"item_id" => 5000+$i,
+				"item_price" => 5.00,
+				"qty" => $quantities[$i]
+		]);
+		$i++;
+		}
+		
+	}
+	
+	public function insertGiftOrder($items, $quantities, $firstName, $lastName, $phone, $email, $addressLine1, $addressType, $city, $state, $zip)
+	{
+		$database = dataBaseConnection::getInstance(); //connect to database
+		$i = 0;
+		$database->insert("address", [
+			"address_id" =>  NULL
+		]);
+		
+		//INSERT INTO CUSTOMER TABLE FIRST
+		$database->insert("customer", [
+			"customer_id" => 25,
+			"last_name" => $lastName,
+			"first_name" => $firstName,
+			"phone_number" => $phone,
+			"email" => $email
+		]);
+
+		$database->insert("order", [
+			"order_id" => 5002,
+			"employee_id" => 2000,
+			"order_date" => date("F j, Y, g:i a"),
+			"subtotal" => 50.00,
+			"tax_amount" => 5.00,
+			"total_price" => 55.00,
+			"order_type" => 'gift'
+		]);
+		
+		foreach($items as $item)
+		{
+			echo $item;
+			echo 'foreach';
+			$database->insert("order_details", [
+				"order_id" => 5002,
+				"item_id" => 5000+$i,
+				"item_price" => 5.00,
+				"qty" => $quantities[$i]
+		]);
+		$i++;
+		}
+		
+	
 	}
 	
 }
-
-/*
-	private $employee_id;
-	private $password;
-
-	public function __construct($employee_id, $password){}
-
-	public static function dropdownItemQuery()
-	{
-		//Select name from item where item id is not in craft or materials
-		$database = dataBaseConnection::getInstance();
-		$dataset = $database->select("item", "item.name",   [ 
-																"AND" => [
-																"item.item_id[!]" => $database->select("craft", "item_id"),
-																"item.item_id[!]" => $database->select("material", "item_id")
-																]
-															]);
-		return $dataset;
-
-	}
-	public static function outputDatabase($arrayOfTables, $password) 
-	{
-		$database = databaseConnection::getInstance();
-		$dataset = $database->select($table, $columns, ['employee_id' => $employee_id]);
-		return $dbpassword_hash;
-	}
-	public static function all() {
-		$db = Db::getInstance();
-		$req = $db->query('SELECT * FROM user');
-		foreach($req->fetchAll() as $user){
-			$list[] = new Authentication($user['employee_id'], $user['password_hash'], $user['accessLevel']);
-	}
-		return $list;
-
-		//return new Authentication($user['employee_id'], $user['password_hash']);
-
-
-	}
-}*/
