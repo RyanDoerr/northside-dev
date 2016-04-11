@@ -1,32 +1,101 @@
 
 <?php
-	//require_once('models/dataBaseModel.php');
+	require_once('forms_controller.php');
+	require_once('models/database.php');
 	class OrdersController 
 	{
-							//This will insert sessionstart into necessary pages
-									//This may have to switch to a switch statement for efficiency reasons, but for now let's go with it.
-									//Inventory English Field Names
-		public static $displayNames = array('inventoryMaterialsFirst' 			=> ['Material ID', 'Material Name', 'Quantity', 'Unit Price'], 
-						 			 'inventoryCraftsFirst'  			=> ['Craft ID', 'Craft Name', 'Current Price', 'Quantity'],
-						 			 'inventoryReturnsFirst' 			=> ['Item ID', 'Item Name', 'Order ID', 'Quantity', 'Current Price'],
-						 			 //Sales English Field Names
-						 			 'OrderSalesFirst'					=> ['Order ID','Employee Name','Sale Date','Subtotal','Tax Amount','Total Cost'],
-						 			 'OrderCustomFirst'					=> ['Custom Order ID', 'Order ID', 'Employee Name', 'Order Date', 'Estimated Price', 'Total Price'],
-						 			 'OrderGiftFirst'					=> ['Gift Order ID','Employee Name','Sale Date','Subtotal','Tax Amount','Total Cost'],
-						 			 //View Sale Order
-						 			 'OrderSalesView'					=>['Item ID', 'Item Name', 'Item Price', 'Quantity'],
-						 			 'OrderCustomView'					=>['Material ID', 'Material Name', 'Unit Price'],
-
-						             );
-		public static $radioButtons = ['Sale', 'Order', 'Gift Order'];
+		public static $radioButtons = ['Sale', 'Custom Order', 'Gift Order'];
 		public static $firstItem = "Sale";
-
+		public static $TAX_RATE = 0.095; //To be used in $total calculations.
+		public static $orderType;
+		
+		
+		public static $orderColumns = array(
+					'order_id' => NULL,
+					'customer_id' => NULL,
+					'employee_id' => NULL,
+					'order_date' => NULL,
+					'subtotal' => NULL,
+					'tax_amount' => NULL,
+					'total_price' => NULL,
+					'order_type' => NULL
+					);		
+					
+		public static $OrderDetailsColumns = array(
+					'order_id' => NULL,
+					'item_id' => NULL,
+					'item_price' => NULL,
+					'qty' => NULL
+					);
+					
+		public static $GiftOrder = array(
+					'gift_id' => NULL,
+					'order_id' => NULL,
+					'rec_last_name' => NULL,
+					'rec_first_name' => NULL,
+					'address_id' => NULL
+					);		
+					
+		public static $address = array(
+					'address_id' => NULL, 
+					'street_number' => NULL,
+					'street_suffix' => NULL,
+					'street_name' => NULL,
+					'street_type' => NULL,
+					'street_direction' => NULL, 
+					'address_type' => NULL,
+					'address_type_identifier' => NULL,
+					'minor_municipality' => NULL,
+					'major_municipality' => NULL,
+					'governing_district' => NULL,
+					'zip' => NULL,
+					'iso_country_code' => NULL
+		);
+		
+		public static $GiftShipping = array(
+					'ship_id' => NULL, 
+					'address_id' => NULL,
+					'gift_id' => NULL
+		);
+		
+		public static $ShipCost = array(
+					'ship_cost_id' => NULL,
+					'ship_distance' => NULL,
+					'ship_id' => NULL,
+					'shipping_cost' => NULL
+					);	
+		
+		public static $Customer = array(
+					'customer_id' => NULL,
+					'last_name' => NULL,
+					'first_name' => NULL,
+					'phone_number' => NULL,
+					'email' => NULL,
+					'address_id' => NULL
+					);	
+					
+		public static $CustomItem = array(
+					'item_id' => NULL,
+					'qoh' => NULL,
+					'calculated_qoh' => NULL,
+					'name' => NULL,
+					'original_price' => NULL,
+					'current_price' => NULL,
+					'min_price' => NULL
+					);
+					
+		public static $CraftMaterials = array(
+					'craft_id' => NULL,
+					'material_id' => NULL
+					);
+					
 
 
 		public function session($set)
 		{
-			switch($set)
-			{
+			
+				switch($set)
+				{
 				case 'start':
 					echo 'session_start();';
 					break;
@@ -34,296 +103,148 @@
 				case 'unset':
 					echo 'session_unset();<br>';
 					break;
-			}
+				}
 		}
 
-	//This function is not a page, and handles requests by specific page functions
+		//This function is not a page, and handles requests by specific page functions
 		public function enterorder()
 		{
-			require('views/pages/enterorder.php');
-		}
+			$stageDBO = DatabaseObjectFactory::build('item');
+			$arr = ['item_id','name'];
+			$items = $stageDBO->getRecords($arr); 
 
-		public function drawRadioButtons(){
-
+			$stageDBO = DatabaseObjectFactory::build('material');
+			$arr = ['material_id'];
+			$materials = $stageDBO->getRecords($arr);
 			
-
-			print "<form>";
-
-			foreach(OrdersController::$radioButtons as $radioButton)
-			{
-				print "<input type='radio' name='ordertype' value='".strtolower(str_replace(' ', '', $radioButton))."'";
-				if ($radioButton == OrdersController::$firstItem)
-				{
-					echo "checked";
-				}
-				print ">".$radioButton;
-			}
-
-			print "<br><input type='button' id='loadform' value='Next'>";
-			print "</form>";
-			print "<div id='orderform'>";
-			print "</div>";
-			//Get the value out of the radio button
-			$jQueryScript = "<script>
-				$(document).ready(function(){
-								$('input[type=button]').click(function(){
-									
-									var ordertypejs = $('input[name=ordertype]:checked').val();
-									switch (ordertypejs){
-										case 'sale':
-											$('#orderform').load('views/pages/enterordersale.php');
-										break;
-										case 'order':
-											$('#orderform').load('views/pages/enterordercustom.php');
-										break;
-										case 'giftorder':
-											$('#orderform').load('views/pages/enterordergift.php');
-										break;
-
-									}
-									
-									
-									//$('label').css('color', 'red');
-								
-				
-								
-								
-								});
-								
-								
-									
-				
-								
-							});
-							</script>";
-			echo $jQueryScript;
-
+			require_once('views/pages/enterorder.php');
 		}
+
 		
+		
+		//This function grabs all the data from the 3 order forms, and calls the appropriate method in the order model.
 		public function submitForm()
 		{
-			require('models/order.php');
+			require('models/order.php');   //Get the Orders model
 			$model = new Order();
-			Order::selectStuff();
-			
-			$address = $_POST['addressLine1'];
-			$quantity = $_POST['quantity'];
-			echo $address;
-			echo $quantity . ' qty';
-		}
-	
-		public function drawForm($orderType)
-		{
-			if($orderType == 'sale')
-			{	
-				echo "<script>
-				
-				
-				$(document).ready(function(){
-						$('input[type=button]').click(function(){
-							$( '.selectItems' ).first().clone().insertAfter( '.selectItems:last' );	
-							
-						});
-
-								
-						$( 'form' ).submit(function( event ) {
-							//var fields = $(':input').serializeArray();
-							
-							
-							
-							//console.log( $( this ).serializeArray() );
-							//event.preventDefault();
-						});		
-				});
-						
-					</script>";
-					
-					
-				print "<h3>Sale Order</h3>
-				
-				
-				<form>
-				<label class='selectItems'>Select Items
-				<select>
-					<option name = 'item' value='Item 1'>Item 1</option>
-					<option name = 'item2' value='Item 2'>Item 2</option>
-				</select>
-				<label>Quantity</label><input type='text' name='quantity' value=1 ><br> 
-				</label>
-				<input type='button' value='Add Item +'/>
-				<br><br>
-				<input type='button' value='Cancel'/> <input type='submit' value='Next'/>
-				</form>
-				
-				
-				
-				
-				";
-				
-			}
+			OrdersController::$orderType = $_POST['orderType'];  //Determine if it is a sale, custom order, or gift from the hidden field.
 			
 			
-			else if($orderType == 'gift')
+			//For sale orders, only 2 things need to be grabbed from the POST array: The items and their quantities.
+			if(self::$orderType == 'sale')
 			{
+				self::$OrderDetailsColumns['item_id'] = $_POST['item'];
+				self::$OrderDetailsColumns['qty'] = $_POST['quantity'];
 				
-				echo "
+				$index = 0;
+				foreach(self::$OrderDetailsColumns['item_id'] as $item)
+				{
+					self::$OrderDetailsColumns['item_price'][$index] = $model->getPrice($item);
+					$index++;
+				}
 				
-				<script>
+				self::$orderColumns['subtotal'] = self::calculateSubtotal(self::$OrderDetailsColumns['item_price'],self::$OrderDetailsColumns['qty']);  //calculates the subtotal based on items and their quantities
+				self::$orderColumns['tax_amount'] = self::$orderColumns['subtotal'] * self::$TAX_RATE;
+				self::$orderColumns['total'] = self::$orderColumns['subtotal'] + self::$orderColumns['tax_amount'];
 				
+				//Order::insertSale($items, $quantities);
+			}
+			
+			else if(self::$orderType == 'gift') //Grab all the fields from the gift order form, then call the Order model.
+			{
+				//ITEMS ORDERED, STORED IN ARRAY
+				self::$OrderDetailsColumns['item_id'] = $_POST['item'];
 				
-				$(document).ready(function(){
-						$('input[type=button]').click(function(){
-							$( '.selectItems' ).first().clone().insertAfter( '.selectItems:last' );	
-							
-						});
-
-								
-						$( 'form' ).submit(function( event ) {
-							//var fields = $(':input').serializeArray();
-							
-							
-							
-							//console.log( $( this ).serializeArray() );
-							//event.preventDefault();
-						});		
-				});
-						
-					</script>";
-					
-					
-				print "<h3>Gift Order</h3>
+				//QUANTITIES OF THOSE ITEMS IN A PARALLEL ARRAY
+				self::$OrderDetailsColumns['qty'] = $_POST['quantity'];
 				
+				//GETS THE ITEM PRICES OF ITEMS USING getPrice() FUNCTION. WILL PROBABLY CHANGE THIS FUNCTION?
+				$index = 0;
+				foreach(self::$OrderDetailsColumns['item_id'] as $item)
+				{
+					self::$OrderDetailsColumns['item_price'][$index] = $model->getPrice($item);
+					$index++;
+				}
 				
-				<form>
-				<label class='selectItems'>Select Items
-				<select>
-					<option name = 'item' value='Item 1'>Item 1</option>
-					<option name = 'item2' value='Item 2'>Item 2</option>
-				</select>
-				<label>Quantity</label><input type='text' name='quantity' value=1><br> 
-				</label>
-				<input type='button' value='Add Item +'/>
-				<br><br>
+				//RECIPIENT INFORMATION
+				self::$GiftOrder['rec_last_name'] = $_POST['reclastName'];
+				self::$GiftOrder['rec_first_name'] = $_POST['recfirstName'];
 				
-				<h3>Customer Info</h3>
+				//GRAB ADDRESS INFO HERE (2 times, one for customer and for Recipient). Parsing it seems....difficult. E
 				
-				<label>First Name <input type='text' name='firstName'></label><br>
-				<label>Last Name <input type='text' name='lastName'></label><br>
-				<label>Address Line 1 <input type='text' name='addressLine1'></label><br>
-				<label>Address Line 2 <input type='text' name='addressLine2'></label><br>
-				<label>Address Type </label>
-				<select>
-					<option name = 'house' value='House'>House</option>
-					<option name = 'apartment' value='Apartment'>Apartment</option>
-				</select><br>
-				<label>City <input type='text' name='city'></label><br>
-				<label>State <input type='text' name='state'></label><br>
-				<label>Zip <input type='text' name='zip'></label><br>
-				<label>P.O. Box <input type='text' name='pobox'></label><br>
+				//self::$GiftShipping['address_id']  This address id will have to reference the one that was inserted. Need to figure this out.
 				
-				<h3>Recipient Info</h3>
+				//GET SHIPPING COST INFO
+				self::$ShipCost['ship_distance'] = 'continental';
+				if(self::$ShipCost['ship_distance'] == 'continental')
+					self::$ShipCost['ship_cost'] = 5.00;
+				else
+					self::$ShipCost['ship_cost'] = 10.00;
 				
-				<label>First Name <input type='text' name='recfirstName'></label><br>
-				<label>Last Name <input type='text' name='reclastName'></label><br>
-				<label>Address Line 1 <input type='text' name='recaddressLine1'></label><br>
-				<label>Address Line 2 <input type='text' name='recaddressLine2'></label><br>
-				<label>Address Type </label>
-				<select>
-					<option name = 'rechouse' value='House'>House</option>
-					<option name = 'recapartment' value='Apartment'>Apartment</option>
-				</select><br>
-				<label>City <input type='text' name='reccity'></label><br>
-				<label>State <input type='text' name='recstate'></label><br>
-				<label>Zip <input type='text' name='reczip'></label><br>
-				<label>P.O. Box <input type='text' name='recpobox'></label><br>
-
+				//GET CUSTOMER INFO
+				self::$Customer['last_name'] = $_POST['lastName'];
+				self::$Customer['first_name'] = $_POST['firstName'];
+				self::$Customer['phone_number'] = $_POST['phone'];
+				self::$Customer['email'] = $_POST['email'];
 				
-				
-				
-				
-				<input type='button' value='Cancel'/> <input type='submit' value='Next'/>
-				
-				
-				
-				</form>
-				
-				
-				
-				
-				";
+				//GET THE SUBTOTAL/TOTAL INFORMATION
+				self::$orderColumns['subtotal'] = self::calculateSubtotal(self::$OrderDetailsColumns['item_price'],self::$OrderDetailsColumns['qty']);  //calculates the subtotal based on items and their quantities
+				self::$orderColumns['tax_amount'] = self::$orderColumns['subtotal'] * self::$TAX_RATE;
+				self::$orderColumns['total'] = self::$orderColumns['subtotal'] + self::$orderColumns['tax_amount'];
 				
 			}
 			
-			else if($orderType == 'custom')
+			else if(self::$orderType == 'custom')
 			{
-					echo "<script>
+				//GET MATERIALS INFORMATION
+				self::$CraftMaterials['material_id'] = $_POST['material'];
+				
+				//GRAB AND INSERT NEW ITEM INTO ITEM AND CRAFT TABLE
+				self::$CustomItem['name'] = $_POST['itemName']; //Each custom craft will have its own item id and name.
+				self::$OrderDetailsColumns['qoh'] = 0;
+				
+				//INSERT INTO THE CRAFT_MATERIALS TABLE USING THE CRAFT ID FROM ABOVE INSERT
 				
 				
-				$(document).ready(function(){
-						$('input[type=button]').click(function(){
-							$( '.selectItems' ).first().clone().insertAfter( '.selectItems:last' );	
-							
-						});
-
-								
-						$( 'form' ).submit(function( event ) {
-							//var fields = $(':input').serializeArray();
-							
-							
-							
-							//console.log( $( this ).serializeArray() );
-							//event.preventDefault();
-						});		
-				});
-						
-					</script>";
-					
-					
-				print "<h3>Custom Order</h3>
+				self::$orderColumns['subtotal'] = $items * $quantities;  //calculates the subtotal based on items and their quantities
+				self::$orderColumns['tax_amount'] = self::$orderColumns['subtotal'] - self::$orderColumns['subtotal'] * self::$TAX_RATE;
+				self::$orderColumns['total'] = self::$orderColumns['subtotal'] + self::$orderColumns['tax_amount']; //The total price of the order
 				
+				//GET CUSTOMER INFORMATION
 				
-				<form action = '?controller=order&action=submitForm' method='post'>
-				<label class='selectItems'>Select Materials to be used:
-				<select>
-					<option name = 'material'>Material 1</option>
-					<option name = 'material'>Material 2</option>
-				</select>
-				<label>Quantity</label><input type='text' name='quantity' value=1> <br> 
-				</label>
-				<input type='button' id='addNew' value='Add New'/>
-				<br><br>
-				<label>Custom Craft Comments <input type='textfield' name='comment'></label>
-				<br>
-				<label>Estimated Minimum Price needed for Profit: <input type='text'></label><br>
-				<h3>Customer Info</h3>
+				//GET CUSTOM_ORDER INFORMATION
 				
-				<label>First Name <input type='text' name='firstName'></label><br>
-				<label>Last Name <input type='text' name='lastName'></label><br>
-				<label>Address Line 1 <input type='text' name='addressLine1'></label><br>
-				<label>Address Line 2 <input type='text' name='addressLine2'></label><br>
-				<label>Address Type </label>
-				<select>
-					<option name = 'house' value='House'>House</option>
-					<option name = 'apartment' value='Apartment'>Apartment</option>
-				</select><br>
-				<label>City <input type='text' name='city'></label><br>
-				<label>State <input type='text' name='state'></label><br>
-				<label>Zip <input type='text' name='zip'></label><br>
-				<label>P.O. Box <input type='text' name='pobox'></label><br>
-				
-				<input type='button' value='Cancel'/> <input type='submit' value='Next'/>
-				</form>
-				
-				
-				
-				
-				";
-				
+				//INSERT ALL THE ORDER INFORMATION HERE
 			}
+			
+			else {
+				echo 'Submit Form Error';
+			}
+			
+			include('views/pages/confirmOrder.php');
+			}
+			
+		public function calculateSubtotal($itemPrices, $quantities)
+		{	
+			$subtotal = 0;
+			$index = 0;
+			foreach($itemPrices AS $price)
+			{
+				$subtotal += $itemPrices[$index] * $quantities[$index];
+				$index++;
+			}
+			
+			
+			return round($subtotal,2);
 		}
 		
-
-
+		public function confirm()
+		{
+			//TESTING: echo 'item id: '.self::$OrderDetailsColumns['item_id'][0];
+		}
+	
+	
+		
 		//find order page action
 		public function findorder()
 		{
@@ -338,14 +259,15 @@
 
 
 		}
+		
 		//look up order page action
 		public function lookuporder()
 		{
-		//make array for form id names
+			//make array for form id names
 			$formidnames = ['Order ID','Customer Name','Order Date'];
-		//function lookuporder()
-			require('views/pages/lookuporder.php');
-		//print all form fields 
+			//function lookuporder()
+			require_once('views/pages/lookuporder.php');
+			//print all form fields 
 			print "<form action='?controller=order&action=findorder' method='post'>";
 			foreach ($formidnames as $formidname){
 		  		print $formidname;
@@ -356,97 +278,68 @@
 			print "</form>";
 		}
 
-}
-
-//	require_once('models/dataBaseModel.php');
-/*	class OrdersController 
-	{
-
-//This will insert sessionstart into necessary pages
-									//This may have to switch to a switch statement for efficiency reasons, but for now let's go with it.
-									//Inventory English Field Names
-		public static $displayNames = array('inventoryMaterialsFirst' 			=> ['Material ID', 'Material Name', 'Quantity', 'Unit Price'], 
-						 			 'inventoryCraftsFirst'  			=> ['Craft ID', 'Craft Name', 'Current Price', 'Quantity'],
-						 			 'inventoryReturnsFirst' 			=> ['Item ID', 'Item Name', 'Order ID', 'Quantity', 'Current Price'],
-						 			 //Sales English Field Names
-						 			 'OrderSalesFirst'					=> ['Sale ID','Employee Name','Sale Date','Subtotal','Tax Amount','Total Cost'],
-						 			 'OrderCustomFirst'					=> ['Custom Order ID', 'Order ID', 'Employee Name', 'Order Date', 'Estimated Price', 'Total Price'],
-						 			 'OrderGiftFirst'					=> ['Gift Order ID','Employee Name','Sale Date','Subtotal','Tax Amount','Total Cost'],
-						 			 //View Sale Order
-						 			 'OrderSalesView'					=>['Item ID', 'Item Name', 'Item Price', 'Quantity'],
-						 			 'OrderCustomView'					=>['Material ID', 'Material Name', 'Unit Price'],
-
-						             );
-		public static $radioButtons = ['Sale', 'Order', 'Gift Order'];
-		public static $firstItem = "Sale";
-
-
-
-		public function session($set)
+		public function returnorder()
 		{
-			switch($set)
+			require_once('views/pages/returnItem.php');
+		}
+		
+		public function drawForm($orderType)
+		{
+			if($orderType == 'custom')
 			{
-				case 'start':
-					echo 'session_start();';
-					break;
-
-				case 'unset':
-					echo 'session_unset();<br>';
-					break;
+				print "<form action = '?controller=order&action=submitForm' method='post'>";
 			}
 		}
-
-	//This function is not a page, and handles requests by specific page functions
-		public function enterorder()
+		
+		public function drawReturnForm()
 		{
-			require('views/pages/enterorder.php');
-		}
-
-		public function drawRadioButtons(){
-
-			
-
 			print "<form>";
-
-			foreach(OrdersController::$radioButtons as $radioButton)
-			{
-				print "<input type='radio' name='ordertype' value='".strtolower(str_replace(' ', '', $radioButton))."'";
-				if ($radioButton == OrdersController::$firstItem)
-				{
-					echo "checked";
-				}
-				print ">".$radioButton;
-			}
-
-			print "<br><input type='button' id='loadform' value='Next'>";
+				print "<h4>Return Item</h4>";
+				for($index = 0; $index < count(FormsController::$ReturnItemForm); $index++)
+					print "<label>" . FormsController::$ReturnItemForm[$index]['label'] . " <input type = '". FormsController::$ReturnItemForm[$index]['type'] . "'name = '".FormsController::$ReturnItemForm[$index]['name'] . "'></label><br>";
+			
+			print "<input type='button' class = 'button redButton' value='Cancel'/> <input class='button blueButton' type='submit' value='Next'/>";
 			print "</form>";
-			print "<div id='orderform'>";
-			print "</div>";
-			//Get the value out of the radio button
-			$jQueryScript = "<script>
-
-								$('input[type=button]').click(function(){
-									var ordertypejs = $('input[name=ordertype]:checked').val();
-									switch (ordertypejs){
-										case 'sale':
-											$('#orderform').load('views/pages/enterordersale.php');
-										break;
-										case 'order':
-											$('#orderform').load('views/pages/enterordercustom.php');
-										break;
-										case 'giftorder':
-											$('#orderform').load('views/pages/enterordergift.php');
-										break;
-
-									}
-								});
-							</script>";
-			echo $jQueryScript;
-			$testDatabaseObject = dataBaseModel::dropDownItemQuery();
-			var_dump($testDatabaseObject);
-
 		}
-
+		
+		public function manageorders()
+		{
+			/*$stageDBO = DatabaseObjectFactory::build('gift_order');
+			$arr = ['gift_id','order_id','rec_last_name', 'rec_first_name'];
+			$gifts = $stageDBO->getRecords($arr);*/
+			
+			$stageDBO = DatabaseObjectFactory::build('order');
+			$arr = ['gift_id', 'order_id', 'rec_last_name','rec_first_name','order_date','last_name','first_name','total_price'];
+			$stageDBO->UnicornMagic('gift_order', 'customer');
+			$gifts = $stageDBO->getRecords($arr);
+			
+			$stageDBO = DatabaseObjectFactory::build('custom_order');
+			$arr = ['custom_order_id','order_id','comment','price_estimation'];
+			$customs = $stageDBO->getRecords($arr);
+			
+			
+			require_once('views/pages/manageorder.php');
+		}
+		
+		public function editGift()
+		{
+			$gift_id = $_POST['gift_id'];
+			$stageDBO = DatabaseObjectFactory::build('gift_order');
+			$stageDBO->UnicornMagic('gift_order', 'customer');
+			$arr = ['gift_id','order_id','rec_last_name', 'rec_first_name'];
+			$gifts = $stageDBO->getRecords($arr);
+			
+			include('views/pages/editGift.php');
+		}
+		
+		public function editCustom()
+		{
+			$custom_order_id = $_POST['custom_id'];
+			$stageDBO = DatabaseObjectFactory::build('custom_order');
+			$arr = ['custom_order_id','order_id','comment', 'rec_first_name'];
+			$gifts = $stageDBO->getRecords($arr);
+			
+			include('views/pages/editGift.php');
+		}
 }
-*/
 
