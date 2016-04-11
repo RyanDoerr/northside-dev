@@ -37,6 +37,8 @@
 			case 'inventory' :
 				$controller = new InventoryController();
 				break;
+			case 'suppliers' :
+				$controller = new SuppliersController();
 		}
 
 		//call the action
@@ -52,7 +54,8 @@
 						 'menus' 	=> ['mainMenu', 'subMenu'],
 						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm','manageorders','editGift'],
 						 'employees' => ['addemployee'],
-						'inventory' => ['ordermaterials', 'getMaterials','submitOrder','InsertOrder','manageinventory','addCraft','addMaterial','editMaterial']
+						'inventory' => ['ordermaterials', 'getMaterials','submitOrder','InsertOrder','manageinventory','addCraft','addMaterial','editMaterial'],
+						'suppliers' => ['managesuppliers','addSupplier','editSupplier']
 						);
 
 
