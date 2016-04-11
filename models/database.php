@@ -27,7 +27,7 @@ class DatabaseObject {
 			$this->data_set = $this->database_db->select($this->table, $this->columns, $where);
 		}
 		else{
-			$this->data_set = $this->database_db->select($this->table, $this->$columns);
+			$this->data_set = $this->database_db->select($this->table, $this->columns);
 		}
 		return $this->data_set;
 	}
