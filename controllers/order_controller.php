@@ -113,15 +113,11 @@
 			$arr = ['item_id','name'];
 			$items = $stageDBO->getRecords($arr); 
 
-			/*$stageDBO = DatabaseObjectFactory::build('material');
-			$stageDBO->setJoin(["[<]item" => "item_id", "[><]material" => "item_id"]);
+			$stageDBO = DatabaseObjectFactory::build('material');
+			$stageDBO->SetJoin(["[><]item" => "item_id"]);
 			$arr = ['material_id','name'];
 			$materials = $stageDBO->getRecords($arr);
-			*/
-
-			$db = $stageDBO->getInstance();
-			$materials = $db->query("SELECT name, material.material_id, item.item_id FROM Material, Item WHERE Material.item_id = Item.item_id")->fetchAll();
-			
+		
 			require_once('views/pages/enterorder.php');
 		}
 
@@ -198,7 +194,7 @@
 				//GET THE SUBTOTAL/TOTAL INFORMATION
 				self::$orderColumns['subtotal'] = self::calculateSubtotal(self::$OrderDetailsColumns['item_price'],self::$OrderDetailsColumns['qty']);  //calculates the subtotal based on items and their quantities
 				self::$orderColumns['tax_amount'] = self::$orderColumns['subtotal'] * self::$TAX_RATE;
-				self::$orderColumns['total'] = self::$orderColumns['subtotal'] + self::$orderColumns['tax_amount'];
+				self::$orderColumns['total'] = self::$orderColumns['subtotal'] + self::$orderColumns['tax_amount'] + self::$ShipCost['ship_cost'];
 				
 			}
 			
@@ -312,13 +308,9 @@
 		
 		public function manageorders()
 		{
-			/*$stageDBO = DatabaseObjectFactory::build('gift_order');
-			$arr = ['gift_id','order_id','rec_last_name', 'rec_first_name'];
-			$gifts = $stageDBO->getRecords($arr);*/
-			
 			$stageDBO = DatabaseObjectFactory::build('order');
-			$arr = ['gift_id', 'order_id', 'rec_last_name','rec_first_name','order_date','last_name','first_name','total_price'];
-			$stageDBO->UnicornMagic('gift_order', 'customer');
+			$arr = ['gift_id', 'order.order_id', 'rec_last_name','rec_first_name','order_date','last_name','first_name','total_price'];
+			$stageDBO->SetJoin(['[><]gift_order' => 'order_id', '[><]customer' => 'customer_id']);
 			$gifts = $stageDBO->getRecords($arr);
 			
 			$stageDBO = DatabaseObjectFactory::build('custom_order');
@@ -333,7 +325,7 @@
 		{
 			$gift_id = $_POST['gift_id'];
 			$stageDBO = DatabaseObjectFactory::build('gift_order');
-			$stageDBO->UnicornMagic('gift_order', 'customer');
+			$stageDBO->SetJoin(['[><]order' => 'order_id', '[><]customer' => 'customer_id']);
 			$arr = ['gift_id','order_id','rec_last_name', 'rec_first_name'];
 			$gifts = $stageDBO->getRecords($arr);
 			

@@ -20,8 +20,9 @@ class DatabaseObject {
 	}
 	public function getRecords($columns, $where = "") {
 		$this->columns = $columns;
-		if (is_array($this->join)){
-			$this->data_set = $this->database_db->select($this->table, $this->joinQuery, $columns, "");
+		if($this->join){
+
+			$this->data_set = $this->database_db->select($this->table, $this->joinQuery, $columns, $where);
 		}
 		else if ($where != ""){
 			$this->data_set = $this->database_db->select($this->table, $this->columns, $where);
@@ -69,7 +70,7 @@ public function SetJoin($join_array){
 			$this->joinQuery = $join_array;
 	}
 
-	
+
 }
 //1
 class OrderDatabaseObject extends DatabaseObject {
@@ -121,6 +122,7 @@ class EmployeeDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('employee_id','last_name','first_name','hire_date','address_id','phone_number');
+		$this->set_table('employee');
 	}
 }
 //6

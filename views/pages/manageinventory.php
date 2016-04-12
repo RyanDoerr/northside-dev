@@ -44,8 +44,8 @@
 			{  ?>
 				<tr>
 					<td>
-					<form action="" method="post"><input type="submit" value="Edit" class="button">
-						<input type="hidden" value='<?php echo $craft['craft_id'] ?>'>
+					<form action="?controller=inventory&action=editCraft" method="post"><input type="submit" value="Edit" class="button">
+						<input type="hidden" name= "craft_id" value='<?php echo $craft['craft_id'] ?>'>
 					</form>
 					</td>
 					<td><?php echo $craft['craft_id']?></td>

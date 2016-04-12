@@ -53,9 +53,9 @@
 						 'forms' 	=> [],
 						 'menus' 	=> ['mainMenu', 'subMenu'],
 						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm','manageorders','editGift'],
-						 'employees' => ['addemployee'],
-						'inventory' => ['ordermaterials', 'getMaterials','submitOrder','InsertOrder','manageinventory','addCraft','addMaterial','editMaterial'],
-						'suppliers' => ['managesuppliers','addSupplier','editSupplier']
+						 'employees' => ['addemployee','editemployee'],
+						'inventory' => ['ordermaterials', 'getMaterials','submitOrder','InsertOrder','manageinventory','addCraft','addMaterial','editMaterial','editCraft'],
+						'suppliers' => ['managesuppliers','addSupplier','editSupplier','managediscounts','addDiscount','editDiscount']
 						);
 
 

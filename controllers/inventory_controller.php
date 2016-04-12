@@ -84,7 +84,32 @@
 			//Grab the material id passed by the Edit button
 			$materialID = $_POST['material_id'];
 
+			$stageDBO = DatabaseObjectFactory::build('material');
+			$arr = ['material_id', 'name','unit_price','current_price','min_price'];
+			$stageDBO->SetJoin(["[><]item" => "item_id"]);
+			$materials = $stageDBO->getRecords($arr, ['material_id' => $materialID] );
 			require_once('views/pages/editMaterial.php');
+
+		}
+
+		public static function editCraft()
+		{
+			//Grab the craft id passed by the Edit button
+			$craftID = $_POST['craft_id'];
+
+			$stageDBO = DatabaseObjectFactory::build('craft');
+			$arr = ['item_id', 'name','current_price','min_price'];
+			$stageDBO->SetJoin(["[><]item" => "item_id"]);
+			$craft = $stageDBO->getRecords($arr, ['craft_id' => $craftID] );
+
+			$stageDBO = DatabaseObjectFactory::build('craft_materials');
+			$arr = ['material_id', 'name','unit_price'];
+			$stageDBO->SetJoin(["[><]material" => "material_id", "[><]item" => "item_id"]);
+			$materials = $stageDBO->getRecords($arr, ['craft_id' => $craftID] );
+
+
+
+			require_once('views/pages/editCraft.php');
 
 		}
 		

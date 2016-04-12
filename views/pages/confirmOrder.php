@@ -13,6 +13,10 @@
 		}
 		
 		echo '</table><br>Subtotal: $' . number_format(self::$orderColumns['subtotal'],2);
+		if(self::$orderType == 'gift')
+			{
+				echo '<br>Shiping Cost: $' . number_format(self::$ShipCost['ship_cost'],2);
+			}
 		echo '<br>Tax Amount: $' . number_format(self::$orderColumns['tax_amount'],2);
 		echo '<br>Total: $' . number_format(self::$orderColumns['total'],2);
 		

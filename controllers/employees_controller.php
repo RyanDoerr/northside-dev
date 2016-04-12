@@ -1,6 +1,7 @@
 
 <?php
 	require_once('forms_controller.php');
+	require_once('models/database.php');
 	
 	class EmployeesController 
 	{	
@@ -8,6 +9,21 @@
 			public static function addemployee()
 			{
 				require_once('views/pages/addemployee.php');
+			}
+
+			public static function editemployee()
+			{
+				$stageDBO = DatabaseObjectFactory::build('employee');
+				$arr = ['employee_id', 'first_name','last_name','hire_date','phone_number'];
+				$stageDBO->SetJoin(["[><]user" => "employee_id"]);
+				$admins = $stageDBO->getRecords($arr, ['accessLevel' => 1] );
+
+				$stageDBO = DatabaseObjectFactory::build('employee');
+				$arr = ['employee_id', 'first_name','last_name','hire_date','phone_number'];
+				$stageDBO->SetJoin(["[><]user" => "employee_id"]);
+				$employees = $stageDBO->getRecords($arr, ['accessLevel' => 2] );
+
+				require_once('views/pages/editEmployee.php');
 			}
 			
 			public static function drawForm()
