@@ -201,17 +201,16 @@
 			else if(self::$orderType == 'custom')
 			{
 				//GET MATERIALS INFORMATION
-				self::$CraftMaterials['material_id'] = $_POST['material'];
+				self::$CraftMaterials['material_id'] = $_POST['material']; // Get all the material id's into array.
 				
-				//GRAB AND INSERT NEW ITEM INTO ITEM AND CRAFT TABLE
+				$index = 0;
+				self::$OrderDetailsColumns['item_price'] = $_POST['estimatedPrice'];  //Get the user-entered price estimate.
+				
 				self::$CustomItem['name'] = $_POST['itemName']; //Each custom craft will have its own item id and name.
-				self::$OrderDetailsColumns['qoh'] = 0;
+				self::$OrderDetailsColumns['qoh'] = $_POST['itemQuantity']; //The quantity of the custom craft.  				
 				
-				//INSERT INTO THE CRAFT_MATERIALS TABLE USING THE CRAFT ID FROM ABOVE INSERT
-				
-				
-				self::$orderColumns['subtotal'] = $items * $quantities;  //calculates the subtotal based on items and their quantities
-				self::$orderColumns['tax_amount'] = self::$orderColumns['subtotal'] - self::$orderColumns['subtotal'] * self::$TAX_RATE;
+				self::$orderColumns['subtotal'] = self::$OrderDetailsColumns['item_price'] * self::$OrderDetailsColumns['qoh'];  //calculates the subtotal based on the custom item and its quantity
+				self::$orderColumns['tax_amount'] = self::$orderColumns['subtotal']  * self::$TAX_RATE;
 				self::$orderColumns['total'] = self::$orderColumns['subtotal'] + self::$orderColumns['tax_amount']; //The total price of the order
 				
 				//GET CUSTOMER INFORMATION
@@ -252,33 +251,219 @@
 		//find order page action
 		public function findorder()
 		{
-			require_once('views/pages/findorder.php');
-			$xxx = 'xxxxxx';
-			$formidnames = ['Customer Name:', 'Order Date:', 'Items Charged:', 'Total:'];
+			$filter = array();
+			$orderID = $_POST['order_id'];
+			$lastName = $_POST['last_name'];
+			$order_date = $_POST['order_date'];
 
-			foreach($formidnames as $formidname)
+			//CHECKING WHAT FILTERS ARE APPLIED
+			if(!empty($orderID) && !empty($lastName) && !empty($order_date))
 			{
-				print $formidname.'&nbsp&nbsp.&nbsp.&nbsp'.$xxx.'<br>';
+				$filter['order_id'] = $orderID;
+				$filter['order_date'] = $orderDate;
+				$filter['last_name'] = $lastName;
+				
 			}
+			else if(!empty($orderID) && empty($lastName) && empty($order_date))
+		    {
+			 	unset($filter['last_name']);
+			 	$filter['order_id'] = $orderID;
+		    	unset($filter['order_date']);
+			}
+
+		    else if(empty($orderID) && !empty($lastName) && empty($order_date))
+		    {
+			 	$filter['last_name'] = $lastName;
+			 	unset($filter['order_id']);
+		    	unset($filter['order_date']);
+			}
+
+			else if(empty($orderID) && empty($lastName) && !empty($order_date))
+		    {
+			 	$filter['order_date'] = $order_date;
+			 	unset($filter['order_id']);
+		    	unset($filter['last_name']);
+			}
+
+			else if(!empty($orderID) && empty($lastName) && !empty($order_date))
+		    {
+			 	$filter['order_date'] = $order_date;
+			 	$filter['order_id'] = $orderID;
+		    	unset($filter['last_name']);
+			}
+
+			else if(empty($orderID) && !empty($lastName) && !empty($order_date))
+		    {
+			 	$filter['order_date'] = $order_date;
+			 	$filter['last_name'] = $lastName;
+		    	unset($filter['order_id']);
+			}
+
+			else if(!empty($orderID) && !empty($lastName) && empty($order_date))
+		    {
+			 	$filter['order_id'] = $orderID;
+			 	$filter['last_name'] = $lastName;
+		    	unset($filter['order_date']);
+			}
+
+
+
+			require_once('views/pages/findorder.php');
+			$stageDBO = DatabaseObjectFactory::build('order');
+			$arr = ['order_id','customer_id','first_name','last_name','order_date','total_price'];
+			$stageDBO->SetJoin(['[><]customer' => 'customer_id']);
+			if(count($filter) > 1) //More than one filter needs an AND statement
+			{
+				$order = $stageDBO->getRecords($arr, ["AND" => $filter]);
+			}
+
+			else //when there is only one filter, no and statement is required
+			{
+				$order = $stageDBO->getRecords($arr, $filter);
+			}
+
+			
+	
+			if(count($order) == 0) //When no orders are returned to the $order variable
+			{
+				print "<h3>No Orders Found</h3>";
+			}
+
+			else if(count($order) > 1) //With multiple results usually found on Order Date or Name searches. 
+			{
+				print "<table><th>Order ID</th><th>Customer Name</th><th>Order Date</th><th>Total Price</th>";
+				foreach($order as $o)
+				{
+					print "<tr><td>
+					<form action='?controller=order&action=viewOrder' method= 'post'>
+						<input type='submit' class = 'button' value='View Order ".$o['order_id']."'>
+						<input type='hidden' name='orderID' value='".$o['order_id']."'>
+					</form></td>";
+					print "<td>".$o['first_name'] . " " . $o['last_name']."</td>";
+					print "<td>".$o['order_date'] . "</td>";
+					print "<td>".$o['total_price']."</td></tr>";
+					
+				}
+
+				print "</table>";
+			}
+
+			else  //For when the order returned is only 1.
+			{	
+				print "<table><th>Order ID</th><th>Customer Name</th><th>Order Date</th><th>Total Price</th>";
+
+				if(!empty($order[0]['customer_id'])) //For Orders that have customer information
+				{	$stageDBO = DatabaseObjectFactory::build('order_details');
+					$arr = ['item_id', 'name', 'item_price', 'qty'];
+					$stageDBO->SetJoin(['[><]item' => 'item_id']);
+					$items = $stageDBO->getRecords($arr, ['order_id' => $order[0]['order_id']]);
+					print "<tr><td>".$order[0]['order_id']."</td>";
+					print "<td>".$order[0]['first_name'] . " " . $order[0]['last_name']."</td>";
+					print "<td>".$order[0]['order_date'] ."</td>";
+					print "<td>".$order[0]['total_price']."</td>";
+					print "</table>";
+
+					print "<h4>Items on Order ".$order[0]['order_id'].":</h4>";
+					print "<table><th>Item ID</th><th>Item Name</th><th>Item Price</th><th>Quantity</th>";
+
+					foreach ($items as $item) {
+						print "<tr><td>".$item['item_id']."</td>
+							  <td>".$item['name']."</td>
+							  <td>".$item['item_price']."</td>
+							  <td>".$item['qty']."</td></tr>";
+					}
+
+					print "</table>";
+				}
+
+				else  //FOR SALE ORDERS, which have no Customer Information
+				{
+					$stageDBO = DatabaseObjectFactory::build('order');
+					$arr = ['order_id','order_date','total_price'];
+					$order = $stageDBO->getRecords($arr,$filter);
+
+					$stageDBO = DatabaseObjectFactory::build('order_details');
+					$arr = ['item_id', 'name', 'item_price', 'qty'];
+					$stageDBO->SetJoin(['[><]item' => 'item_id']);
+					$items = $stageDBO->getRecords($arr, ['order_id' => $order[0]['order_id']]);
+					print "<tr><td>".$order[0]['order_id']."</td>";
+					print "<td>N/A</td>";
+					print "<td>".$order[0]['order_date'] ."</td>";
+					print "<td>".$order[0]['total_price']."</td>";
+					print "</table>";
+
+					print "<h4>Items on Order ".$order[0]['order_id'].":</h4>";
+					print "<table><th>Item ID</th><th>Item Name</th><th>Item Price</th><th>Quantity</th>";
+
+					foreach ($items as $item) {
+						print "<tr><td>".$item['item_id']."</td>
+							  <td>".$item['name']."</td>
+							  <td>".$item['item_price']."</td>
+							  <td>".$item['qty']."</td></tr>";
+					}
+
+					print "</table>";
+				}
+			}
+
+			
 
 
 		}
 		
+		public static function viewOrder() //When there are multiple results for a Look Up Order, this page will show the details when the View Order # button is selected to show the specific items on that order.
+		{
+			$orderID = $_POST['orderID'];
+
+			$stageDBO = DatabaseObjectFactory::build('order');
+			$arr = ['order_id','first_name','last_name','order_date','total_price'];
+			$stageDBO->SetJoin(['[><]customer' => 'customer_id', '[><]order_details' => 'order_id']);
+			$order = $stageDBO->getRecords($arr, ['order_id' => $orderID]);
+
+			$stageDBO = DatabaseObjectFactory::build('order_details');
+			$arr = ['item_id', 'name', 'item_price', 'qty'];
+			$stageDBO->SetJoin(['[><]item' => 'item_id']);
+			$items = $stageDBO->getRecords($arr, ['order_id' => $orderID]);
+
+
+				print "<table>";
+				print "<tr><td>".$order[0]['order_id']."</td>";
+				print "<td>".$order[0]['first_name'] . " " . $order[0]['last_name']."</td>";
+				print "<td>".$order[0]['order_date'] ."</td>";
+				print "<td>".$order[0]['total_price']."</td>";
+				print "</table>";
+
+				print "<h4>Items on Order ".$order[0]['order_id'].":</h4>";
+				print "<table><th>Item ID</th><th>Item Name</th><th>Item Price</th><th>Quantity</th>";
+
+				foreach ($items as $item) {
+					print "<tr><td>".$item['item_id']."</td>
+						  <td>".$item['name']."</td>
+						  <td>".$item['item_price']."</td>
+						  <td>".$item['qty']."</td></tr>";
+				}
+
+				print "</table>";
+
+		}
 		//look up order page action
 		public function lookuporder()
 		{
 			//make array for form id names
-			$formidnames = ['Order ID','Customer Name','Order Date'];
+			$formidnames = ['Order ID','Customer Last Name','Order Date'];
+			$formNames = ['order_id','last_name', 'order_date'];
 			//function lookuporder()
 			require_once('views/pages/lookuporder.php');
 			//print all form fields 
 			print "<form action='?controller=order&action=findorder' method='post'>";
+			$index = 0;
 			foreach ($formidnames as $formidname){
 		  		print $formidname;
-		  		print "<input type='text' name='filter'><br>";
+		  		print "<input type='text' name='".$formNames[$index]."'><br>";
+		  		$index++;
   			}
-  			print "<input type='submit' value='Find Order'>";
-			print "<input type='button' value='Cancel'>";
+  			print "<a href='?controller=menus&action=mainMenu&subMenu=Order'><input type='button' class = 'button redButton' value='Cancel'/></a> ";
+  			print "<input type='submit' class='button blueButton' value='Find Order'>";
 			print "</form>";
 		}
 
@@ -302,7 +487,7 @@
 				for($index = 0; $index < count(FormsController::$ReturnItemForm); $index++)
 					print "<label>" . FormsController::$ReturnItemForm[$index]['label'] . " <input type = '". FormsController::$ReturnItemForm[$index]['type'] . "'name = '".FormsController::$ReturnItemForm[$index]['name'] . "'></label><br>";
 			
-			print "<input type='button' class = 'button redButton' value='Cancel'/> <input class='button blueButton' type='submit' value='Next'/>";
+			print "<a href='?controller=menus&action=mainMenu&subMenu=Order'><input type='button' class = 'button redButton' value='Cancel'/></a> <input class='button blueButton' type='submit' value='Next'/>";
 			print "</form>";
 		}
 		
@@ -325,9 +510,9 @@
 		{
 			$gift_id = $_POST['gift_id'];
 			$stageDBO = DatabaseObjectFactory::build('gift_order');
-			$stageDBO->SetJoin(['[><]order' => 'order_id', '[><]customer' => 'customer_id']);
-			$arr = ['gift_id','order_id','rec_last_name', 'rec_first_name'];
-			$gifts = $stageDBO->getRecords($arr);
+			$stageDBO->SetJoin(['[><]address' => 'address_id','[><]order' => 'order_id', '[><]customer' => 'customer_id']);
+			$arr = ['gift_id','order_id','rec_last_name', 'rec_first_name','last_name','first_name','street_number','street_name','street_type','major_municipality','governing_district','iso_country_code','zip'];
+			$gifts = $stageDBO->getRecords($arr, ['gift_id'=>$gift_id]);
 			
 			include('views/pages/editGift.php');
 		}
@@ -336,10 +521,16 @@
 		{
 			$custom_order_id = $_POST['custom_id'];
 			$stageDBO = DatabaseObjectFactory::build('custom_order');
-			$arr = ['custom_order_id','order_id','comment', 'rec_first_name'];
-			$gifts = $stageDBO->getRecords($arr);
+			$stageDBO->SetJoin(['[><]order' => 'order_id', '[><]customer' => 'customer_id']);
+			$arr = ['custom_order_id','order_id','comment', 'first_name','last_name'];
+			$custom = $stageDBO->getRecords($arr);
 			
-			include('views/pages/editGift.php');
+			include('views/pages/editCustom.php');
+		}
+
+		public static function updateGift()
+		{
+			
 		}
 }
 

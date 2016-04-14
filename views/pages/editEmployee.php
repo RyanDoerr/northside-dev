@@ -7,7 +7,7 @@
 <?php foreach($admins AS $admin) { ?>
 <tr>
 	<td>
-		<form action = '' method='post'>
+		<form action = '?controller=employees&action=getEmployee' method='post'>
 			<input type="hidden"  name = "employee_id" value= "<?php echo $admin['employee_id'];?>">
 			<input type="submit" value="Edit" class="button">
 		</form>
@@ -32,7 +32,7 @@
 <?php foreach($employees AS $employee) { ?>
 <tr>
 	<td>
-		<form action = '' method='post'>
+		<form action = '?controller=employees&action=getEmployee' method='post'>
 			<input type="hidden"  name = "employee_id" value= "<?php echo $employee['employee_id'];?>">
 			<input type="submit" value="Edit" class="button">
 		</form>

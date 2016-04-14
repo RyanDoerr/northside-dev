@@ -17,7 +17,6 @@
 
 						             );
 
-		public $displayNames = 
 		public function session($set)
 		{
 			switch($set)
@@ -33,9 +32,9 @@
 		}
 
 	//This function is not a page, and handles requests by specific page functions
-		public function makeReport()
+		public static function makeReport()
 		{
-
+			print 'hi';
 
 		}
 

@@ -9,7 +9,7 @@
 	
 	
 	
-	<?php SuppliersController::drawAddressForm(); ?>
+	<?php SuppliersController::editAddressForm($supplierID); ?>
 
 	<a href="?controller=suppliers&action=managesuppliers"><input type = "button" value="Cancel" class = "button redButton"></a>
 

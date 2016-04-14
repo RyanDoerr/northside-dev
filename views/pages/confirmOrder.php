@@ -25,7 +25,7 @@
 	
 	else
 	{
-		echo '<tr><td>'.$items.'</td><td>15.00</td><td>'.$quantities.'<br>';
+		echo '<tr><td>'.self::$CustomItem['name'].'</td><td>'.self::$OrderDetailsColumns['item_price'].'</td><td>'.self::$OrderDetailsColumns['qoh'].'<br>';
 		echo '</table><br>Subtotal: $' . number_format(self::$orderColumns['subtotal'],2);
 		echo '<br>Tax Amount: $' . number_format(self::$orderColumns['tax_amount'],2);
 		echo '<br>Total: $' . number_format(self::$orderColumns['total'],2);
@@ -35,5 +35,6 @@
 
 ?>
 <form action="?controller=order&action=confirm" method="post">
-<input  class = 'button redButton' type='button' value='Cancel'/><input class='button blueButton' type='submit' value='Confirm'/>
+<a href="?controller=order&action=enterorder"><input  class = 'button redButton' type='button' value='Cancel'/></a>
+<input class='button blueButton' type='submit' value='Confirm'/>
 </form>

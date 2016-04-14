@@ -16,7 +16,7 @@
 	</table>
 	<h3>Item Information</h3>
 	<label>Price <input type="text" name="currentPrice" value='<?php echo number_format($craft[0]['current_price'],2); ?>'></label><br>
-	<label>Minimum Price <input type="text" name="minPrice" value='<?php echo number_format($craft[0]['current_price'],2); ?>'></label><br>
+	<label>Minimum Price <input type="text" name="minPrice" value='<?php echo number_format($craft[0]['min_price'],2); ?>'></label><br>
 
 	<a href="?controller=inventory&action=manageinventory"><input type = "button" value="Cancel" class = "button redButton"></a>
 

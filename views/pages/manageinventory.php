@@ -23,7 +23,7 @@
 						</form>
 					</td>
 					<td><?php echo $material['material_id']?></td>
-					<td><?php echo number_format($material['unit_price'],2)?></td>
+					<td><?php echo $material['unit_price']?></td>
 				</tr>
 				
 			<?php } ?>
@@ -49,7 +49,7 @@
 					</form>
 					</td>
 					<td><?php echo $craft['craft_id']?></td>
-					<td><?php echo number_format($material['unit_price'],2)?></td>
+					<td><?php echo $material['unit_price']?></td>
 				</tr>
 	
 			<?php } ?>
@@ -63,7 +63,29 @@
   
   
   <div id="tabs-3">
+	<h3>Returns Inventory</h3>
+		
+
+		<table>
+			<th>Edit</th><th>Return ID</th><th>Item ID</th><th>Current Price</th>
+			<?php foreach($returns AS $return)
+			{  ?>
+				<tr>
+					<td>
+					<form action="?controller=inventory&action=editReturn" method="post"><input type="submit" value="Edit" class="button">
+						<input type="hidden" name= "return_id" value='<?php echo $return['return_id'] ?>'>
+					</form>
+					</td>
+					<td><?php echo $return['return_id']?></td>
+					<td><?php echo $return['item_id']?></td>
+					<td><?php echo $return['current_price']?></td>
+				</tr>
 	
+			<?php } ?>
+		</table>
+
+
+
 				
 
   </div>

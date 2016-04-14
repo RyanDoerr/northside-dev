@@ -25,7 +25,7 @@
 				</label>
 				<input name= "add"type='button'  class='button' value='Add Item +'/>
 				<br><br>
-				<input class = 'button redButton' type='button' value='Cancel'/> <input class = 'button blueButton' type='submit' value='Next'/>
+				<a href="?controller=menus&action=mainMenu&subMenu=Order"><input type='button' class = "button redButton" value='Cancel'/></a>  <input class = 'button blueButton' type='submit' value='Next'/>
 				</form>
 				
 
@@ -46,10 +46,10 @@
 				</label>
 				<input name="add" type='button' class="button" id='addNew' value='Add New +'/>
 				<br><br>
-				<label>Name of Custom Craft<input type="text" name="itemName"></label><label>Quantity</label><input type='text' name='itemQuantity' value=1><br>
-				<label>Custom Craft Comments <input type='textfield' name='comment'></label>
+				<label>Name of Custom Craft <input type="text" name="itemName"></label><label> Quantity </label><input type='text' name='itemQuantity' value=1><br>
+				<label>Custom Craft Comments </label><br><textarea name='comment' rows="5" columns = '10'></textarea>
 				<br>
-				<label>Estimated Minimum Price needed for Profit: <input type='text'></label><br>
+				<label>Estimated Minimum Price needed for Profit: <input type='text' name='estimatedPrice'></label><br>
 				<h3>Customer Info</h3>
 				
 				<label>First Name <input type='text' name='firstName'></label><br>
@@ -66,7 +66,7 @@
 				<label>Zip <input type='text' name='zip'></label><br>
 				<label>P.O. Box <input type='text' name='pobox'></label><br>
 				
-				<input type='button' class = "button redButton" value='Cancel'/> <input class="button blueButton" type='submit' value='Next'/>
+				<a href="?controller=menus&action=mainMenu&subMenu=Order"><input type='button' class = "button redButton" value='Cancel'/></a> <input class="button blueButton" type='submit' value='Next'/>
 				</form>
 				
   </div>
@@ -96,7 +96,7 @@
 				<label>Last Name <input type='text' name='lastName'></label><br>
 				<label>Phone Number<input type='text' name='phone'></label><br>
 				<label>Email<input type='text' name='email'></label><br>
-				<label>Address Line 1 <input type='text' name='addressLine1'></label><br>
+				<label>Address Line 1 <input type='text' name='addressLine1' required></label><br>
 				<label>Address Line 2 <input type='text' name='addressLine2'></label><br>
 				<label>Address Type </label>
 				<select name='addressType'>
@@ -128,7 +128,7 @@
 				
 				
 				
-				<input type='button' class="button redButton" value='Cancel'/> <input class="button blueButton" type='submit' value='Next'/>
+				<a href="?controller=menus&action=mainMenu&subMenu=Order"><input type='button' class = "button redButton" value='Cancel'/></a>  <input class="button blueButton" type='submit' value='Next'/>
 				
 				
 				

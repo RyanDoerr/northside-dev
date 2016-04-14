@@ -9,7 +9,7 @@
 			<option value="<?php echo $supplier['supplier_id'];?>"><?php echo $supplier['company_name']; ?></option>
 		<?php } ?>
 	</select><br><br>
-	<input type = "button" value="Cancel" class = "button redButton"><input type = "submit" value="Next" class = "button blueButton">
+	<a href="?controller=menus&action=mainMenu&subMenu=Order"><input type = "button" value="Cancel" class = "button redButton"></a><input type = "submit" value="Next" class = "button blueButton">
 </form>
 
 				

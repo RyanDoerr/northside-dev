@@ -20,6 +20,7 @@ class DatabaseObject {
 	}
 	public function getRecords($columns, $where = "") {
 		$this->columns = $columns;
+
 		if($this->join){
 
 			$this->data_set = $this->database_db->select($this->table, $this->joinQuery, $columns, $where);
@@ -30,7 +31,6 @@ class DatabaseObject {
 		else{
 			$this->data_set = $this->database_db->select($this->table, $this->columns);
 		}
-		
 		return $this->data_set;
 	}
 	public function setRecords($table, $data) {
@@ -115,6 +115,7 @@ class CustomerDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('customer_id','last_name','first_name','phone_number','email','address_id');
+		$this->set_table('customer');
 	}
 }
 //5
@@ -150,7 +151,7 @@ class OrderMaterialsDatabaseObject extends DatabaseObject {
 class SupplierDiscountDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
-		$this->field_set = array('material_id','supplier_id', 'min_qty', 'subtotal', 'discount_percent');
+		$this->field_set = array('material_id','supplier_id', 'min_qty', 'discount_percent');
 		$this->set_table('supplier_discount');
 	}
 }
@@ -175,6 +176,7 @@ class ReturnDetailsDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('return_id','item_id','qty');
+		$this->set_table('return_details');
 	}
 }
 //13
@@ -182,6 +184,7 @@ class ReturnsInventoryDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('return_id','item_id','return_date');
+		$this->set_table('returns_inventory');
 	}
 }
 //14
@@ -240,6 +243,7 @@ class MaterialDatabaseObject extends ItemDatabaseObject {
 		$this->set_table('material');
 	}
 }
+
 class DatabaseObjectFactory {
 	public static function build($tableName) {
 		$tableName = ucwords(str_replace("_", " ", $tableName));

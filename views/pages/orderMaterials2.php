@@ -16,9 +16,9 @@
 		<input name="otherAdd" type='button' class="button" id='addNew' value='Add New +'/>
 	<br><br>
 	<input type = "hidden" name = "supplier_id" value="<?php echo $supplier_id; ?>">
-	<input type = "button" value="Cancel" class = "button redButton"><input type = "submit" value="Submit" class = "button blueButton">
+	<a href="?controller=menus&action=mainMenu&subMenu=Inventory"><input type = "button" value="Cancel" class = "button redButton"></a><input type = "submit" value="Submit" class = "button blueButton">
 </form>
-<script type='text/javascript' src='css/addItem.js'></script>
+
 
 				
 		

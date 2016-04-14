@@ -4,7 +4,7 @@ require_once 'lib/medoo.php';
 /*
 $database = new medoo([
 	'database_type' => 'mysql',
-	'database_name' => '4750',
+	'database_name' => '4950',
 	'server'		=> 'localhost',
 	'username'		=> 'root',
 	'password'		=> '',
@@ -35,7 +35,7 @@ $database = new medoo([
 			if (!isset(self::$instance)) {
 			databaseConnection::$instance = new medoo([
 				'database_type' => 'mysql',
-				'database_name' => '4850',
+				'database_name' => '4950',
 				'server'		=> 'localhost',
 				'username'		=> 'root',
 				'password'		=> '',

@@ -49,13 +49,13 @@
 	//actions are "pages", but also functions that might be needed within the page class
 	//for example startSession is not a page, but is included on pages to keep a user's session alive
 	$controllers = array('pages' 	=> ['login', 'errors', 'menu','success', 'startSession', 'verify', 'stage'], 
-						 'reports' 	=> [],
+						 'reports' 	=> ['makeReport'],
 						 'forms' 	=> [],
 						 'menus' 	=> ['mainMenu', 'subMenu'],
-						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm','manageorders','editGift'],
-						 'employees' => ['addemployee','editemployee'],
-						'inventory' => ['ordermaterials', 'getMaterials','submitOrder','InsertOrder','manageinventory','addCraft','addMaterial','editMaterial','editCraft'],
-						'suppliers' => ['managesuppliers','addSupplier','editSupplier','managediscounts','addDiscount','editDiscount']
+						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm','manageorders','editGift', 'editCustom','viewOrder'],
+						 'employees' => ['addemployee','editemployee','getEmployee'],
+						'inventory' => ['ordermaterials', 'getMaterials','submitOrder','InsertOrder','manageinventory','addCraft','addMaterial','editMaterial','editCraft','editReturn','displayinventorysheet','recordinventory'],
+						'suppliers' => ['managesuppliers','addSupplier','editSupplier','managediscounts','addDiscount','editDiscount','getMaterials']
 						);
 
 
