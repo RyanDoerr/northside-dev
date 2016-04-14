@@ -119,7 +119,7 @@
 			$materials = $stageDBO->getRecords($arr);
 			*/
 
-			$db = $stageDBO->getInstance();
+			$db = databaseConnection::getInstance();
 			$materials = $db->query("SELECT name, material.material_id, item.item_id FROM Material, Item WHERE Material.item_id = Item.item_id")->fetchAll();
 			
 			require_once('views/pages/enterorder.php');
@@ -228,7 +228,6 @@
 			else {
 				echo 'Submit Form Error';
 			}
-			
 			include('views/pages/confirmOrder.php');
 			}
 			
@@ -318,7 +317,7 @@
 			
 			$stageDBO = DatabaseObjectFactory::build('order');
 			$arr = ['gift_id', 'order_id', 'rec_last_name','rec_first_name','order_date','last_name','first_name','total_price'];
-			$stageDBO->UnicornMagic('gift_order', 'customer');
+			$stageDBO->SetJoin('gift_order', 'customer');
 			$gifts = $stageDBO->getRecords($arr);
 			
 			$stageDBO = DatabaseObjectFactory::build('custom_order');
