@@ -109,13 +109,18 @@
 		//This function is not a page, and handles requests by specific page functions
 		public function enterorder()
 		{
-			$stageDBO = DatabaseObjectFactory::build('item');
+			$stageDBO = DatabaseObjectFactory::build('Item');
 			$arr = ['item_id','name'];
 			$items = $stageDBO->getRecords($arr); 
 
-			$stageDBO = DatabaseObjectFactory::build('material');
-			$arr = ['material_id'];
+			/*$stageDBO = DatabaseObjectFactory::build('material');
+			$stageDBO->setJoin(["[<]item" => "item_id", "[><]material" => "item_id"]);
+			$arr = ['material_id','name'];
 			$materials = $stageDBO->getRecords($arr);
+			*/
+
+			$db = databaseConnection::getInstance();
+			$materials = $db->query("SELECT name, material.material_id, item.item_id FROM Material, Item WHERE Material.item_id = Item.item_id")->fetchAll();
 			
 			require_once('views/pages/enterorder.php');
 		}
@@ -135,12 +140,15 @@
 			{
 				self::$OrderDetailsColumns['item_id'] = $_POST['item'];
 				self::$OrderDetailsColumns['qty'] = $_POST['quantity'];
-				
+				//print_r(self::$OrderDetailsColumns['item_id'] );
+				//print_r(self::$OrderDetailsColumns['qty'] );
+
 				$index = 0;
 				foreach(self::$OrderDetailsColumns['item_id'] as $item)
 				{
 					self::$OrderDetailsColumns['item_price'][$index] = $model->getPrice($item);
 					$index++;
+
 				}
 				
 				self::$orderColumns['subtotal'] = self::calculateSubtotal(self::$OrderDetailsColumns['item_price'],self::$OrderDetailsColumns['qty']);  //calculates the subtotal based on items and their quantities
@@ -220,7 +228,6 @@
 			else {
 				echo 'Submit Form Error';
 			}
-			
 			include('views/pages/confirmOrder.php');
 			}
 			
@@ -310,7 +317,7 @@
 			
 			$stageDBO = DatabaseObjectFactory::build('order');
 			$arr = ['gift_id', 'order_id', 'rec_last_name','rec_first_name','order_date','last_name','first_name','total_price'];
-			$stageDBO->UnicornMagic('gift_order', 'customer');
+			$stageDBO->SetJoin('gift_order', 'customer');
 			$gifts = $stageDBO->getRecords($arr);
 			
 			$stageDBO = DatabaseObjectFactory::build('custom_order');

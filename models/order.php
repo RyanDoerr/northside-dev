@@ -1,38 +1,46 @@
 <!--This whole model might just get deleted, but keeping it for now so I can reference some of the queries I used-->
 
 <?php
+require_once('models/database.php'); 
 class Order
 {
 	//This function inserts sale orders into the database, as well as all the order details
 	
+
 	public function getItems()
 	{
-		include('../../connection.php');
-		$database = databaseConnection::getInstance(); 
-		$dataset = array();
-		$dataset = $database->select("item", ["name", "item_id", "current_price"], [
-			"LIMIT" => 20,
-			"ORDER" => "name ASC"
-		]);
+		$stageDBO = DatabaseObjectFactory::build('item');
+		$arr = ['item_id','name','current_price'];
+		$items = $stageDBO->getRecords($arr);
 		
-		return $dataset;
+		//return $items;
 	}
 	
 	public function getPrice($item_id)
 	{
-		$database = dataBaseConnection::getInstance(); 
-		$dataset = $database->query('SELECT current_price FROM item WHERE item_id='.$item_id)->fetchAll(); //This query grabs the current price of one item
-		return $dataset[0]['current_price'];  //This returns the current price of the item as a single value instead of a result set.
+		$stageDBO = DatabaseObjectFactory::build('item');
+		$arr = ['current_price'];
+		$itemPrice = $stageDBO->getRecords($arr,['item_id' => $item_id]);
+		return $itemPrice[0]['current_price'];
+		
 	}
 	
 	public function getMaterials()
 	{
-		include('../../connection.php');
+
+		$stageDBO = DatabaseObjectFactory::build('material');
+		$stageDBO->setJoin("'[>]item' => 'item_id'");
+		$arr = ['material_id','name'];
+		$materials = $stageDBO->getRecords($arr);
+		//print_r($materials);
+
+
+		/*include('../../connection.php');
 		$database = databaseConnection::getInstance(); 
 		$dataset = array();
 		$dataset = $database->query("SELECT name, material.material_id, item.item_id FROM Material, Item WHERE Material.item_id = Item.item_id
-									ORDER BY name ASC")->fetchAll();
-		return $dataset;
+									ORDER BY name ASC")->fetchAll();*/
+		return $materials;
 	}
 	
 	public function insertSale($items, $quantities) 

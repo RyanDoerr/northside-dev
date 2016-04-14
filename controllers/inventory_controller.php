@@ -20,12 +20,12 @@
 			$supplier_id = $_POST['supplier'];
 			
 			$stageDBO = DatabaseObjectFactory::build('material');
-			$arr = ['material_id','supplier_id'];
-			$materials = $stageDBO->getRecords($arr,'<?php echo $supplier_id; ?> = supplier_id');
+			$arr = ['material_id'];
+			$materials = $stageDBO->getRecords($arr, ['supplier_id' => $supplier_id]);
 			
-			$stageDBO = DatabaseObjectFactory::build('supplier_discount');
+			/*$stageDBO = DatabaseObjectFactory::build('supplier_discount');
 			$arr = ['material_id','supplier_id'];
-			$discounts = $stageDBO->getRecords($arr,'<?php echo $supplier_id; ?> = supplier_id');
+			$discounts = $stageDBO->getRecords($arr,'<?php echo $supplier_id; ?> = supplier_id');*/
 			require_once('views/pages/orderMaterials2.php');
 		}
 			
@@ -53,7 +53,7 @@
 		public static function manageinventory()
 		{
 			//This function gets craft, material, and return information for the manageinventory page.
-			$stageDBO = DatabaseObjectFactory::build('material');
+			$stageDBO = DatabaseObjectFactory::build('Material');
 			$arr = ['material_id','unit_price'];
 			$materials = $stageDBO->getRecords($arr);
 			

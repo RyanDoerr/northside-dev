@@ -1,4 +1,5 @@
 <!--The enter Order screen was consolidated into one screen with 3 tabs for ease of use.-->
+ 
   <div id="tabs">
   <ul>
     <li><a href="#tabs-1">Sale</a></li>
@@ -32,13 +33,12 @@
   <div id="tabs-2">
 	<h3>Custom Order</h3>
 				
-				
 				<form action = '?controller=order&action=submitForm' method='post'>
 				<input type='hidden' name='orderType' value='custom'>
 				<label class='selectItems'>Select Materials to be used:
 				<select name = 'material[]'>
 					<?php foreach($materials as $material) { ?>
-						<option value="<?php echo $material['material_id'];?>"><?php echo $material['material_id']; ?></option>
+						<option value="<?php echo $material['material_id'];?>"><?php echo $material['name']; ?></option>
 					<?php } ?>
 					
 				</select>

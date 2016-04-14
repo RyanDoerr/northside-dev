@@ -8,11 +8,16 @@ Includes: The login page for Northside Craft Exchange
 	<header>
 		<h2> Northside Login </h2>
 	</header>
-	<form id="userform" name="userform" method="post" action="?controller=pages&action=menu">
+	<form id="userform" name="userform" method="post" action="?controller=pages&action=verify">
 		<input placeholder="Username" type="text" name="employee_id" id="employee_id"></input>
 		<input placeholder="Password" type="password" name="password_hash" id="password_hash"></input>
+		<?php if 
+				 (!empty($error) && 
+						 $error == "error") 
+				{ echo "The username or password is incorrect.";} ?>
+
 		<section class="links">
-			<button class="button"><span>LOGIN</span></button>
+			<button class="button" type="submit"><span>LOGIN</span></button>
 			<br><br>
 		</section>
 	</form>
