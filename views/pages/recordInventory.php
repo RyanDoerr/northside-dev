@@ -5,6 +5,7 @@
     <li><a href="#tabs-2">Update Inventory</a></li>
   </ul>
   <div id="tabs-1">
+  I AM REDOING THIS SCREEN -- ALEX
     <table>
 <th>Item ID</th><th>Item Name</th><th>Quantity on Hand</th><th>Calculated Quantity On Hand</th>
 
