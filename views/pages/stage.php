@@ -14,3 +14,4 @@
 	$records = $stageDBO->getRecords($arr);
 	$stageDBO->drawTable();
 ?>
+

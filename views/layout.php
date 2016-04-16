@@ -1,5 +1,6 @@
 <?php
-	session_start();
+	session_start();	
+	var_dump($_SESSION);
 ?>
 <!DOCTYPE html>
 	<html>
@@ -18,9 +19,11 @@
 			<header>
 				
 			</header>
+			<!--
 			<nav>
 				<a style="float:left;" href="?controller=menus&action=mainMenu">Main Menu</a>
 			</nav><br>
+			-->
 			<?php require_once('routes.php'); ?>
 
 		</body>

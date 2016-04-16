@@ -117,7 +117,12 @@
 			$stageDBO->SetJoin(["[><]item" => "item_id"]);
 			$arr = ['material_id','name'];
 			$materials = $stageDBO->getRecords($arr);
-		
+
+
+			$db = databaseConnection::getInstance();
+			$materials = $db->query("SELECT name, material.material_id, item.item_id FROM Material, Item WHERE Material.item_id = Item.item_id")->fetchAll();
+			
+
 			require_once('views/pages/enterorder.php');
 		}
 
@@ -223,7 +228,6 @@
 			else {
 				echo 'Submit Form Error';
 			}
-			
 			include('views/pages/confirmOrder.php');
 			}
 			
@@ -494,8 +498,13 @@
 		public function manageorders()
 		{
 			$stageDBO = DatabaseObjectFactory::build('order');
+<<<<<<< HEAD
 			$arr = ['gift_id', 'order.order_id', 'rec_last_name','rec_first_name','order_date','last_name','first_name','total_price'];
 			$stageDBO->SetJoin(['[><]gift_order' => 'order_id', '[><]customer' => 'customer_id']);
+=======
+			$arr = ['gift_id', 'order_id', 'rec_last_name','rec_first_name','order_date','last_name','first_name','total_price'];
+			$stageDBO->SetJoin('gift_order', 'customer');
+>>>>>>> development
 			$gifts = $stageDBO->getRecords($arr);
 			
 			$stageDBO = DatabaseObjectFactory::build('custom_order');
