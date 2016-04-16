@@ -498,13 +498,10 @@
 		public function manageorders()
 		{
 			$stageDBO = DatabaseObjectFactory::build('order');
-<<<<<<< HEAD
+
 			$arr = ['gift_id', 'order.order_id', 'rec_last_name','rec_first_name','order_date','last_name','first_name','total_price'];
 			$stageDBO->SetJoin(['[><]gift_order' => 'order_id', '[><]customer' => 'customer_id']);
-=======
-			$arr = ['gift_id', 'order_id', 'rec_last_name','rec_first_name','order_date','last_name','first_name','total_price'];
-			$stageDBO->SetJoin('gift_order', 'customer');
->>>>>>> development
+
 			$gifts = $stageDBO->getRecords($arr);
 			
 			$stageDBO = DatabaseObjectFactory::build('custom_order');
