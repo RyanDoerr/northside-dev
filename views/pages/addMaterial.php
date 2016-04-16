@@ -1,6 +1,4 @@
-<?php
 
-?>
 <h3>Add Material</h3>
 <form action = "" method = "post">
 	<label>Material Name <input type="text" name="materialName"></label><br>
@@ -20,5 +18,5 @@
 		
 	<input type = "submit" value="Add" class = "button blueButton">
 </form>
-<script type='text/javascript' src='css/addItem.js'></script>			
+		
 		

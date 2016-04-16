@@ -1,5 +1,5 @@
-<h3>Materials Inventory</h3>
-			<form action = "?controller=supplier&action=addSupplier" method="post">
+<h3>Manage Suppliers</h3>
+			<form action = "?controller=suppliers&action=addSupplier" method="post">
 				<input style="width:160px;"class="button blueButton" type="submit" value="Add Supplier">
 			</form>
 
@@ -9,7 +9,7 @@
 					{  ?>
 					<tr>
 						<td>
-						<form action="?controller=supplier&action=editSupplier" method="post"><input type="submit" value="Edit" class="button">
+						<form action="?controller=suppliers&action=editSupplier" method="post"><input type="submit" value="Edit" class="button">
 							<input name = "supplier_id" type="hidden" value='<?php echo $supplier['supplier_id'] ?>'>
 						</form>
 					</td>
