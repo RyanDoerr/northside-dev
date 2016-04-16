@@ -44,7 +44,7 @@
 		//call the action
 		$controller->{ $action }();
 	}
-	$controllers = array('pages' 	=> ['login', 'errors', 'menu','success', 'startSession', 'verify', 'stage']);
+	//$controllers = array('pages' 	=> ['login', 'errors', 'menu','success', 'startSession', 'verify', 'stage']);
 
 	//just a list of the controllers we have and their actions
 	//actions are "pages", but also functions that might be needed within the page class
@@ -52,13 +52,14 @@
 	//
 	//
 	$controllers = array('pages' 	=> ['login', 'errors', 'menu','success', 'startSession', 'verify', 'stage'], 
-						 'reports' 	=> [],
+						 'reports' 	=> ['makeReport'],
 						 'forms' 	=> [],
-						 'menus' 	=> ['makeMenu', 'mainMenu', 'subMenu', 'chooseMenu'],
-						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm','manageorders','editGift'],
-						 'employees' => ['addemployee'],
-						'inventory' => ['ordermaterials', 'getMaterials','submitOrder','InsertOrder','manageinventory','addCraft','addMaterial','editMaterial'],
-						'suppliers' => ['managesuppliers','addSupplier','editSupplier']
+						 'menus' 	=> ['mainMenu', 'subMenu', 'makeMenu', 'makeEmployeeMenu'],
+						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm','manageorders','editGift', 'editCustom','viewOrder'],
+						 'employees' => ['addemployee','editemployee','getEmployee'],
+						'inventory' => ['ordermaterials', 'getMaterials','submitOrder','InsertOrder','manageinventory','addCraft','addMaterial','editMaterial','editCraft','editReturn','displayinventorysheet','recordinventory'],
+						'suppliers' => ['managesuppliers','addSupplier','editSupplier','managediscounts','addDiscount','editDiscount','getMaterials']
+
 						);
 	/*
 	else if ($_SESSION["user"] == 3){

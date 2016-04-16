@@ -61,7 +61,7 @@
     public static function makeEmployeeMenu()
     {
       $employeeMenu    = array('Menu'   => ['Order']);
-      $employeeSubMenu = array('Order'  => ['Enter Order', 'Look Up Order', 'Manage Orders', 'Return Order']);
+      $employeeSubMenu = array('Order'  => ['Enter Order', 'Look Up Order', 'Return Order']);
       print "<nav class='navbar'>";
         foreach ( $employeeMenu['Menu'] as $menuItem)
         {

@@ -14,5 +14,6 @@
 		echo '</table><br>';	
 ?>
 <form action="?controller=inventory&action=InsertOrder" method="post">
-<input  class = 'button redButton' type='button' value='Cancel'/><input class='button blueButton' type='submit' value='Confirm'/>
+	<a href="?controller=inventory&action=ordermaterials"><input  class = 'button redButton' type='button' value='Cancel'/></a>
+	<input class='button blueButton' type='submit' value='Confirm'/>
 </form>

@@ -17,6 +17,7 @@ class databaseConnection {
 
 //Attempt Connection		
 			if (!isset(self::$instance)) {
+
 				databaseConnection::$instance = new medoo([
 					'database_type' => 'mysql',
 					'database_name' => 'northside_production',
@@ -25,6 +26,7 @@ class databaseConnection {
 					'password'		=> '',
 					'charset'		=> 'utf8'
 				]);
+
 			}
 
 			return self::$instance;
