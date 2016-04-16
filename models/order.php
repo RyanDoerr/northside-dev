@@ -43,30 +43,34 @@ class Order
 		return $materials;
 	}
 	
-	public function insertSale($items, $quantities) 
+	public function insertSale($items = '', $quantities = '') 
 	{
 		$database = dataBaseConnection::getInstance(); //connect to database
 		$i = 0;
 		
-		$database->insert("order", [
-			"order_id" => 5002,
-			"employee_id" => 2000,
-			"order_date" => date("F j, Y, g:i a"),
-			"subtotal" => 50.00,
-			"tax_amount" => 5.00,
-			"total_price" => 55.00,
-			"order_type" => 'sale'
-		]);
+		$database->insert("order", $_SESSION['orderInsert']);
+
+		//$_SESSION
+			//"employee_id" => $_SESSION["employee_id"],
+			//"order_date" => $_SESSION["order_date"],
+			//"subtotal" => $_SESSION["subtotal"],
+			//"tax_amount" => 5.00,
+			//"total_price" => 55.00,
+			//"order_type" => 'sale'
+		
 		
 		foreach($items as $item)
 		{
 			echo $item;
 			echo 'foreach';
+		
+		
 			$database->insert("order_details", [
 				"order_id" => 5002,
 				"item_id" => 5000+$i,
 				"item_price" => 5.00,
 				"qty" => $quantities[$i]
+
 		]);
 		$i++;
 		}

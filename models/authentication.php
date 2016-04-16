@@ -7,7 +7,7 @@ class Authentication
 
 		//$dbpassword_hash = false;
 		$table           = 'user';
-		$columns         = ['password_hash', 'accessLevel'];
+		$columns         = ['password_hash', 'accessLevel', 'employee_id'];
 		$database        = databaseConnection::getInstance();
 		$dataset         = $database->select($table, $columns, [
 																"employee_id" => $employee_id

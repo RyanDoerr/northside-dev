@@ -15,6 +15,7 @@ class DatabaseObject {
 	protected $columns;
 	protected $where;
 	protected $lastInsertId;
+	protected $insert;
 	public function __construct(){
 		$this->database_db = databaseConnection::getInstance();
 	}
@@ -36,10 +37,10 @@ class DatabaseObject {
 	public function setRecords($table, $data) {
 		$this->lastInstertId = $database_db->insert($table, $data);
 	}
-	public function set_table($string){
+	public function setTable($string){
 		$this->table = $string;
 	}
-	public function get_table($string){
+	public function getTable($string){
 		return $this->table;
 	}
 	public function drawTable(){
@@ -65,10 +66,14 @@ class DatabaseObject {
 		echo "</table>";
 	}
 
-public function SetJoin($join_array){
-			$this->join = true;
-			$this->joinQuery = $join_array;
+	public function setJoin($join_array){
+		$this->join = true;
+		$this->joinQuery = $join_array;
 	}
+	public function sendInsert($arrayToInsert){
+		$this->insert = $arrayToInsert;
+	}
+
 
 
 }
@@ -78,7 +83,7 @@ class OrderDatabaseObject extends DatabaseObject {
 		parent::__construct();
 		$this->field_set = array( 'order_id', 'customer_id', 'employee_id', 'order_date',
 					   'subtotal', 'tax_amount', 'total_price', 'order_type' );
-		$this->set_table('order');
+		$this->setTable('order');
 	}
 }
 //2
@@ -87,7 +92,7 @@ class OrderDetailsDatabaseObject extends OrderDatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->my_field_set = array('order_id','item_id', 'item_price', 'qty');
-		$this->set_table('order_details');
+		$this->setTable('order_details');
 	}
 }
 //3
@@ -95,7 +100,7 @@ class GiftOrderDatabaseObject extends OrderDatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->my_field_set = array('gift_id','order_id','rec_last_name','rec_first_name','address_id');
-		$this->set_table('gift_order');
+		$this->setTable('gift_order');
 	}
 }
 //base object is no my_field_set
@@ -107,7 +112,7 @@ class AddressDatabaseObject extends DatabaseObject {
 								 'street_type','street_type','street_direction','address_type',
 								 'address_type_identifier','minor_municipality','major_municipality',
 								 'governing_district','zip', 'iso_country_code');
-		$this->set_table('address');
+		$this->setTable('address');
 	}
 }
 //4
@@ -115,7 +120,7 @@ class CustomerDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('customer_id','last_name','first_name','phone_number','email','address_id');
-		$this->set_table('customer');
+		$this->setTable('customer');
 	}
 }
 //5
@@ -123,7 +128,7 @@ class EmployeeDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('employee_id','last_name','first_name','hire_date','address_id','phone_number');
-		$this->set_table('employee');
+		$this->setTable('employee');
 	}
 }
 //6
@@ -152,7 +157,7 @@ class SupplierDiscountDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('material_id','supplier_id', 'min_qty', 'discount_percent');
-		$this->set_table('supplier_discount');
+		$this->setTable('supplier_discount');
 	}
 }
 //10
@@ -160,7 +165,7 @@ class SupplierDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('supplier_id','company_name','contact_name','contact_job_title','company_phone','contact_phone','address_id','email');
-		$this->set_table('supplier');
+		$this->setTable('supplier');
 	}
 }
 //11
@@ -168,7 +173,7 @@ class ItemDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('item_id', 'qoh','calculated_qoh','name','original_price','current_price','min_price');
-		$this->set_table('item');
+		$this->setTable('item');
 	}
 }
 //12
@@ -176,7 +181,7 @@ class ReturnDetailsDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('return_id','item_id','qty');
-		$this->set_table('return_details');
+		$this->setTable('return_details');
 	}
 }
 //13
@@ -184,7 +189,7 @@ class ReturnsInventoryDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('return_id','item_id','return_date');
-		$this->set_table('returns_inventory');
+		$this->setTable('returns_inventory');
 	}
 }
 //14
@@ -200,7 +205,7 @@ class CraftMaterialsDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('material_id','craft_id');
-		$this->set_table('craft_materials');
+		$this->setTable('craft_materials');
 	}
 }
 //16
@@ -208,7 +213,7 @@ class UserDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('employee_id','password_hash', 'accessLevel');
-		$this->set_table('user');
+		$this->setTable('user');
 	}
 }
 //17
@@ -216,7 +221,7 @@ class ShipCostDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('ship_cost_id','ship_distance', 'ship_id', 'shipping_cost');
-		$this->set_table('ship_cost');
+		$this->setTable('ship_cost');
 	}
 }
 //18
@@ -231,7 +236,7 @@ class CustomOrderDatabaseObject extends OrderDatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('custom_order_id','order_id', 'comment', 'price_estimation');
-		$this->set_table('custom_order');
+		$this->setTable('custom_order');
 
 	}
 }
@@ -240,7 +245,7 @@ class MaterialDatabaseObject extends ItemDatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('material_id','supplier_id', 'item_id', 'item_price','unit_price');
-		$this->set_table('material');
+		$this->setTable('material');
 	}
 }
 

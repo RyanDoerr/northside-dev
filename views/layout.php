@@ -1,6 +1,7 @@
 <?php
 	session_start();	
-	//var_dump($_SESSION);
+	$_SESSION['date'] = date('Y-m-d');
+	print_r($_SESSION);
 ?>
 <!DOCTYPE html>
 	<html>

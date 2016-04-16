@@ -140,7 +140,7 @@
 			if(self::$orderType == 'sale')
 			{
 				self::$OrderDetailsColumns['item_id'] = $_POST['item'];
-				self::$OrderDetailsColumns['qty'] = $_POST['quantity'];
+				self::$OrderDetailsColumns['qty']     = $_POST['quantity'];
 				//print_r(self::$OrderDetailsColumns['item_id'] );
 				//print_r(self::$OrderDetailsColumns['qty'] );
 
@@ -152,11 +152,30 @@
 
 				}
 				
-				self::$orderColumns['subtotal'] = self::calculateSubtotal(self::$OrderDetailsColumns['item_price'],self::$OrderDetailsColumns['qty']);  //calculates the subtotal based on items and their quantities
+				self::$orderColumns['subtotal']   = self::calculateSubtotal(self::$OrderDetailsColumns['item_price'],self::$OrderDetailsColumns['qty']);  //calculates the subtotal based on items and their quantities
 				self::$orderColumns['tax_amount'] = self::$orderColumns['subtotal'] * self::$TAX_RATE;
-				self::$orderColumns['total'] = self::$orderColumns['subtotal'] + self::$orderColumns['tax_amount'];
-				
-				//Order::insertSale($items, $quantities);
+				self::$orderColumns['total']      = self::$orderColumns['subtotal'] + self::$orderColumns['tax_amount'];
+
+				$_SESSION['orderInsert'] = array(
+													'employee_id' => $_SESSION['employee_id'],
+													'order_date'  => $_SESSION['date'],
+													'subtotal'    => self::$orderColumns['subtotal'],
+													'tax_amount'  => self::$orderColumns['tax_amount'],
+													'total_price' => self::$orderColumns['total'],
+													'order_type'  => 'sale'
+					);
+				foreach($items as $item)
+				{
+					$_SESSION['order_detailsInsert']
+					"order_id" => 5002,
+					"item_id" => 5000+$i,
+					"item_price" => 5.00,
+					"qty" => $quantities[$i]
+
+		]);
+		$i++;
+		}
+				Order::insertSale();
 			}
 			
 			else if(self::$orderType == 'gift') //Grab all the fields from the gift order form, then call the Order model.
