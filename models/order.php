@@ -13,7 +13,7 @@ class Order
 		$arr = ['item_id','name','current_price'];
 		$items = $stageDBO->getRecords($arr);
 		
-		//return $items;
+		return $items;
 	}
 	
 	public function getPrice($item_id)
@@ -43,79 +43,27 @@ class Order
 		return $materials;
 	}
 	
-	public function insertSale($items = '', $quantities = '') 
+	public function insertSale() 
 	{
-		$database = dataBaseConnection::getInstance(); //connect to database
-		$i = 0;
-		
-		$database->insert("order", $_SESSION['orderInsert']);
+		//create new insert object
+		$insertDBO = InsertObjectFactory::build('sale');
+		$insertDBO->setOrderInsert($_SESSION['order']);
+		$insertDBO->setOrderDetailsInsert($_SESSION['order_details']);
+		$insertDBO->commitInsert();
 
-		//$_SESSION
-			//"employee_id" => $_SESSION["employee_id"],
-			//"order_date" => $_SESSION["order_date"],
-			//"subtotal" => $_SESSION["subtotal"],
-			//"tax_amount" => 5.00,
-			//"total_price" => 55.00,
-			//"order_type" => 'sale'
-		
-		
-		foreach($items as $item)
-		{
-			echo $item;
-			echo 'foreach';
-		
-		
-			$database->insert("order_details", [
-				"order_id" => 5002,
-				"item_id" => 5000+$i,
-				"item_price" => 5.00,
-				"qty" => $quantities[$i]
-
-		]);
-		$i++;
-		}
-		
 	}
 	
-	public function insertGiftOrder($items, $quantities, $firstName, $lastName, $phone, $email, $addressLine1, $addressType, $city, $state, $zip)
+	public function insertGiftOrder()
 	{
-		$database = dataBaseConnection::getInstance(); //connect to database
-		$i = 0;
-		$database->insert("address", [
-			"address_id" =>  NULL
-		]);
+		$insertDBO = InsertObjectFactory::build('gift');
+		$insertDBO->setOrderInsert($_SESSION['order']);
+		$insertDBO->setOrderDetailsInsert($_SESSION['order_details']);
+		$insertDBO->setAddressInsert($_SESSION['address']);
+		$insertDBO->setGiftOrderInsert($_SESSION['gift_order']);
+		$insertDBO->setGiftShippingInsert($_SESSION['gift_shipping']);
+		$insertDBO->setShipCostInsert($_SESSION['ship_cost']);
 		
-		//INSERT INTO CUSTOMER TABLE FIRST
-		$database->insert("customer", [
-			"customer_id" => 25,
-			"last_name" => $lastName,
-			"first_name" => $firstName,
-			"phone_number" => $phone,
-			"email" => $email
-		]);
 
-		$database->insert("order", [
-			"order_id" => 5002,
-			"employee_id" => 2000,
-			"order_date" => date("F j, Y, g:i a"),
-			"subtotal" => 50.00,
-			"tax_amount" => 5.00,
-			"total_price" => 55.00,
-			"order_type" => 'gift'
-		]);
-		
-		foreach($items as $item)
-		{
-			echo $item;
-			echo 'foreach';
-			$database->insert("order_details", [
-				"order_id" => 5002,
-				"item_id" => 5000+$i,
-				"item_price" => 5.00,
-				"qty" => $quantities[$i]
-		]);
-		$i++;
-		}
 		
 	
 	}

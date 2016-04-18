@@ -20,7 +20,7 @@
 		echo '<br>Tax Amount: $' . number_format(self::$orderColumns['tax_amount'],2);
 		echo '<br>Total: $' . number_format(self::$orderColumns['total'],2);
 		
-		self::confirm();
+		//self::confirm($);
 	}
 	
 	else

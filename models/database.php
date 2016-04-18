@@ -15,7 +15,8 @@ class DatabaseObject {
 	protected $columns;
 	protected $where;
 	protected $lastInsertId;
-	protected $insert;
+	//array to be inserted, each class will define their own, 
+	protected $insertArray = [];
 	public function __construct(){
 		$this->database_db = databaseConnection::getInstance();
 	}
@@ -70,9 +71,11 @@ class DatabaseObject {
 		$this->join = true;
 		$this->joinQuery = $join_array;
 	}
+	/*
 	public function sendInsert($arrayToInsert){
 		$this->insert = $arrayToInsert;
 	}
+	*/
 
 
 
@@ -86,7 +89,7 @@ class OrderDatabaseObject extends DatabaseObject {
 		$this->setTable('order');
 	}
 }
-//2
+//2 //the insert will ultimately be for a sale object
 class OrderDetailsDatabaseObject extends OrderDatabaseObject {
 	
 	function __construct(){
@@ -262,4 +265,104 @@ class DatabaseObjectFactory {
 		}
 	}
 }
+/*=============================================================================================================================
+===============================================================================================================================
+==============================================================================================================================*/
+class SaleInsertObject extends OrderDetailsDatabaseObject {
+	//setting up the tables we are gonna mess with
+	protected $insertArray = [];
+	protected $orderNumber;
+	public function __construct(){
+		parent::__construct();
+		$this->insertArray = array(
+									'order' => array(),
+									'order_details' => array(),
+							);
+	}
+	public function setOrderInsert($orderInsertArray){
+		$this->insertArray['order'] = $orderInsertArray;
+		//print_r($insertArray);
+	}
+	public function setOrderDetailsInsert($orderDetailsInsertArray){
+		//$i = 0;
+		//count returns a number based on 0, sql counts from 1
+		$this->orderNumber = $this->database_db->max('order','order_id') + 1;
+
+		$this->insertArray["order_details"] += $orderDetailsInsertArray;
+
+  		echo "<pre><br>===============================insertArray<br>";
+		print_r($this->insertArray['order_details'][0]);
+		echo "</pre>"; 
+		//var_dump($insertArray);
+		//$this->insertArray['order_details'] = array($insertArray);
+	}
+	public function commitInsert(){
+		$this->database_db->insert('order', $this->insertArray['order']);
+		$i = 0;
+		foreach ($this->insertArray['order_details'] as $separateInsert){
+			echo "<br>===============================separateInsert<br>";
+			$separateInsert['order_id'] = $this->orderNumber;
+			print_r($separateInsert);
+			//$separateInsert['order_id'] = 2;
+			$this->database_db->insert('order_details', $separateInsert);
+		}
+		
+
+	}
+}
+class GiftInsertObject extends SaleInsertObject {
+		public function __construct(){
+		parent::__construct();
+		$this->insertArray = array(
+									'order' => array(),
+									'order_details' => array(),
+									'gift_order' => array(),
+									'address' => array(),
+									'gift_shipping' => array(),
+									'ship_cost' => array()
+
+							);
+	}
+	public function setAddressInsert($addressInsertArray){
+			
+	}
+	public function setGiftOrderInsert($giftOrderInsertArray){
+
+	}
+
+	public function setGiftShippingInsert($giftShippingInsertArray){
+
+	}
+	public function setShipCostInsert($shipCostInsertArray){
+
+	}
+	public function commitInsert(){
+		parent::commitInsert();
+
+	}
+
+}
+class InsertObjectFactory {
+
+		public static function build($tableName) {
+		$tableName = ucwords(str_replace("_", " ", $tableName));
+		$InsertObject = str_replace(" ","", $tableName."InsertObject");
+		//var_dump($DatabaseObject);
+		if (class_exists($InsertObject)) {
+			return new $InsertObject;
+		}
+		else {
+			throw new Exception("Error in InsertObject Factory. Tablename doesn't exist.");
+		}
+	}
+}
+/*
+class InsertObject {
+	//holds the query in array form
+	protected $insertQueryArray;
+
+
+}
+*/
+
 ?>

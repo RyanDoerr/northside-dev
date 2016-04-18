@@ -54,8 +54,9 @@
 				
 				<label>First Name <input type='text' name='firstName'></label><br>
 				<label>Last Name <input type='text' name='lastName'></label><br>
-				<label>Address Line 1 <input type='text' name='addressLine1'></label><br>
-				<label>Address Line 2 <input type='text' name='addressLine2'></label><br>
+				<label>Address Number <input type='text' name='streetNumber'></label>
+				<label>Address Street <input type='text' name='streetName'></label><br>
+				<label>Address Road Type <input type='text' name="streetType"></label>
 				<label>Address Type </label>
 				<select>
 					<option name = 'house' value='House'>House</option>
@@ -96,8 +97,9 @@
 				<label>Last Name <input type='text' name='lastName'></label><br>
 				<label>Phone Number<input type='text' name='phone'></label><br>
 				<label>Email<input type='text' name='email'></label><br>
-				<label>Address Line 1 <input type='text' name='addressLine1' required></label><br>
-				<label>Address Line 2 <input type='text' name='addressLine2'></label><br>
+				<label>Address Number <input type='text' name='streetNumber'></label>
+				<label>Address Street <input type='text' name='streetName'></label><br>
+				<label>Address Road Type <input type='text' name="streetType"></label>
 				<label>Address Type </label>
 				<select name='addressType'>
 					<option>House</option>
@@ -112,8 +114,9 @@
 				
 				<label>First Name <input type='text' name='recfirstName'></label><br>
 				<label>Last Name <input type='text' name='reclastName'></label><br>
-				<label>Address Line 1 <input type='text' name='recaddressLine1'></label><br>
-				<label>Address Line 2 <input type='text' name='recaddressLine2'></label><br>
+				<label>Address Number <input type='text' name='streetNumber'></label>
+				<label>Address Street <input type='text' name='streetName'></label><br>
+				<label>Address Road Type <input type='text' name="streetType"></label>
 				<label>Address Type </label>
 				<select>
 					<option name = 'rechouse' value='House'>House</option>

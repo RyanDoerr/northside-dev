@@ -3,7 +3,8 @@
 	require_once('forms_controller.php');
 	require_once('models/database.php');
 	class OrdersController 
-	{
+	{	
+		//public static $model;
 		public static $radioButtons = ['Sale', 'Custom Order', 'Gift Order'];
 		public static $firstItem = "Sale";
 		public static $TAX_RATE = 0.095; //To be used in $total calculations.
@@ -36,7 +37,22 @@
 					'address_id' => NULL
 					);		
 					
-		public static $address = array(
+		public static $customerAddress = array(
+					'address_id' => NULL, 
+					'street_number' => NULL,
+					'street_suffix' => NULL,
+					'street_name' => NULL,
+					'street_type' => NULL,
+					'street_direction' => NULL, 
+					'address_type' => NULL,
+					'address_type_identifier' => NULL,
+					'minor_municipality' => NULL,
+					'major_municipality' => NULL,
+					'governing_district' => NULL,
+					'zip' => NULL,
+					'iso_country_code' => NULL
+		);
+		public static $recipientAddress = array(
 					'address_id' => NULL, 
 					'street_number' => NULL,
 					'street_suffix' => NULL,
@@ -125,20 +141,22 @@
 
 			require_once('views/pages/enterorder.php');
 		}
-
-		
-		
 		//This function grabs all the data from the 3 order forms, and calls the appropriate method in the order model.
 		public function submitForm()
 		{
 			require('models/order.php');   //Get the Orders model
 			$model = new Order();
 			OrdersController::$orderType = $_POST['orderType'];  //Determine if it is a sale, custom order, or gift from the hidden field.
+			$_SESSION['orderType'] = OrdersController::$orderType;
 			
+			
+
 			
 			//For sale orders, only 2 things need to be grabbed from the POST array: The items and their quantities.
 			if(self::$orderType == 'sale')
 			{
+				//build a db object
+				$stageDBO = DatabaseObjectFactory::build('order_details');
 				self::$OrderDetailsColumns['item_id'] = $_POST['item'];
 				self::$OrderDetailsColumns['qty']     = $_POST['quantity'];
 				//print_r(self::$OrderDetailsColumns['item_id'] );
@@ -156,7 +174,11 @@
 				self::$orderColumns['tax_amount'] = self::$orderColumns['subtotal'] * self::$TAX_RATE;
 				self::$orderColumns['total']      = self::$orderColumns['subtotal'] + self::$orderColumns['tax_amount'];
 
-				$_SESSION['orderInsert'] = array(
+				//this creates an order array in SESSION that carries all the relevant info for an order insert
+				$_SESSION['order']         = [];
+				$_SESSION['order_details'] = [];
+
+ 				$_SESSION['order'] = array(
 													'employee_id' => $_SESSION['employee_id'],
 													'order_date'  => $_SESSION['date'],
 													'subtotal'    => self::$orderColumns['subtotal'],
@@ -164,22 +186,35 @@
 													'total_price' => self::$orderColumns['total'],
 													'order_type'  => 'sale'
 					);
-				foreach($items as $item)
+				$i = 0;
+				foreach(self::$OrderDetailsColumns['item_id'] as $item)
 				{
-					$_SESSION['order_detailsInsert']
-					"order_id" => 5002,
-					"item_id" => 5000+$i,
-					"item_price" => 5.00,
-					"qty" => $quantities[$i]
+					
+					$_SESSION['order_details'][$i] = array(
+														'order_id' => '',
+														'item_id' => $item,
+														'item_price' => $model->getPrice($item),
+														'qty' => self::$OrderDetailsColumns['qty'][$i]
 
-		]);
-		$i++;
-		}
-				Order::insertSale();
+												);
+					$i++;
+				}
+				/*
+				foreach(self::$OrderDetailsColumns['item_id'] as $item){
+
+				}
+				*/
+		
+		
+		
+				//Order::insertSale();
 			}
 			
 			else if(self::$orderType == 'gift') //Grab all the fields from the gift order form, then call the Order model.
 			{
+				
+				//build a db object
+				//$stageDBO = DatabaseObjectFactory::build('gift_order');
 				//ITEMS ORDERED, STORED IN ARRAY
 				self::$OrderDetailsColumns['item_id'] = $_POST['item'];
 				
@@ -200,6 +235,17 @@
 				
 				//GRAB ADDRESS INFO HERE (2 times, one for customer and for Recipient). Parsing it seems....difficult. E
 				
+				$_SESSION['street_number'] = self::$customerAddress['street_number'] = $_POST['street_number'];	
+				$_SESSION['street_name'] = self::$customerAddress['street_name'] = $_POST['street'];
+//self::$recipientAddress[''];				
+
+
+
+
+
+
+
+
 				//self::$GiftShipping['address_id']  This address id will have to reference the one that was inserted. Need to figure this out.
 				
 				//GET SHIPPING COST INFO
@@ -210,20 +256,84 @@
 					self::$ShipCost['ship_cost'] = 10.00;
 				
 				//GET CUSTOMER INFO
-				self::$Customer['last_name'] = $_POST['lastName'];
-				self::$Customer['first_name'] = $_POST['firstName'];
+				self::$Customer['last_name']    = $_POST['lastName'];
+				self::$Customer['first_name']   = $_POST['firstName'];
 				self::$Customer['phone_number'] = $_POST['phone'];
-				self::$Customer['email'] = $_POST['email'];
+				self::$Customer['email']        = $_POST['email'];
 				
 				//GET THE SUBTOTAL/TOTAL INFORMATION
 				self::$orderColumns['subtotal'] = self::calculateSubtotal(self::$OrderDetailsColumns['item_price'],self::$OrderDetailsColumns['qty']);  //calculates the subtotal based on items and their quantities
 				self::$orderColumns['tax_amount'] = self::$orderColumns['subtotal'] * self::$TAX_RATE;
 				self::$orderColumns['total'] = self::$orderColumns['subtotal'] + self::$orderColumns['tax_amount'] + self::$ShipCost['ship_cost'];
+
+
+				//GRABBING NECESSARY VARS AND THROWING THEM INTO $_SESSION
+								$_SESSION['order']         = [];
+								$_SESSION['order_details'] = [];
+								$_SESSION['gift_order']    = [];
+								$_SESSION['gift_shipping'] = [];
+								$_SESSION['ship_cost']     = [];
+								$_SESSION['customer']      = [];
+
+								$_SESSION['order'] = array(
+													'employee_id' => $_SESSION['employee_id'],
+													'order_date'  => $_SESSION['date'],
+													'subtotal'    => self::$orderColumns['subtotal'],
+													'tax_amount'  => self::$orderColumns['tax_amount'],
+													'total_price' => self::$orderColumns['total'],
+													'order_type'  => 'gift'
+
+							);
+							foreach(self::$OrderDetailsColumns['item_id'] as $item)
+							{
+							
+								$_SESSION['order_details'][$i] = array(
+														'order_id'   => '',
+														'item_id'    => self::$OrderDetailsColumns['item_id'],
+														'item_price' => self::$OrderDetailsColumns['item_price'],
+														'qty'        => self::$OrderDetailsColumns['qty'][$i]
+
+								);
+								$i++;
+							}
+							
+							$_SESSION['gift_order'] = array(
+													'order_id'       => '',
+													'rec_last_name'  => self::$GiftOrder['rec_last_name'],
+													'rec_first_name' => self::$GiftOrder['rec_first_name'],
+													'address'		 => '',
+							);
+
+							$_SESSION['customer'] = array(
+													'last_name'    => self::$Customer['last_name'],
+													'first_name'   => self::$Customer['last_name'],
+													'phone_number' => self::$Customer['phone_number'],
+													'email'        => self::$Customer['email']
+							);
+							$_SESSION['gift_shipping'] = array(
+													'address_id' => '',
+													'gift_id'    => ''
+													
+							);
+							$_SESSION['ship_cost'] = array(
+													'ship_distance' => self::$ShipCost['ship_distance'],
+													'ship_id'    	=> '',
+													'shipping_cost' => self::$ShipCost['shipping_cost']
+													
+							);
+							$_SESSION['address'] = array(
+													'street_number' => self::$ShipCost['ship_distance'],
+													'ship_id'    	=> '',
+													'shipping_cost' => self::$ShipCost['shipping_cost']
+													
+							);
 				
 			}
 			
 			else if(self::$orderType == 'custom')
 			{
+				//build a db object
+				$stageDBO = DatabaseObjectFactory::build('custom_order');
 				//GET MATERIALS INFORMATION
 				self::$CraftMaterials['material_id'] = $_POST['material']; // Get all the material id's into array.
 				
@@ -248,7 +358,8 @@
 				echo 'Submit Form Error';
 			}
 			include('views/pages/confirmOrder.php');
-			}
+		}
+
 			
 		public function calculateSubtotal($itemPrices, $quantities)
 		{	
@@ -266,7 +377,17 @@
 		
 		public function confirm()
 		{
-			//TESTING: echo 'item id: '.self::$OrderDetailsColumns['item_id'][0];
+			require_once('models/order.php');
+			if ($_SESSION['orderType'] == "sale"){
+				Order::insertSale();
+			}
+			else if ($_SESSION['orderType'] == "gift"){
+				Order::insertGiftOrder();
+			}
+			else if ($_SESSION['orderType'] == "custom"){
+				Order::insertCustomOrder();
+			}
+			
 		}
 	
 	
