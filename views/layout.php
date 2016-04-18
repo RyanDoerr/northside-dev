@@ -1,11 +1,11 @@
 <?php
 	session_start();	
-	var_dump($_SESSION);
+	//var_dump($_SESSION);
 ?>
 <!DOCTYPE html>
 	<html>
 		<head>
-			<script src="jquery.js"></script>
+			<script src="lib/jquery.js"></script>
 			<meta charset="utf-8">
 			<link href="css/main.css" rel="stylesheet" type="text/css">
 

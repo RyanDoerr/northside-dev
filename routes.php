@@ -44,7 +44,7 @@
 		//call the action
 		$controller->{ $action }();
 	}
-	$controllers = array('pages' 	=> ['login', 'errors', 'menu','success', 'startSession', 'verify', 'stage']);
+	//$controllers = array('pages' 	=> ['login', 'errors', 'menu','success', 'startSession', 'verify', 'stage']);
 
 	//just a list of the controllers we have and their actions
 	//actions are "pages", but also functions that might be needed within the page class
@@ -54,8 +54,7 @@
 	$controllers = array('pages' 	=> ['login', 'errors', 'menu','success', 'startSession', 'verify', 'stage'], 
 						 'reports' 	=> ['makeReport'],
 						 'forms' 	=> [],
-
-						 'menus' 	=> ['mainMenu', 'subMenu'],
+						 'menus' 	=> ['mainMenu', 'subMenu', 'makeMenu', 'makeEmployeeMenu'],
 						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm','manageorders','editGift', 'editCustom','viewOrder'],
 						 'employees' => ['addemployee','editemployee','getEmployee'],
 						'inventory' => ['ordermaterials', 'getMaterials','submitOrder','InsertOrder','manageinventory','addCraft','addMaterial','editMaterial','editCraft','editReturn','displayinventorysheet','recordinventory'],
