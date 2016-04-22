@@ -52,13 +52,14 @@
 	//
 	//
 	$controllers = array('pages' 	=> ['login', 'errors', 'menu','success', 'startSession', 'verify', 'stage'], 
-						 'reports' 	=> ['makeReport'],
+						 'reports' 	=> ['makeReport','orders','inventory','generateOrderReports','generateInventoryReport','keyindicator','generateKeyIndicator','viewSale','viewCustom','suppliers','generateSupplierReport','viewGift','viewSupplyOrder'],
 						 'forms' 	=> [],
 						 'menus' 	=> ['mainMenu', 'subMenu', 'makeMenu', 'makeEmployeeMenu'],
-						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm','manageorders','editGift', 'editCustom','viewOrder'],
-						 'employees' => ['addemployee','editemployee','getEmployee'],
-						'inventory' => ['ordermaterials', 'getMaterials','submitOrder','InsertOrder','manageinventory','addCraft','addMaterial','editMaterial','editCraft','editReturn','displayinventorysheet','recordinventory'],
-						'suppliers' => ['managesuppliers','addSupplier','editSupplier','managediscounts','addDiscount','editDiscount','getMaterials']
+						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm','manageorders','editGift', 'editCustom','viewOrder','updateGift','updateCustomOrder','returnItem'],
+						 'employees' => ['addemployee','editemployee','getEmployee','insertEmployee','updateEmployee'],
+						'inventory' => ['ordermaterials', 'getMaterials','submitOrder','InsertOrder','manageinventory','addCraft','addMaterial','editMaterial','editCraft','editReturn','displayinventorysheet','recordinventory','updateMaterial','insertMaterial','updateCraft','deleteMaterial','insertCraft','addCraftMaterial','updateReturn','updateItemInventory','editQoh','updateQoh'],
+						'suppliers' => ['managesuppliers','addSupplier','editSupplier','managediscounts','addDiscount','editDiscount','getMaterials','insertSupplier','insertDiscount','updateSupplier','updateDiscount','deleteDiscount']
+						
 
 						);
 	/*

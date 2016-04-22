@@ -24,7 +24,7 @@
 <table>
 <th>Edit</th><th>Gift Order ID</th><th>Order ID</th><th>Recipient Name</th>
 <th>Customer Name</th><th>Order Date</th><th>Total Cost</th>
-<<<<<<< HEAD
+
 
 <?php foreach($gifts as $gift)
 {  
