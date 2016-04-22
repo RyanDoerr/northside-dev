@@ -28,17 +28,41 @@ class DatabaseObject {
 		else if ($where != ""){
 			$this->data_set = $this->database_db->select($this->table, $this->columns, $where);
 		}
+		
 		else{
 			$this->data_set = $this->database_db->select($this->table, $this->columns);
 		}
 		return $this->data_set;
 	}
 	public function setRecords($table, $data) {
-		$this->lastInstertId = $database_db->insert($table, $data);
+		$this->lastInsertId = $this->database_db->insert($table, $data);
+
 	}
 	public function set_table($string){
 		$this->table = $string;
 	}
+
+	public function makeQuery($string)
+	{
+		$this->data_set = $this->database_db->query($string)->fetchAll();
+		return $this->data_set;
+	}
+
+	public function updateRecord($data,$where)
+	{
+		$this->database_db->update($this->table, $data,$where);
+	}
+
+	public function getLastInsert()
+	{
+		return $this->lastInsertId;
+	}
+
+	public function deleteRecord($where)
+	{
+		$this->database_db->delete($this->table,$where);
+	}
+
 	public function get_table($string){
 		return $this->table;
 	}
@@ -104,7 +128,7 @@ class AddressDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('address_id', 'street_number', 'street_suffix', 'street_name',
-								 'street_type','street_type','street_direction','address_type',
+								 'street_type','street_direction','address_type',
 								 'address_type_identifier','minor_municipality','major_municipality',
 								 'governing_district','zip', 'iso_country_code');
 		$this->set_table('address');
@@ -138,6 +162,7 @@ class SupplierOrderDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('supplier_order_id','employee_id', 'supplier_id', 'order_date', 'subtotal', 'tax_amount','total_discount', 'total_price');
+		$this->set_table('supplier_order');
 	}
 }
 //8
@@ -145,6 +170,7 @@ class OrderMaterialsDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('material_id','supplier_order_id', 'qty', 'discount_amount');
+		$this->set_table('order_materials');
 	}
 }
 //9
@@ -183,7 +209,7 @@ class ReturnDetailsDatabaseObject extends DatabaseObject {
 class ReturnsInventoryDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
-		$this->field_set = array('return_id','item_id','return_date');
+		$this->field_set = array('return_id','order_id','return_date');
 		$this->set_table('returns_inventory');
 	}
 }

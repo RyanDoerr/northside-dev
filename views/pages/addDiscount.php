@@ -1,4 +1,4 @@
-<?php ?>
+<a href='?controller=suppliers&action=managediscounts'><input type='button' class = 'blueButton' value='Back'/></a>
 
 <h3>Add Discount</h3>
 

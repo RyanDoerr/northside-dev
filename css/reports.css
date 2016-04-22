@@ -1,0 +1,94 @@
+html,
+#form.form-horizontal,
+h3,
+body {
+  background-color: #C3E6F4 !important;
+}
+
+html {
+	background-color: #C3E6F4;
+}
+
+#inventory.form-control {
+  background-color: #F8F8F8;
+  width: 690px;
+  border-color: #909090;
+}
+
+span.input-group-addon {
+  background-color: #E0E0E0;
+  border-color: #909090;
+}
+
+button.btn.btn-primary {
+  background-color: #0088bb;
+  border-color: #0088bb;
+  width: 100px;
+  align: right;
+}
+
+body {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: #3b3b3b;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  width: 100%;
+  background-color: #C3E6F4;
+
+
+}
+
+.wrapper {
+  margin: 0 auto;
+  padding: 40px;
+  max-width: 600px;
+}
+
+table {
+  margin: 0 0 40px 0;
+  width: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  display: table;
+}
+
+@media screen and (max-width: 580px) {
+table {
+    display: block;
+  }
+}
+
+tr {
+  display: table-row;
+  background: #f6f6f6;
+}
+
+tr:nth-of-type(odd) {
+  background: #e9e9e9;
+}
+
+ th {
+  font-weight: 900;
+  color: #ffffff;
+  background: #0088bb;
+}
+
+@media screen and (max-width: 580px) {
+  tr {
+    padding: 8px 0;
+    display: block;
+  }
+}
+
+td {
+  padding: 6px 12px;
+  display: table-cell;
+}
+
+@media screen and (max-width: 580px) {
+  td {
+    padding: 2px 12px;
+    display: block;
+  }
+}

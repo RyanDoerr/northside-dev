@@ -44,7 +44,7 @@
 		//call the action
 		$controller->{ $action }();
 	}
-	$controllers = array('pages' 	=> ['login', 'errors', 'menu','success', 'startSession', 'verify', 'stage']);
+	//$controllers = array('pages' 	=> ['login', 'errors', 'menu','success', 'startSession', 'verify', 'stage']);
 
 	//just a list of the controllers we have and their actions
 	//actions are "pages", but also functions that might be needed within the page class
@@ -52,14 +52,14 @@
 	//
 	//
 	$controllers = array('pages' 	=> ['login', 'errors', 'menu','success', 'startSession', 'verify', 'stage'], 
-						 'reports' 	=> ['makeReport'],
+						 'reports' 	=> ['makeReport','orders','inventory','generateOrderReports','generateInventoryReport','keyindicator','generateKeyIndicator','viewSale','viewCustom','suppliers','generateSupplierReport','viewGift','viewSupplyOrder'],
 						 'forms' 	=> [],
-
-						 'menus' 	=> ['mainMenu', 'subMenu'],
-						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm','manageorders','editGift', 'editCustom','viewOrder'],
-						 'employees' => ['addemployee','editemployee','getEmployee'],
-						'inventory' => ['ordermaterials', 'getMaterials','submitOrder','InsertOrder','manageinventory','addCraft','addMaterial','editMaterial','editCraft','editReturn','displayinventorysheet','recordinventory'],
-						'suppliers' => ['managesuppliers','addSupplier','editSupplier','managediscounts','addDiscount','editDiscount','getMaterials']
+						 'menus' 	=> ['mainMenu', 'subMenu', 'makeMenu', 'makeEmployeeMenu'],
+						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm','manageorders','editGift', 'editCustom','viewOrder','updateGift','updateCustomOrder','returnItem'],
+						 'employees' => ['addemployee','editemployee','getEmployee','insertEmployee','updateEmployee'],
+						'inventory' => ['ordermaterials', 'getMaterials','submitOrder','InsertOrder','manageinventory','addCraft','addMaterial','editMaterial','editCraft','editReturn','displayinventorysheet','recordinventory','updateMaterial','insertMaterial','updateCraft','deleteMaterial','insertCraft','addCraftMaterial','updateReturn','updateItemInventory','editQoh','updateQoh'],
+						'suppliers' => ['managesuppliers','addSupplier','editSupplier','managediscounts','addDiscount','editDiscount','getMaterials','insertSupplier','insertDiscount','updateSupplier','updateDiscount','deleteDiscount']
+						
 
 						);
 	/*

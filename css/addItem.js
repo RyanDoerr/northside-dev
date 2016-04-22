@@ -36,7 +36,7 @@ $(document).ready(function(){
 						$('input[name=otherAdd]').click(function(){
 							
 							$('.selectItems').first().clone().insertAfter('.selectItems:last');
-							$('.selectItems:last input').val(1); //make sure default value of quantity is 1
+							
 							
 
 							
