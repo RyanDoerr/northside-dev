@@ -3,6 +3,7 @@
 require_once('connection.php');
 class DatabaseObject {
 	//protected static $database_db;
+	
 	public $database_db;
 	//public static $database;
 	protected $field_set; //array that holds table field associative array
@@ -286,9 +287,10 @@ class SaleInsertObject extends OrderDetailsDatabaseObject {
 	public function setOrderDetailsInsert($orderDetailsInsertArray){
 		//$i = 0;
 		//count returns a number based on 0, sql counts from 1
-		$this->orderNumber = $this->database_db->max('order','order_id') + 1;
-
-		$this->insertArray["order_details"] += $orderDetailsInsertArray;
+		//
+		$data = $this->database_db->select("order","order_id",[ "ORDER" => "order_id DESC"]);
+		$this->orderNumber = $data[0];
+		$this->insertArray['order_details'] += $orderDetailsInsertArray;
 
   		echo "<pre><br>===============================insertArray<br>";
 		print_r($this->insertArray['order_details'][0]);
@@ -297,48 +299,271 @@ class SaleInsertObject extends OrderDetailsDatabaseObject {
 		//$this->insertArray['order_details'] = array($insertArray);
 	}
 	public function commitInsert(){
+		echo "fuck2";
 		$this->database_db->insert('order', $this->insertArray['order']);
 		$i = 0;
 		foreach ($this->insertArray['order_details'] as $separateInsert){
-			echo "<br>===============================separateInsert<br>";
+			echo "<br>=====================fuck==========separateInsert<br>";
 			$separateInsert['order_id'] = $this->orderNumber;
 			print_r($separateInsert);
-			//$separateInsert['order_id'] = 2;
 			$this->database_db->insert('order_details', $separateInsert);
 		}
 		
 
 	}
 }
+//order and order details are taken care of by parent
 class GiftInsertObject extends SaleInsertObject {
 		public function __construct(){
 		parent::__construct();
+		$this->recipientAddressID = NULL;
+		$this->customerAddressID = NULL;
 		$this->insertArray = array(
-									'order' => array(),
-									'order_details' => array(),
-									'gift_order' => array(),
-									'address' => array(),
-									'gift_shipping' => array(),
-									'ship_cost' => array()
-
+									'order'            => array(),
+									'order_details'    => array(),
+									'gift_order'       => array(),
+									'customerAddress'  => array(),
+									'recipientAddress' => array(),
+									'gift_shipping'    => array(),
+									'ship_cost'        => array(),
+									'customer'         => array(),
 							);
 	}
-	public function setAddressInsert($addressInsertArray){
-			
+	public function setOrderInsert($orderInsertArray){
+		$this->insertArray['order'] = $orderInsertArray;
+		//print_r($insertArray);
+	}
+	public function setOrderDetailsInsert($orderDetailsInsertArray){
+		//$i = 0;
+		//count returns a number based on 0, sql counts from 1
+		//
+		$data = $this->database_db->select('order','order_id',[ 'ORDER' => 'order_id DESC']);
+		//$orderID = $data[0];
+		$this->insertArray['order_details'] += $orderDetailsInsertArray;
+
+  		echo "<pre><br>===============================insertArray<br>";
+		print_r($this->insertArray['order_details'][0]);
+		echo "</pre>"; 
+		//var_dump($insertArray);
+		//$this->insertArray['order_details'] = array($insertArray);
+	}
+	public function setCustomerAddressInsert($addressInsertArray){
+		$this->insertArray['customerAddress'] = $addressInsertArray;
+	}
+	public function setRecipientAddressInsert($addressInsertArray){
+		$this->insertArray['recipientAddress'] = $addressInsertArray;
+
 	}
 	public function setGiftOrderInsert($giftOrderInsertArray){
-
+		$this->insertArray['gift_order'] = $giftOrderInsertArray;
+		$this->insertArray['gift_order']['order_id'] = $this->orderNumber;
 	}
-
 	public function setGiftShippingInsert($giftShippingInsertArray){
-
+		$this->insertArray['gift_shipping'] = $giftShippingInsertArray;
 	}
 	public function setShipCostInsert($shipCostInsertArray){
-
+		$this->insertArray['ship_cost'] = $shipCostInsertArray;
+	}
+	public function setCustomerInsert($customerInsertArray){
+		$this->insertArray['customer'] = $customerInsertArray;
 	}
 	public function commitInsert(){
-		parent::commitInsert();
+		//parent::commitInsert();
+		echo "fuck";
+		$this->database_db->pdo->beginTransaction();
+		//pray that none of this fails.
+		try
+		{
+		//a customer address must exist before we can grab a customer_id for the order
+		$this->database_db->insert('address', $this->insertArray['customerAddress']);
+		//now we must grab that address id for our customer insert
+		$data = $this->database_db->select('address','address_id',['ORDER' => 'address.address_id DESC']);
+		$customerAddressID = $data[0];
+		//before we create an order/order_details insert we must grab a customer id
+		// which means we must insert a customer then grab that id
+		$this->insertArray['customer']['address_id'] = $customerAddressID;
+		$this->database_db->insert('customer', $this->insertArray['customer']);
+		$data = $this->database_db->select('customer','customer_id', ['ORDER' => 'customer.customer_id DESC'] );
+		$custID = $data[0];//['customer_id'];
+		//now that we have a customer and therefore an address for that customer we can update the order array before the insert with
+		//a customer id
+		$this->insertArray['order']['customer_id'] = $custID;
+		//$this->database_db->insert['order']
+		$this->database_db->insert('order', $this->insertArray['order']);
+		//now we can grab an order id for our order details
+		$data = $this->database_db->select('order','order_id',['ORDER' => 'order.order_id DESC']);
+		$orderID = $data[0];
+		//now that we have an order, we can do our order_details inserts
+		//and just to be dirty we'll decrement item.qoh here
+		foreach ($this->insertArray['order_details'] as $separateInsert){
+			echo "<br>===============================separateInsert<br>";
+			$separateInsert['order_id'] = $orderID;
+			//$this->insertArray['order_details']['order_id'] = $orderID;
+			print_r($separateInsert);
+			$data = $this->database_db->select('item', 'qoh', ['item_id' => $separateInsert['item_id']]);
+			$itemQOH = $data[0];
+			$itemQOH =  $itemQOH - $separateInsert['qty'];
+			$this->database_db->update('item', ['qoh' => $itemQOH], ['item_id' => $separateInsert['item_id']]);
+			$this->database_db->insert('order_details', $separateInsert);
+		}
+		//now before we can insert a gift order, we need to have an address_id, and an order_id
+		//to get an address_id id we have to insert the recipients address
+		$this->database_db->insert('address', $this->insertArray['recipientAddress']);
+		//now we can pull the address id for gift_order
+		$data = $this->database_db->select('address','address_id',['ORDER' => 'address.address_id DESC']);
+		$recipientAddressID = $data[0];//['address_id'];
+		//now we pull the order_id for gift_order
+		//$data = $this->database_db->select('order','order_id');
+		//$giftOrderId = $data[0];//['order_id'];
+		//now we update our gift order array with order_id and address_id
+		$this->insertArray['gift_order']['order_id'] = $orderID;
+		$this->insertArray['gift_order']['address_id'] = $recipientAddressID;
+		//now we can push her on in
+		$this->database_db->insert('gift_order', $this->insertArray['gift_order']);
+		//cool now we need to prepare gift_shipping, we need recipients address_id and a gift id from our gift_order
+		//we still have the recipients address, so all we need is the gift id
+		$data = $this->database_db->select('gift_order', 'gift_id',['ORDER' => 'gift_order.gift_id DESC']);
+		$giftID = $data[0];//['gift_id'];
+		//now that we've got the gift id we can start preparing gift_shipping
+		$this->insertArray['gift_shipping']['gift_id'] = $giftID;
+		$this->insertArray['gift_shipping']['address_id'] = $recipientAddressID;
+		//now we can roll in the gift_shipping record
+		$this->database_db->insert('gift_shipping', $this->insertArray['gift_shipping']);
+		//now that we have a gift_shipping record we can start preparing ship_cost
+		//which means we need a ship id
+		$data = $this->database_db->select('gift_shipping', 'ship_id', ['ORDER' => 'gift_shipping.ship_id DESC']);
+		$shipID = $data[0];//['ship_id'];
+		//got it, so now we'll prepare ship cost
+		$this->insertArray['ship_cost']['ship_id'] = $shipID;
+		//now we can push it
+		$this->database_db->insert('ship_cost',$this->insertArray['ship_cost']);
+		//now that we've gotten this far we should update "item";
+		echo "<pre>";
+		echo "THIS IS THE FINAL INSERT ARRAY->"."<br>";
+		print_r($this->insertArray);
+		echo "</pre>";
+		//$this->database_db->insert('gift_shipping', $this->insertArray['gift_shipping']);
+	//	$this->database_db->insert('ship_cost', $this->insertArray['ship_cost']);
+		
+		
+		//$this->customerAddressID = $this->database_db->max('address','address_id');
 
+		//$this->insertArray['customer']['address_id'] = $this->customerAddressID;
+		
+		//$this->database_db->insert('order',['customer_id' => $custID]);
+		$this->database_db->pdo->commit();
+		
+		}
+
+		catch(PDOException $e)
+		{
+			$this->database_db->pdo->rollback();
+			ErrorHandler($e);
+			//require_once($footer_inc);
+			exit;
+		}
+
+	}
+
+}
+
+class CustomInsertObject extends SaleInsertObject{
+		public function __construct(){
+		parent::__construct();
+		//$this->recipientAddressID = NULL;
+		//$this->customerAddressID = NULL;
+		$this->insertArray = array(
+									'order'            => array(),
+									'order_details'    => array(),
+									'custom_order'	   => array(),
+									'customerAddress'  => array(),
+									'customer'         => array(),
+									'item'			   => array(),
+									'craft'			   => array(),
+									'materials'		   => array(),
+							);
+	}
+	public function setCustomerAddressInsert($addressInsertArray){
+		$this->insertArray['customerAddress'] = $addressInsertArray;
+	}
+	public function setCustomerInsert($customerInsertArray){
+		$this->insertArray['customer'] = $customerInsertArray;
+	}
+	public function setOrderInsert($orderInsertArray){
+		$this->insertArray['order'] = $orderInsertArray;
+		//print_r($insertArray);
+	}
+	public function setOrderDetailsInsert($orderDetailsInsertArray){
+		$this->insertArray['order_details'] = $orderDetailsInsertArray; 
+	}
+	public function setCustomOrderInsert($customOrderInsertArray){
+		$this->insertArray['custom_order'] = $customOrderInsertArray;
+	}
+	public function setItemInsert($itemInsertArray){
+		$this->insertArray['item'] = $itemInsertArray;
+	}
+	public function setCraftInsert($insertCraftArray){
+		$this->insertArray['craft'] = $itemInsertArray;
+	}
+	public function setMaterials($materialsArray){
+		$this->insertArray['materials'] = $materialsArray;
+	}
+	public function commitInsert(){
+		//$this->database_db->pdo->beginTransaction();
+		//try{
+			//a customer address must exist before we can grab a customer_id for the order
+			$this->database_db->insert('address', $this->insertArray['customerAddress']);
+			//now we must grab that address id for our customer insert
+			$data = $this->database_db->select('address','address_id',['ORDER' => 'address.address_id DESC']);
+			$customerAddressID = $data[0];
+			//now we set up a customer for insertion
+			$this->insertArray['customer']['address_id'] = $customerAddressID;
+			//now we can insert a customer
+			$this->database_db->insert('customer', $this->insertArray['customer']);
+			//now that we have a customer, we can grab a customer id
+			$data = $this->database_db->select('customer','customer_id',['ORDER' => 'customer.customer_id DESC']);
+			$customerID = $data[0];
+			//now that we have a customer id we can prepare order
+			$this->insertArray['order']['customer_id'] = $customerID;
+			//now we can fully insert our prepared order
+			$this->database_db->insert('order',$this->insertArray['order']);
+			//now we can grab our order_id for order_details and custom_order
+			$data = $this->database_db->select('order', 'order_id',['ORDER' => 'order.order_id DESC']);
+			//store it
+			$orderID = $data[0];
+			//now we can prepare order_details and custom_order
+			//now we'll prepare custom order
+			$this->insertArray['custom_order']['order_id'] = $orderID;
+			//now we can push it
+			$this->database_db->insert('custom_order', $this->insertArray['custom_order']);
+			//ok now we have to enter an item record for the new item we created
+			//it has no dependencies, so we're ready to push
+			$this->database_db->insert('item', $this->insertArray['item']);
+			//now we need to pull the item_id to make a craft and an order_details record
+			$data = $this->database_db->select('item', 'item_id', ['ORDER' => 'item.item_id DESC']);
+			$itemID = $data[0];
+			//now we can prepare craft and order_details
+			$this->insertArray['order_details']['order_id'] = $orderID;
+			$this->insertArray['order_details']['item_id'] = $itemID;
+			$this->insertArray['craft']['item_id'] = $itemID;
+			//now we can push order_details
+			$this->database_db->insert('order_details', $this->insertArray['order_details']);
+			//now we can push the prepared craft entry
+			$this->database_db->insert('craft',$this->insertArray['craft']);
+			//now that we have a craft entry, we can pull our craft_id
+			$data = $this->database_db->select('craft','craft_id', ['ORDER' => 'craft.craft_id DESC']);
+			$craftID = $data[0];
+			//now we can prepare and insert craft_materials, there will be multiple entries for each material used in the craft
+			echo "<pre>separateMaterials";
+			print_r($this->insertArray['materials']);
+			echo "</pre>";
+			foreach($this->insertArray['materials'] as $separateMaterial){
+				$separateMaterial['craft_id'] = $craftID;
+				//grab the material id of the item we're using
+				//now push each craft_materials record
+				print_r($separateMaterial);
+				$this->database_db->insert('craft_materials', $separateMaterial);
+			}
 	}
 
 }

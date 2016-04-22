@@ -1,5 +1,7 @@
 <!--The enter Order screen was consolidated into one screen with 3 tabs for ease of use.-->
- 
+ <?php
+
+?>
   <div id="tabs">
   <ul>
     <li><a href="#tabs-1">Sale</a></li>
@@ -10,7 +12,7 @@
   <div id="tabs-1">
 	<h3>Sale Order</h3>
 				
-				
+				<?php $_SESSION['orderType'] = 'sale'; ?>
 				<form action = '?controller=order&action=submitForm' method='post'>
 				<input type='hidden' name='orderType' value='sale'>
 				<label class='selectItems'>Select Items
@@ -33,6 +35,7 @@
   <div id="tabs-2">
 	<h3>Custom Order</h3>
 				
+				<?php $_SESSION['orderType'] = 'custom'; ?>
 				<form action = '?controller=order&action=submitForm' method='post'>
 				<input type='hidden' name='orderType' value='custom'>
 				<label class='selectItems'>Select Materials to be used:
@@ -58,9 +61,9 @@
 				<label>Address Street <input type='text' name='streetName'></label><br>
 				<label>Address Road Type <input type='text' name="streetType"></label>
 				<label>Address Type </label>
-				<select>
-					<option name = 'house' value='House'>House</option>
-					<option name = 'apartment' value='Apartment'>Apartment</option>
+				<select name="addressType">
+					<option value='House'>House</option>
+					<option value='Apartment'>Apartment</option>
 				</select><br>
 				<label>City <input type='text' name='city'></label><br>
 				<label>State <input type='text' name='state'></label><br>
@@ -76,8 +79,8 @@
   <div id="tabs-3">
 	<h3>Gift Order</h3>
 				
-				
-				<form action = '?controller=order&action=submitForm' method='post'>
+				<?php $_SESSION['orderType'] = 'gift'; ?>
+				<form action = '?controller=order&action=submitForm' method='post' autocomplete='on'>
 				<input type='hidden' name='orderType' value='gift'>
 				<label class='selectItems'>Select Items
 				<select name = 'item[]'>
@@ -102,8 +105,8 @@
 				<label>Address Road Type <input type='text' name="streetType"></label>
 				<label>Address Type </label>
 				<select name='addressType'>
-					<option>House</option>
-					<option>Apartment</option>
+					<option value="House">House</option>
+					<option value="Apartment">Apartment</option>
 				</select><br>
 				<label>City <input type='text' name='city'></label><br>
 				<label>State <input type='text' name='state'></label><br>
@@ -112,20 +115,20 @@
 				
 				<h3>Recipient Info</h3>
 				
-				<label>First Name <input type='text' name='recfirstName'></label><br>
-				<label>Last Name <input type='text' name='reclastName'></label><br>
-				<label>Address Number <input type='text' name='streetNumber'></label>
-				<label>Address Street <input type='text' name='streetName'></label><br>
-				<label>Address Road Type <input type='text' name="streetType"></label>
+				<label>First Name <input type='text' name='recFirstName'></label><br>
+				<label>Last Name <input type='text' name='recLastName'></label><br>
+				<label>Address Number <input type='text' name='recStreetNumber'></label>
+				<label>Address Street <input type='text' name='recStreetName'></label><br>
+				<label>Address Road Type <input type='text' name="recStreetType"></label>
 				<label>Address Type </label>
-				<select>
-					<option name = 'rechouse' value='House'>House</option>
-					<option name = 'recapartment' value='Apartment'>Apartment</option>
+				<select name='recAddressType'>
+					<option value="House">House</option>
+					<option value="Apartment">Apartment</option>
 				</select><br>
-				<label>City <input type='text' name='reccity'></label><br>
-				<label>State <input type='text' name='recstate'></label><br>
-				<label>Zip <input type='text' name='reczip'></label><br>
-				<label>P.O. Box <input type='text' name='recpobox'></label><br>
+				<label>City <input type='text' name='recCity'></label><br>
+				<label>State <input type='text' name='recState'></label><br>
+				<label>Zip <input type='text' name='recZip'></label><br>
+				<label>P.O. Box <input type='text' name='recPobox'></label><br>
 
 				
 				

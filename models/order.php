@@ -5,7 +5,19 @@ require_once('models/database.php');
 class Order
 {
 	//This function inserts sale orders into the database, as well as all the order details
-	
+	/*
+	public function confirm(){
+		if ($_SESSION['orderType'] == 'sale'){
+			self::insertSale();
+		}
+		else if ($_SESSION['orderType'] == 'gift'){
+			self::insertGiftOrder();
+		}
+		else if ($_SESSION['orderType'] == 'custom'){
+			self::insertCustomOrder();
+		}
+	}
+	*/
 
 	public function getItems()
 	{
@@ -43,7 +55,7 @@ class Order
 		return $materials;
 	}
 	
-	public function insertSale() 
+	public static function insertSale() 
 	{
 		//create new insert object
 		$insertDBO = InsertObjectFactory::build('sale');
@@ -53,19 +65,29 @@ class Order
 
 	}
 	
-	public function insertGiftOrder()
+	public static function insertGiftOrder()
 	{
 		$insertDBO = InsertObjectFactory::build('gift');
 		$insertDBO->setOrderInsert($_SESSION['order']);
 		$insertDBO->setOrderDetailsInsert($_SESSION['order_details']);
-		$insertDBO->setAddressInsert($_SESSION['address']);
+		$insertDBO->setCustomerAddressInsert($_SESSION['customerAddress']);
+		$insertDBO->setRecipientAddressInsert($_SESSION['recipientAddress']);
 		$insertDBO->setGiftOrderInsert($_SESSION['gift_order']);
 		$insertDBO->setGiftShippingInsert($_SESSION['gift_shipping']);
 		$insertDBO->setShipCostInsert($_SESSION['ship_cost']);
-		
-
-		
-	
+		$insertDBO->setCustomerInsert($_SESSION['customer']);
+		$insertDBO->commitInsert();
 	}
-	
+	public static function insertCustomOrder()
+	{
+		$insertDBO = InsertObjectFactory::build('custom');
+		$insertDBO->setMaterials($_SESSION['materials']);
+		$insertDBO->setCustomerAddressInsert($_SESSION['customerAddress']);
+		$insertDBO->setCustomerInsert($_SESSION['customer']);
+		$insertDBO->setOrderInsert($_SESSION['order']);
+		$insertDBO->setOrderDetailsInsert($_SESSION['order_details']);
+		$insertDBO->setCustomOrderInsert($_SESSION['custom_order']);
+		$insertDBO->setItemInsert($_SESSION['item']);
+		$insertDBO->commitInsert();
+	}
 }
