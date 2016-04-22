@@ -1,17 +1,27 @@
 <h4>Select Material</h4>
-<form action = "" method="post">
+<form action = "?controller=suppliers&action=insertDiscount" method="post">
 	<label>Select Material
 	<select name = "material">
-		<?php foreach($materials as $material) { ?>
-			<option value="<?php echo $material['material_id'];?>"><?php echo $material['material_id']; ?></option>
+		<?php foreach($materials as $material) { 
+			$selected = '';
+			if($materialID == $material['material_id'])
+			{
+				$selected='selected = "selected"';
+			}
+			?>
+			<option value="<?php echo $material['material_id'] . ' '. $selected?>"><?php echo $material['material_id']; ?></option>
 		<?php } ?>
 	</select>
 	<br>
 	<label>Minimum Quantity Required
-		<input type='text' name='min_qty'>
-	</label><br> 
+		<input required type='text' name='min_qty' value = '<?php if(!empty($minQty))echo $minQty?>'>
+	</label>
+	<?php if(!empty($errorMessage['min_qtyError'])) echo $errorMessage['min_qtyError'] ?>
+	<br> 
 	<label>Discount Percent
-		<input type='text' name='discountPct'><br> 
+		<input required type='text' name='discountPct' value='<?php if(!empty($discountPct))echo $discountPct?>'>
+		<?php if(!empty($errorMessage['discountPctError'])) echo $errorMessage['discountPctError'] ?>
+		<br> 
 	</label>		
 
 		
