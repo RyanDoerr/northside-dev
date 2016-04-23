@@ -1,4 +1,3 @@
-
 <?php
 	require_once('forms_controller.php');
 	require_once('models/database.php');
@@ -209,15 +208,6 @@
 												);
 					$i++;
 				}
-				/*
-				foreach(self::$OrderDetailsColumns['item_id'] as $item){
-
-				}
-				*/
-		
-		
-		
-				//Order::insertSale();
 			}
 			
 			else if(self::$orderType == 'gift') //Grab all the fields from the gift order form, then call the Order model.

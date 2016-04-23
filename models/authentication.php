@@ -3,7 +3,7 @@ class Authentication
 {
 	//private $employee_id;
 	//private $password
-	public static function verification($employee_id, $password) {
+	public static function verification($employee_id = "", $password) {
 
 		//$dbpassword_hash = false;
 		$table           = 'user';
@@ -12,7 +12,10 @@ class Authentication
 		$dataset         = $database->select($table, $columns, [
 																"employee_id" => $employee_id
 																]);
+
 		//var_dump($dataset);
-		return $dataset;
+		if ($dataset[0]['employee_id'] == $employee_id){
+			return $dataset;
+		}
 	}
 }

@@ -23,7 +23,7 @@
 				</select>
 				
 				
-				<label>Quantity </label><input type='text' name='quantity[]' value= 1 ><br> 
+				<label>Quantity </label><input style="width: 5%" type='text' name='quantity[]' value= 1 ><br> 
 				</label>
 				<input name= "add"type='button'  class='button' value='Add Item +'/>
 				<br><br>
@@ -45,7 +45,7 @@
 					<?php } ?>
 					
 				</select>
-				<label>Quantity</label><input type='text' name='quantity' value=1> <br> 
+				<label>Quantity</label><input  style="width: 5%" type='text' name='quantity' value=1> 
 				</label>
 				<input name="add" type='button' class="button" id='addNew' value='Add New +'/>
 				<br><br>
@@ -54,12 +54,11 @@
 				<br>
 				<label>Estimated Minimum Price needed for Profit: <input type='text' name='estimatedPrice'></label><br>
 				<h3>Customer Info</h3>
-				
 				<label>First Name <input type='text' name='firstName'></label><br>
 				<label>Last Name <input type='text' name='lastName'></label><br>
-				<label>Address Number <input type='text' name='streetNumber'></label>
+				<label>Address Number <input type='text' name='streetNumber'></label><br>
 				<label>Address Street <input type='text' name='streetName'></label><br>
-				<label>Address Road Type <input type='text' name="streetType"></label>
+				<label>Address Road Type <input type='text' name="streetType"></label><br>
 				<label>Address Type </label>
 				<select name="addressType">
 					<option value='House'>House</option>
@@ -89,7 +88,7 @@
 					<?php } ?>
 				</select>
 				
-				<label>Quantity</label><input type='text' name='quantity[]' value=1><br> 
+				<label>Quantity</label><input style="width: 5%" type='text' name='quantity[]' value=1><br> 
 				</label>
 				<input name= "add" type='button' class="button" value='Add Item +'/>
 				<br><br>
@@ -100,9 +99,9 @@
 				<label>Last Name <input type='text' name='lastName'></label><br>
 				<label>Phone Number<input type='text' name='phone'></label><br>
 				<label>Email<input type='text' name='email'></label><br>
-				<label>Address Number <input type='text' name='streetNumber'></label>
+				<label>Address Number <input type='text' name='streetNumber'></label><br>
 				<label>Address Street <input type='text' name='streetName'></label><br>
-				<label>Address Road Type <input type='text' name="streetType"></label>
+				<label>Address Road Type <input type='text' name="streetType"></label><br>
 				<label>Address Type </label>
 				<select name='addressType'>
 					<option value="House">House</option>
@@ -117,9 +116,9 @@
 				
 				<label>First Name <input type='text' name='recFirstName'></label><br>
 				<label>Last Name <input type='text' name='recLastName'></label><br>
-				<label>Address Number <input type='text' name='recStreetNumber'></label>
+				<label>Address Number <input type='text' name='recStreetNumber'></label><br>
 				<label>Address Street <input type='text' name='recStreetName'></label><br>
-				<label>Address Road Type <input type='text' name="recStreetType"></label>
+				<label>Address Road Type <input type='text' name="recStreetType"></label><br>
 				<label>Address Type </label>
 				<select name='recAddressType'>
 					<option value="House">House</option>

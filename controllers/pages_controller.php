@@ -33,6 +33,7 @@
 			$dataset = Authentication::verification($employee_id, $password);
 			$hashed = $dataset[0]["password_hash"];
 			$userLevel = $dataset[0]["accessLevel"];
+			$_SESSION['employee'] = $dataset[0]['employee_id'];
 			if (password_verify($password, $hashed)){
 				$_SESSION["employee_id"] = $dataset[0]["employee_id"];
 				if ($userLevel == 3){

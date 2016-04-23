@@ -1,11 +1,14 @@
 <?php
 	session_start();	
 	$_SESSION['date'] = date('Y-m-d');
-	echo "<pre>";
-	print_r($_SESSION);
-	print_r($_POST);
-	echo "</pre>";
-	echo "===SESSION ==========================================================";
+	$_SESSION['vardump'] = 0;
+	if ($_SESSION['vardump']){
+		echo "<pre>";
+		print_r($_SESSION);
+		print_r($_POST);
+		echo "</pre>";
+		echo "===SESSION ==========================================================";
+	}
 	/*
 	function ErrorHandler($errno, $errstr, $errline, $errfile, $customMessage) {
   		$writeMessage = "<br><b>Error: Line: $errfile in $errline</b> [$errno] $errstr<br>";
@@ -38,9 +41,9 @@
 			<!-- links to the style sheet -->
 		</head>
 		<body>
-			<header>
+			<!--<header>
 			<!-- <a href="http://localhost:4750/northside-dev/?controller=menus&action=mainMenu">Main Menu</a> -->	
-			</header>
+			<!--</header>
 			<!--
 			<nav>
 				<a style="float:left;" href="?controller=menus&action=mainMenu">Main Menu</a>

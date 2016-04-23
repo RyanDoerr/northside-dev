@@ -1,4 +1,4 @@
-/*********************************************************************
+﻿/*********************************************************************
 CSCI 4750
 Group 3 Codist Technologies
 Team Members: Matthew Doerr, Alexander Hornick, Mikayla Webber, Tiasha
@@ -16,6 +16,7 @@ body {
   /* IE Fallback */
 
 }
+
 
   /******************************************************************
   Below is the login page class information.
@@ -186,3 +187,5 @@ cancel, etc.
   position: relative;
   top: 1px;
 }
+
+
