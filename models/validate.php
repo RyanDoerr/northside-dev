@@ -20,12 +20,18 @@ class validate{
 		}
 	}
 	public static function thisInt($int){
-		if (filter_var($int, FILTER_VALIDATE_INT)){
+		if (filter_input(INPUT_POST, $int, FILTER_VALIDATE_INT)){
 			return 1;
 		}
 		else {
 			return 0;
 		}
+	}
+	function test_input($data){
+		$data = trim($data);
+		$data = stripslashes($data);
+		$data = htmlspecialchars($data);
+		return $data;
 	}
 
 

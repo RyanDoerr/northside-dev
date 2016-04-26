@@ -23,7 +23,7 @@
 				</select>
 				
 				
-				<label>Quantity </label><input style="width: 5%" type='text' name='quantity[]' value= 1 ><br> 
+				<label>Quantity </label><input style="width: 5%" type='text' name='quantity[]' value= 1><br> 
 				</label>
 				<input name= "add"type='button'  class='button' value='Add Item +'/>
 				<br><br>
@@ -49,25 +49,25 @@
 				</label>
 				<input name="add" type='button' class="button" id='addNew' value='Add New +'/>
 				<br><br>
-				<label>Name of Custom Craft <input type="text" name="itemName"></label><label> Quantity </label><input type='text' name='itemQuantity' value=1><br>
+				<label>Name of Custom Craft <input type="text" name="itemName" required></label><label> Quantity </label><input type='text' name='itemQuantity' value=1><br>
 				<label>Custom Craft Comments </label><br><textarea name='comment' rows="5" columns = '10'></textarea>
 				<br>
 				<label>Estimated Minimum Price needed for Profit: <input type='text' name='estimatedPrice'></label><br>
 				<h3>Customer Info</h3>
-				<label>First Name <input type='text' name='firstName'></label><br>
-				<label>Last Name <input type='text' name='lastName'></label><br>
-				<label>Address Number <input type='text' name='streetNumber'></label><br>
-				<label>Address Street <input type='text' name='streetName'></label><br>
-				<label>Address Road Type <input type='text' name="streetType"></label><br>
+				<label>First Name <input type='text' name='firstName' required></label><br>
+				<label>Last Name <input type='text' name='lastName' required></label><br>
+				<label>Address Number <input type='text' name='streetNumber' required></label><br>
+				<label>Address Street <input type='text' name='streetName' required></label><br>
+				<label>Address Road Type <input type='text' name="streetType" required></label><br>
 				<label>Address Type </label>
 				<select name="addressType">
 					<option value='House'>House</option>
 					<option value='Apartment'>Apartment</option>
 				</select><br>
-				<label>City <input type='text' name='city'></label><br>
-				<label>State <input type='text' name='state'></label><br>
-				<label>Zip <input type='text' name='zip'></label><br>
-				<label>P.O. Box <input type='text' name='pobox'></label><br>
+				<label>City <input type='text' name='city' required></label><br>
+				<label>State <input type='text' name='state' required></label><br>
+				<label>Zip <input type='text' name='zip' required></label><br>
+				<label>P.O. Box <input type='text' name='pobox' required></label><br>
 				
 				<a href="?controller=menus&action=mainMenu&subMenu=Order"><input type='button' class = "button redButton" value='Cancel'/></a> <input class="button blueButton" type='submit' value='Next'/>
 				</form>
@@ -79,7 +79,7 @@
 	<h3>Gift Order</h3>
 				
 				<?php $_SESSION['orderType'] = 'gift'; ?>
-				<form action = '?controller=order&action=submitForm' method='post' autocomplete='on'>
+				<form action = '?controller=order&action=submitForm' method='post' autocomplete='on' id="giftForm">
 				<input type='hidden' name='orderType' value='gift'>
 				<label class='selectItems'>Select Items
 				<select name = 'item[]'>
@@ -95,21 +95,21 @@
 				
 				<h3>Customer Info</h3>
 				
-				<label>First Name <input type='text' name='firstName'></label><br>
-				<label>Last Name <input type='text' name='lastName'></label><br>
-				<label>Phone Number<input type='text' name='phone'></label><br>
-				<label>Email<input type='text' name='email'></label><br>
-				<label>Address Number <input type='text' name='streetNumber'></label><br>
-				<label>Address Street <input type='text' name='streetName'></label><br>
-				<label>Address Road Type <input type='text' name="streetType"></label><br>
+				<label>First Name <input type='text' name='firstName' required></label><br>
+				<label>Last Name <input type='text' name='lastName' required></label><br>
+				<label>Phone Number<input type='text' name='phone' required></label><br>
+				<label>Email<input type='email' name='email' required></label><br>
+				<label>Address Number <input type='text' name='streetNumber' required></label><br>
+				<label>Address Street <input type='text' name='streetName' required></label><br>
+				<label>Address Road Type <input type='text' name="streetType" required></label><br>
 				<label>Address Type </label>
 				<select name='addressType'>
 					<option value="House">House</option>
 					<option value="Apartment">Apartment</option>
 				</select><br>
-				<label>City <input type='text' name='city'></label><br>
-				<label>State <input type='text' name='state'></label><br>
-				<label>Zip <input type='text' name='zip'></label><br>
+				<label>City <input type='text' name='city' required></label><br>
+				<label>State <input type='text' name='state' required></label><br>
+				<label>Zip <input type='text' name='zip' required></label><br>
 				<label>P.O. Box <input type='text' name='pobox'></label><br>
 				
 				<h3>Recipient Info</h3>
@@ -128,7 +128,9 @@
 				<label>State <input type='text' name='recState'></label><br>
 				<label>Zip <input type='text' name='recZip'></label><br>
 				<label>P.O. Box <input type='text' name='recPobox'></label><br>
-
+				<script>
+					$("#giftForm").validate();
+				</script>
 				
 				
 				

@@ -8,6 +8,7 @@
 		public static $firstItem = "Sale";
 		public static $TAX_RATE = 0.095; //To be used in $total calculations.
 		public static $orderType;
+		public static $error = [];
 		
 		
 		public static $orderColumns = array(
@@ -122,10 +123,10 @@
 		}
 
 		//This function is not a page, and handles requests by specific page functions
-		public function enterorder($error = [])
+		public function enterorder()
 		{
-			if (!empty($error)){
-			foreach ($error as $anotherError){
+			if (!empty(self::$error)){
+			foreach (self::$error as $anotherError){
 				echo $anotherError."<br>";
 			}
 			echo '<a href=?controller=order&action=enterorder>Please Try Again.</a>';
@@ -144,20 +145,26 @@
 			$db = databaseConnection::getInstance();
 			$materials = $db->query("SELECT name, material.material_id, item.item_id FROM Material, Item WHERE Material.item_id = Item.item_id")->fetchAll();
 			
-			if (empty($error)){
+			if (empty(self::$error)){
 				require_once('views/pages/enterorder.php');
 			}
 		}
 		//This function grabs all the data from the 3 order forms, and calls the appropriate method in the order model.
-		public function submitForm($error = [])
+		public function submitForm()
 		{
 			echo "<pre>";
-			print_r($_POST);
+			print_r(self::$error);
 			echo "</pre>";
+			if (!empty(self::$error)){
+			foreach (self::$error as $anotherError){
+				echo $anotherError."<br>";
+			}
+			self::$error = [];
+			echo '<a href=?controller=order&action=enterorder>Please Try Again.</a>';
+			}
 			require_once('models/validate.php');
 			require_once('models/order.php');   //Get the Orders model
 			$model = new Order();
-			$errorMessage = [];
 			OrdersController::$orderType = $_POST['orderType'];  
 			$_SESSION['orderType'] = OrdersController::$orderType;
 			//Determine if it is a sale, custom order, or gift from the hidden field
@@ -169,10 +176,12 @@
 				//build a db object
 				$stageDBO = DatabaseObjectFactory::build('order_details');
 				self::$OrderDetailsColumns['item_id'] = $_POST['item'];
-				self::$OrderDetailsColumns['qty']     = $_POST['quantity'];
-				//print_r(self::$OrderDetailsColumns['item_id'] );
-				//print_r(self::$OrderDetailsColumns['qty'] );
-
+				if (!validate::thisInt($_POST['quantity'])){
+					self::$error += ["The Quantity field in a sale order must be an integer."];
+				}
+				else {
+					self::$OrderDetailsColumns['qty'] = $_POST['quantity'];
+				}
 				$index = 0;
 				foreach(self::$OrderDetailsColumns['item_id'] as $item)
 				{
@@ -213,6 +222,7 @@
 			
 			else if(self::$orderType == 'gift') //Grab all the fields from the gift order form, then call the Order model.
 			{
+				
 				$_SESSION['orderType'] = OrdersController::$orderType;
 				
 				//build a db object
@@ -221,6 +231,9 @@
 				self::$OrderDetailsColumns['item_id'] = $_POST['item'];
 				
 				//QUANTITIES OF THOSE ITEMS IN A PARALLEL ARRAY
+				
+				self::$error += 'Quantity must be an integer.';
+				
 				self::$OrderDetailsColumns['qty'] = $_POST['quantity'];
 				
 				//GETS THE ITEM PRICES OF ITEMS USING getPrice() FUNCTION. WILL PROBABLY CHANGE THIS FUNCTION?
@@ -237,7 +250,7 @@
 					self::$GiftOrder['rec_last_name'] = $_POST['recLastName'];
 				}
 				else {
-					OrdersController::enterorder($error += ["Recipient Last Name"]);
+					self::$error += ['Recipient last name is not valid.'];
 				}
 					self::$GiftOrder['rec_first_name'] = $_POST['recFirstName'];
 				
@@ -264,15 +277,6 @@
 				self::$recipientAddress['iso_country_code']   = 'us';
 				//self::$recipientAddress[''] = $_POST['recPobox'];	
 				//}
-						
-
-
-
-
-
-
-
-
 				//self::$GiftShipping['address_id']  This address id will have to reference the one that was inserted. Need to figure this out.
 				
 				//GET SHIPPING COST INFO
@@ -494,8 +498,11 @@
 			else {
 				echo 'Submit Form Error';
 			}
-			if (empty($error)){
+			if (empty(self::$error)){
 				require_once('views/pages/confirmOrder.php');
+			}
+			else {
+
 			}
 		}
 

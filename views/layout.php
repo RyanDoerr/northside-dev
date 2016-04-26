@@ -39,6 +39,7 @@
 			<link rel="stylesheet" href="jquery-ui/jquery-ui.min.css">
 			<script type="text/javascript" src="jquery-ui/jquery-ui.min.js"></script>
 			<script type='text/javascript' src='css/addItem.js'></script>
+			<script src="lib/jquery-validation-1.15.0/jquery.validate.js"></script>
 			<!-- links to the style sheet -->
 		</head>
 		<body>
