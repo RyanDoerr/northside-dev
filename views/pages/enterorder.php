@@ -2,6 +2,37 @@
  <?php
 
 ?>
+				<script>
+					$().ready(function() {
+						$("#giftForm").validate({
+							rules: {
+								number: {
+									digits:true,
+									decimal:true
+								},
+								zip: {
+									minlength:5,
+									maxlength:5,
+									digits:true
+								},
+								recZip: {
+									minlength:5,
+									maxlength:5,
+									digits:true
+								},
+								phoneNumber: {
+									phoneUS:true
+								},
+								quantity: {
+									minlength:1,
+									maxlength:5,
+									digits:true
+								}
+
+							}
+						})
+					});
+				</script>
   <div id="tabs">
   <ul>
     <li><a href="#tabs-1">Sale</a></li>
@@ -11,7 +42,6 @@
   
   <div id="tabs-1">
 	<h3>Sale Order</h3>
-				
 				<?php $_SESSION['orderType'] = 'sale'; ?>
 				<form action = '?controller=order&action=submitForm' method='post'>
 				<input type='hidden' name='orderType' value='sale'>
@@ -23,7 +53,7 @@
 				</select>
 				
 				
-				<label>Quantity </label><input style="width: 5%" type='text' name='quantity[]' value= 1><br> 
+				<label for='quantity'>Quantity </label><input style="width: 5%" type='text' id='quantity'name='quantity[]' value= 1><br> 
 				</label>
 				<input name= "add"type='button'  class='button' value='Add Item +'/>
 				<br><br>
@@ -43,14 +73,13 @@
 					<?php foreach($materials as $material) { ?>
 						<option value="<?php echo $material['material_id'];?>"><?php echo $material['name']; ?></option>
 					<?php } ?>
-					
 				</select>
-				<label>Quantity</label><input  style="width: 5%" type='text' name='quantity' value=1> 
+				<label for='quantity3'>Quantity</label><input  style="width: 5%" id='quantity3' type='text' name='quantity' value=1> 
 				</label>
 				<input name="add" type='button' class="button" id='addNew' value='Add New +'/>
 				<br><br>
 				<label>Name of Custom Craft <input type="text" name="itemName" required></label><label> Quantity </label><input type='text' name='itemQuantity' value=1><br>
-				<label>Custom Craft Comments </label><br><textarea name='comment' rows="5" columns = '10'></textarea>
+				<label for='comment'>Custom Craft Comments </label><br><textarea name='comment' rows="5" columns = '10'></textarea>
 				<br>
 				<label>Estimated Minimum Price needed for Profit: <input type='text' name='estimatedPrice'></label><br>
 				<h3>Customer Info</h3>
@@ -67,7 +96,6 @@
 				<label>City <input type='text' name='city' required></label><br>
 				<label>State <input type='text' name='state' required></label><br>
 				<label>Zip <input type='text' name='zip' required></label><br>
-				<label>P.O. Box <input type='text' name='pobox' required></label><br>
 				
 				<a href="?controller=menus&action=mainMenu&subMenu=Order"><input type='button' class = "button redButton" value='Cancel'/></a> <input class="button blueButton" type='submit' value='Next'/>
 				</form>
@@ -88,7 +116,7 @@
 					<?php } ?>
 				</select>
 				
-				<label>Quantity</label><input style="width: 5%" type='text' name='quantity[]' value=1><br> 
+				<label for="quantity2">Quantity</label><input style="width: 5%" id='quantity2' type='text' name='quantity[]' value=1><br> 
 				</label>
 				<input name= "add" type='button' class="button" value='Add Item +'/>
 				<br><br>
@@ -97,9 +125,9 @@
 				
 				<label>First Name <input type='text' name='firstName' required></label><br>
 				<label>Last Name <input type='text' name='lastName' required></label><br>
-				<label>Phone Number<input type='text' name='phone' required></label><br>
+				<label for="phoneNumber">Phone Number<input type='text' name='phone' id='phoneNumber' required></label><br>
 				<label>Email<input type='email' name='email' required></label><br>
-				<label>Address Number <input type='text' name='streetNumber' required></label><br>
+				<label for="number">Address Number <input type='text' name='streetNumber' required></label><br>
 				<label>Address Street <input type='text' name='streetName' required></label><br>
 				<label>Address Road Type <input type='text' name="streetType" required></label><br>
 				<label>Address Type </label>
@@ -109,8 +137,7 @@
 				</select><br>
 				<label>City <input type='text' name='city' required></label><br>
 				<label>State <input type='text' name='state' required></label><br>
-				<label>Zip <input type='text' name='zip' required></label><br>
-				<label>P.O. Box <input type='text' name='pobox'></label><br>
+				<label for="zip">Zip<input id='zip' type='text' name='zip' required></label><br>
 				
 				<h3>Recipient Info</h3>
 				
@@ -126,11 +153,8 @@
 				</select><br>
 				<label>City <input type='text' name='recCity'></label><br>
 				<label>State <input type='text' name='recState'></label><br>
-				<label>Zip <input type='text' name='recZip'></label><br>
-				<label>P.O. Box <input type='text' name='recPobox'></label><br>
-				<script>
-					$("#giftForm").validate();
-				</script>
+				<label for="recZip">Zip <input id='recZip' type='text' name='recZip' required></label><br>
+
 				
 				
 				

@@ -152,16 +152,6 @@
 		//This function grabs all the data from the 3 order forms, and calls the appropriate method in the order model.
 		public function submitForm()
 		{
-			echo "<pre>";
-			print_r(self::$error);
-			echo "</pre>";
-			if (!empty(self::$error)){
-			foreach (self::$error as $anotherError){
-				echo $anotherError."<br>";
-			}
-			self::$error = [];
-			echo '<a href=?controller=order&action=enterorder>Please Try Again.</a>';
-			}
 			require_once('models/validate.php');
 			require_once('models/order.php');   //Get the Orders model
 			$model = new Order();
@@ -176,12 +166,8 @@
 				//build a db object
 				$stageDBO = DatabaseObjectFactory::build('order_details');
 				self::$OrderDetailsColumns['item_id'] = $_POST['item'];
-				if (!validate::thisInt($_POST['quantity'])){
-					self::$error += ["The Quantity field in a sale order must be an integer."];
-				}
-				else {
-					self::$OrderDetailsColumns['qty'] = $_POST['quantity'];
-				}
+
+				self::$OrderDetailsColumns['qty'] = $_POST['quantity'];
 				$index = 0;
 				foreach(self::$OrderDetailsColumns['item_id'] as $item)
 				{
@@ -232,7 +218,7 @@
 				
 				//QUANTITIES OF THOSE ITEMS IN A PARALLEL ARRAY
 				
-				self::$error += 'Quantity must be an integer.';
+				//self::$error += 'Quantity must be an integer.';
 				
 				self::$OrderDetailsColumns['qty'] = $_POST['quantity'];
 				
@@ -246,12 +232,9 @@
 				
 				//
 				// INFORMATION
-				if (validate::thisString($_POST['recLastName'])){
+				
 					self::$GiftOrder['rec_last_name'] = $_POST['recLastName'];
-				}
-				else {
-					self::$error += ['Recipient last name is not valid.'];
-				}
+				
 					self::$GiftOrder['rec_first_name'] = $_POST['recFirstName'];
 				
 				
