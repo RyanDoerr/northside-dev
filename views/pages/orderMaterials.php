@@ -4,7 +4,7 @@
 
 <h4>Select a Supplier</h4>
 <form action = "?controller=inventory&action=getMaterials" method="post">
-	<select name = "supplier">
+	<select name = "supplierID">
 		<?php foreach($suppliers as $supplier) { ?>
 			<option value="<?php echo $supplier['supplier_id'];?>"><?php echo $supplier['company_name']; ?></option>
 		<?php } ?>
