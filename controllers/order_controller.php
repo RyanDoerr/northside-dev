@@ -122,8 +122,15 @@
 		}
 
 		//This function is not a page, and handles requests by specific page functions
-		public function enterorder()
+		public function enterorder($error = [])
 		{
+			if (!empty($error)){
+			foreach ($error as $anotherError){
+				echo $anotherError."<br>";
+			}
+			echo '<a href=?controller=order&action=enterorder>Please Try Again.</a>';
+			}
+
 			$stageDBO = DatabaseObjectFactory::build('Item');
 			$arr = ['item_id','name'];
 			$items = $stageDBO->getRecords($arr); 
@@ -137,30 +144,24 @@
 			$db = databaseConnection::getInstance();
 			$materials = $db->query("SELECT name, material.material_id, item.item_id FROM Material, Item WHERE Material.item_id = Item.item_id")->fetchAll();
 			
-
-			require_once('views/pages/enterorder.php');
+			if (empty($error)){
+				require_once('views/pages/enterorder.php');
+			}
 		}
 		//This function grabs all the data from the 3 order forms, and calls the appropriate method in the order model.
-		public function submitForm()
+		public function submitForm($error = [])
 		{
-			require('models/order.php');   //Get the Orders model
+			echo "<pre>";
+			print_r($_POST);
+			echo "</pre>";
+			require_once('models/validate.php');
+			require_once('models/order.php');   //Get the Orders model
 			$model = new Order();
-
+			$errorMessage = [];
 			OrdersController::$orderType = $_POST['orderType'];  
 			$_SESSION['orderType'] = OrdersController::$orderType;
-			//Determine if it is a sale, custom order, or gift from the hidden field.
-			//$_SESSION['orderType'] = OrdersController::$orderType;
-			/*
-			$_SESSION['order']         = [];
-			$_SESSION['order_details'] = [];
-			$_SESSION['gift_order']    = [];
-			$_SESSION['custom_order']  = [];
-			$_SESSION['gift_shipping'] = [];
-			$_SESSION['ship_cost']     = [];
-			$_SESSION['address']       = [];
-			*/
+			//Determine if it is a sale, custom order, or gift from the hidden field
 
-			
 			//For sale orders, only 2 things need to be grabbed from the POST array: The items and their quantities.
 			if(self::$orderType == 'sale')
 			{
@@ -215,11 +216,10 @@
 				$_SESSION['orderType'] = OrdersController::$orderType;
 				
 				//build a db object
-				//$stageDBO = DatabaseObjectFactory::build('gift_order');
 				//ITEMS ORDERED, STORED IN ARRAY
-				//if (!empty($_POST['item'])){
+				
 				self::$OrderDetailsColumns['item_id'] = $_POST['item'];
-				//}
+				
 				//QUANTITIES OF THOSE ITEMS IN A PARALLEL ARRAY
 				self::$OrderDetailsColumns['qty'] = $_POST['quantity'];
 				
@@ -233,9 +233,14 @@
 				
 				//
 				// INFORMATION
-				//if (!empty($_POST['recLastName'])){
+				if (validate::thisString($_POST['recLastName'])){
 					self::$GiftOrder['rec_last_name'] = $_POST['recLastName'];
+				}
+				else {
+					OrdersController::enterorder($error += ["Recipient Last Name"]);
+				}
 					self::$GiftOrder['rec_first_name'] = $_POST['recFirstName'];
+				
 				
 				//GRAB ADDRESS INFO HERE (2 times, one for customer and for 
 				//). Parsing it seems....difficult. E
@@ -489,7 +494,9 @@
 			else {
 				echo 'Submit Form Error';
 			}
-			include('views/pages/confirmOrder.php');
+			if (empty($error)){
+				require_once('views/pages/confirmOrder.php');
+			}
 		}
 
 			
@@ -506,6 +513,7 @@
 			
 			return round($subtotal,2);
 		}
+
 		
 		public function confirm()
 		{
@@ -850,20 +858,62 @@
 				print "Quantity is higher than the amount on the order.";
 			}
 		}
+		public static function filter(){
+			$filterText = '';
+			$filter = '';
+			if (isset($_POST['filter'])){
+				$filterText = $_POST['filterOption'];
+				$filter = $_POST['filterText'];
+			}
+			//echo $filterText;
+			//print_r($_POST);
+			$filterArray = [$filterText => $filter];
+			self::manageorders($filterArray);
+		}
 		
-		public function manageorders()
+		public function manageorders($filter = NULL)
 		{
+
+			require_once('models/filterDraw.php');
+			if (isset($_POST['context'])){
+				if ($_POST['context'] == 'gift'){
+				print "<script>$(document).ready(function() {
+      				  $( '#tabs' ).tabs({ active: 0 });
+						});</script>";
+				}
+				if ($_POST['context'] == 'custom'){
+				print "<script>$(document).ready(function() {
+      				  $( '#tabs' ).tabs({ active: 1 });
+						});</script>";
+				}
+			}
 			$stageDBO = DatabaseObjectFactory::build('order');
 
 			$arr = ['gift_id', 'order.order_id', 'rec_last_name','rec_first_name','order_date','last_name','first_name','total_price'];
 			$stageDBO->SetJoin(['[><]gift_order' => 'order_id', '[><]customer' => 'customer_id']);
 
-			$gifts = $stageDBO->getRecords($arr);
-			
-			$stageDBO = DatabaseObjectFactory::build('custom_order');
-			$arr = ['custom_order_id','order_id','comment','price_estimation'];
-			$customs = $stageDBO->getRecords($arr);
-			
+			if (empty($filter)){
+
+				$gifts = $stageDBO->getRecords($arr);
+			}
+			else {
+
+				$gifts = $stageDBO->getRecords($arr, $filter);
+			}
+			$stageDBO2= DatabaseObjectFactory::build('custom_order');
+			//$stageDBO->SetJoin(['[><]custom_order' => 'custom_order.order_id', '[><]customer' => 'customer_id', '[><]order' => 'order.order_id']);
+			//print_r($stageDBO2);
+			$arr = ['custom_order_id', 'custom_order.order_id','comment','price_estimation'];
+			if (empty($filter)){
+
+				$customs = $stageDBO2->getRecords($arr);
+
+			}
+			else {
+				//$stageDBO2->SetJoin(['[><]customer' => 'customer.customer_id', '[><]order' => 'order.order_id']);
+				$customs = $stageDBO2->getRecords($arr, $filter);
+
+			}
 			
 			require_once('views/pages/manageorder.php');
 		}

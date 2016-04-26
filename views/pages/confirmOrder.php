@@ -8,7 +8,7 @@
 	{
 		foreach(self::$OrderDetailsColumns['item_id'] as $item)    //Relates each quantity to that particular item.
 		{
-			echo '<tr><td>'.$item.'</td><td>'.self::$OrderDetailsColumns['item_price'][$index].'</td><td>'.self::$OrderDetailsColumns['qty'][$index].'</td></tr><br>';
+			echo '<tr><td>'.$item.'</td><td>'.number_format(self::$OrderDetailsColumns['item_price'][$index],2).'</td><td>'.self::$OrderDetailsColumns['qty'][$index].'</td></tr><br>';
 			$index++;
 		}
 		

@@ -8,6 +8,7 @@
     <p><h3>Manage Orders - Gift Orders</h3>
 
 <h4>Filter Options</h4>
+<!--
 <form action="?controller=order&action=filterOrders" method = "post">
 	<label>Gift ID <input type = "text" name="giftID"></label><br>
 	<label> Item ID <input type = "text" name="itemID"></label><br>
@@ -20,13 +21,18 @@
 	<input type="submit" class="button blueButton" value="Generate">
 	
 </form>
+-->
+<?php filterDraw::dropDownGiftOrder();?><br>
+
 
 <table>
 <th>Edit</th><th>Gift Order ID</th><th>Order ID</th><th>Recipient Name</th>
 <th>Customer Name</th><th>Order Date</th><th>Total Cost</th>
 
 
-<?php foreach($gifts as $gift)
+<?php 
+if (is_array($gifts)){
+foreach($gifts as $gift)
 {  
 ?>
 	<tr>
@@ -44,13 +50,15 @@
 		<td><?php echo $gift['total_price'];?></td>
 	</tr>
 	
-<?php } ?>
+<?php } }?>
 </table></p>
   </div>
   <div id="tabs-2">
     <p><h3>Manage Orders - Custom Orders</h3>
 
 <h4>Filter Options</h4>
+<?php filterDraw::dropDownCustomOrder();?>
+<!--
 <form action="?controller=order&action=filterOrders" method = "post">
 	<label> Order ID <input type = "text" name="orderID"></label><br>
 	<label>Custom OrderID <input type = "text" name="customID"></label><br>
@@ -61,10 +69,12 @@
 	<input type="submit" class="button blueButton" value="Generate">
 	
 </form>
-
+-->
 <table>
 <th>Edit</th><th>Custom Order ID</th><th>Order ID</th><th>Comment</th><th>Price Estimation</th>
-<?php foreach($customs AS $custom)
+<?php 
+if (is_array($customs)){
+foreach($customs AS $custom)
 {  ?>
 	<tr>
 		<td>
@@ -80,7 +90,7 @@
 		
 	</tr>
 	
-<?php } ?>
+<?php }} ?>
 </table></p>
   </div>
   

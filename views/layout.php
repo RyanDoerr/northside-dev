@@ -24,6 +24,7 @@
 <!DOCTYPE html>
 	<html>
 		<head>
+			<title>Northside Craft Exchange</title>
 			<script src="lib/jquery.js"></script>
 			<meta charset="utf-8">
 			<link href="css/main.css" rel="stylesheet" type="text/css">
@@ -41,6 +42,7 @@
 			<!-- links to the style sheet -->
 		</head>
 		<body>
+
 			<!--<header>
 			<!-- <a href="http://localhost:4750/northside-dev/?controller=menus&action=mainMenu">Main Menu</a> -->	
 			<!--</header>
@@ -50,6 +52,7 @@
 			</nav><br>
 			-->
 			<div class='wrapper'>
+			<a href='?controller=menus&action=mainMenu'>Main Menu</a>
 				<?php require_once('routes.php'); ?>
 			</div>
 

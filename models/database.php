@@ -98,6 +98,10 @@ class DatabaseObject {
 		$this->join = true;
 		$this->joinQuery = $join_array;
 	}
+	public function unSetJoin($join_array){
+		$this->join = false;
+
+	}
 }
 //1
 class OrderDatabaseObject extends DatabaseObject {
@@ -165,7 +169,7 @@ class SupplierOrderDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('supplier_order_id','employee_id', 'supplier_id', 'order_date', 'subtotal', 'tax_amount','total_discount', 'total_price');
-		$this->set_table('supplier_order');
+		$this->setTable('supplier_order');
 	}
 }
 //8
@@ -173,7 +177,7 @@ class OrderMaterialsDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('material_id','supplier_order_id', 'qty', 'discount_amount');
-		$this->set_table('order_materials');
+		$this->setTable('order_materials');
 	}
 }
 //9
@@ -213,7 +217,7 @@ class ReturnsInventoryDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('return_id','order_id','return_date');
-		$this->set_table('returns_inventory');
+		$this->setTable('returns_inventory');
 	}
 }
 //14
