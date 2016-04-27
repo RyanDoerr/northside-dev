@@ -38,7 +38,6 @@
 
 			<!--These two jquery-ui scripts are used for the tabs widget-->
 			<link rel="stylesheet" href="jquery-ui/jquery-ui.min.css">
-			<link rel="stylesheet" href="jquery-ui/jquery-ui.theme">
 			<script type='text/javascript' src='jquery-ui/jquery-ui.min.js'></script>
 			<script type='text/javascript' src='css/addItem.js'></script>
 			<script type='text/javascript' src='lib/jquery.validate.js'></script>

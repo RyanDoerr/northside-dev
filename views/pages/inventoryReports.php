@@ -30,7 +30,7 @@
 						<td><?php echo $material['name']?></td>
 						<td><?php echo $material['company_name']?></td>
 						<td><?php echo $material['calculated_qoh']?></td>
-						<td><?php echo $material['unit_price']?></td>
+						<td><?php echo number_format($material['unit_price'],2)?></td>
 					</tr>
 					
 				<?php } ?>
