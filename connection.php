@@ -20,7 +20,7 @@ class databaseConnection {
 
 				databaseConnection::$instance = new medoo([
 					'database_type' => 'mysql',
-					'database_name' => '4950',
+					'database_name' => 'northside_production',
 					'server'		=> 'localhost',
 					'username'		=> 'root',
 					'password'		=> '',

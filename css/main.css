@@ -1,4 +1,4 @@
-/*********************************************************************
+﻿/*********************************************************************
 CSCI 4750
 Group 3 Codist Technologies
 Team Members: Matthew Doerr, Alexander Hornick, Mikayla Webber, Tiasha
@@ -6,6 +6,10 @@ Gray-Ramey
 Includes: This style sheet contains the css for the login page and red
 and blue buttons.
 *********************************************************************/
+input:required:focus {
+  border: 3px #006699;
+
+}
 body {
   /******************************************************************
   This contains the font, Internet Explorer fall back options and 
@@ -16,6 +20,7 @@ body {
   /* IE Fallback */
 
 }
+
 
   /******************************************************************
   Below is the login page class information.
@@ -186,3 +191,5 @@ cancel, etc.
   position: relative;
   top: 1px;
 }
+
+

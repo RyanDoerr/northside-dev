@@ -8,19 +8,19 @@
 	{
 		foreach(self::$OrderDetailsColumns['item_id'] as $item)    //Relates each quantity to that particular item.
 		{
-			echo '<tr><td>'.$item.'</td><td>'.self::$OrderDetailsColumns['item_price'][$index].'</td><td>'.self::$OrderDetailsColumns['qty'][$index].'</td></tr><br>';
+			echo '<tr><td>'.$item.'</td><td>'.number_format(self::$OrderDetailsColumns['item_price'][$index],2).'</td><td>'.self::$OrderDetailsColumns['qty'][$index].'</td></tr><br>';
 			$index++;
 		}
 		
 		echo '</table><br>Subtotal: $' . number_format(self::$orderColumns['subtotal'],2);
 		if(self::$orderType == 'gift')
 			{
-				echo '<br>Shiping Cost: $' . number_format(self::$ShipCost['ship_cost'],2);
+				echo '<br>Shipping Cost: $' . number_format(self::$ShipCost['ship_cost'],2);
 			}
 		echo '<br>Tax Amount: $' . number_format(self::$orderColumns['tax_amount'],2);
 		echo '<br>Total: $' . number_format(self::$orderColumns['total'],2);
 		
-		self::confirm();
+		//self::confirm($);
 	}
 	
 	else

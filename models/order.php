@@ -5,7 +5,19 @@ require_once('models/database.php');
 class Order
 {
 	//This function inserts sale orders into the database, as well as all the order details
-	
+	/*
+	public function confirm(){
+		if ($_SESSION['orderType'] == 'sale'){
+			self::insertSale();
+		}
+		else if ($_SESSION['orderType'] == 'gift'){
+			self::insertGiftOrder();
+		}
+		else if ($_SESSION['orderType'] == 'custom'){
+			self::insertCustomOrder();
+		}
+	}
+	*/
 
 	public function getItems()
 	{
@@ -13,7 +25,7 @@ class Order
 		$arr = ['item_id','name','current_price'];
 		$items = $stageDBO->getRecords($arr);
 		
-		//return $items;
+		return $items;
 	}
 	
 	public function getPrice($item_id)
@@ -43,77 +55,39 @@ class Order
 		return $materials;
 	}
 	
-	public function insertSale($items, $quantities) 
+	public static function insertSale() 
 	{
-		$database = dataBaseConnection::getInstance(); //connect to database
-		$i = 0;
-		
-		$database->insert("order", [
-			"order_id" => 5002,
-			"employee_id" => 2000,
-			"order_date" => date("F j, Y, g:i a"),
-			"subtotal" => 50.00,
-			"tax_amount" => 5.00,
-			"total_price" => 55.00,
-			"order_type" => 'sale'
-		]);
-		
-		foreach($items as $item)
-		{
-			echo $item;
-			echo 'foreach';
-			$database->insert("order_details", [
-				"order_id" => 5002,
-				"item_id" => 5000+$i,
-				"item_price" => 5.00,
-				"qty" => $quantities[$i]
-		]);
-		$i++;
-		}
-		
-	}
-	
-	public function insertGiftOrder($items, $quantities, $firstName, $lastName, $phone, $email, $addressLine1, $addressType, $city, $state, $zip)
-	{
-		$database = dataBaseConnection::getInstance(); //connect to database
-		$i = 0;
-		$database->insert("address", [
-			"address_id" =>  NULL
-		]);
-		
-		//INSERT INTO CUSTOMER TABLE FIRST
-		$database->insert("customer", [
-			"customer_id" => 25,
-			"last_name" => $lastName,
-			"first_name" => $firstName,
-			"phone_number" => $phone,
-			"email" => $email
-		]);
+		//create new insert object
+		$insertDBO = InsertObjectFactory::build('sale');
+		$insertDBO->setOrderInsert($_SESSION['order']);
+		$insertDBO->setOrderDetailsInsert($_SESSION['order_details']);
+		$insertDBO->commitInsert();
 
-		$database->insert("order", [
-			"order_id" => 5002,
-			"employee_id" => 2000,
-			"order_date" => date("F j, Y, g:i a"),
-			"subtotal" => 50.00,
-			"tax_amount" => 5.00,
-			"total_price" => 55.00,
-			"order_type" => 'gift'
-		]);
-		
-		foreach($items as $item)
-		{
-			echo $item;
-			echo 'foreach';
-			$database->insert("order_details", [
-				"order_id" => 5002,
-				"item_id" => 5000+$i,
-				"item_price" => 5.00,
-				"qty" => $quantities[$i]
-		]);
-		$i++;
-		}
-		
-	
 	}
 	
+	public static function insertGiftOrder()
+	{
+		$insertDBO = InsertObjectFactory::build('gift');
+		$insertDBO->setOrderInsert($_SESSION['order']);
+		$insertDBO->setOrderDetailsInsert($_SESSION['order_details']);
+		$insertDBO->setCustomerAddressInsert($_SESSION['customerAddress']);
+		$insertDBO->setRecipientAddressInsert($_SESSION['recipientAddress']);
+		$insertDBO->setGiftOrderInsert($_SESSION['gift_order']);
+		$insertDBO->setGiftShippingInsert($_SESSION['gift_shipping']);
+		$insertDBO->setShipCostInsert($_SESSION['ship_cost']);
+		$insertDBO->setCustomerInsert($_SESSION['customer']);
+		$insertDBO->commitInsert();
+	}
+	public static function insertCustomOrder()
+	{
+		$insertDBO = InsertObjectFactory::build('custom');
+		$insertDBO->setMaterials($_SESSION['materials']);
+		$insertDBO->setCustomerAddressInsert($_SESSION['customerAddress']);
+		$insertDBO->setCustomerInsert($_SESSION['customer']);
+		$insertDBO->setOrderInsert($_SESSION['order']);
+		$insertDBO->setOrderDetailsInsert($_SESSION['order_details']);
+		$insertDBO->setCustomOrderInsert($_SESSION['custom_order']);
+		$insertDBO->setItemInsert($_SESSION['item']);
+		$insertDBO->commitInsert();
+	}
 }

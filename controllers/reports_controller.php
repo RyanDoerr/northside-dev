@@ -58,7 +58,7 @@
 
 
 
-			require_once('views/pages/inventoryreports.php');
+			require_once('views/pages/inventoryReports.php');
 
 		}
 

@@ -46,7 +46,7 @@
 						<td><?php echo $supplier['supplier_id']?></td>
 						<td><?php echo $supplier['first_name'] . ' ' . $supplier['last_name'];?></td>
 						<td><?php echo $supplier['order_date']?></td>
-						<td><?php echo $supplier['total_price']?></td>
+						<td><?php echo number_format($supplier['total_price'],2)?></td>
 					</tr>
 					
 				<?php } ?>
@@ -66,7 +66,7 @@
 						<td><?php echo $supplier['supplier_order_id']?></td>
 						<td><?php echo $supplier['material_id'];?></td>
 						<td><?php echo $supplier['qty']?></td>
-						<td><?php echo $supplier['discount_amount']?></td>
+						<td><?php echo number_format($supplier['discount_amount'],2)?></td>
 					</tr>
 					
 				<?php } ?>

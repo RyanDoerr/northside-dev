@@ -55,7 +55,7 @@
 						 'reports' 	=> ['makeReport','orders','inventory','generateOrderReports','generateInventoryReport','keyindicator','generateKeyIndicator','viewSale','viewCustom','suppliers','generateSupplierReport','viewGift','viewSupplyOrder'],
 						 'forms' 	=> [],
 						 'menus' 	=> ['mainMenu', 'subMenu', 'makeMenu', 'makeEmployeeMenu'],
-						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm','manageorders','editGift', 'editCustom','viewOrder','updateGift','updateCustomOrder','returnItem'],
+						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm','manageorders','editGift', 'editCustom','viewOrder','updateGift','updateCustomOrder','returnItem', 'filter'],
 						 'employees' => ['addemployee','editemployee','getEmployee','insertEmployee','updateEmployee'],
 						'inventory' => ['ordermaterials', 'getMaterials','submitOrder','InsertOrder','manageinventory','addCraft','addMaterial','editMaterial','editCraft','editReturn','displayinventorysheet','recordinventory','updateMaterial','insertMaterial','updateCraft','deleteMaterial','insertCraft','addCraftMaterial','updateReturn','updateItemInventory','editQoh','updateQoh'],
 						'suppliers' => ['managesuppliers','addSupplier','editSupplier','managediscounts','addDiscount','editDiscount','getMaterials','insertSupplier','insertDiscount','updateSupplier','updateDiscount','deleteDiscount']

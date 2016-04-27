@@ -32,7 +32,7 @@
 							
 						<td class='cell'><?php echo $order['day']?></td>
 						<td class='cell'><?php echo $order['NumberOfOrders']?></td>
-						<td class='cell'><?php echo $order['TotalAmt']?></td>
+						<td class='cell'><?php echo number_format($order['TotalAmt'],0)?></td>
 						<td class='cell'><?php echo $order['items']?></td>
 					</tr>
 					
@@ -52,7 +52,7 @@
 							
 						<td><?php echo $order['week']?></td>
 						<td><?php echo $order['NumberOfOrders']?></td>
-						<td><?php echo $order['TotalAmt']?></td>
+						<td><?php echo number_format($order['TotalAmt'],0)?></td>
 						<td><?php echo $order['items']?></td>
 					</tr>
 					
@@ -70,7 +70,7 @@
 							
 						<td><?php echo $order['month']?></td>
 						<td><?php echo $order['NumberOfOrders']?></td>
-						<td><?php echo $order['TotalAmt']?></td>
+						<td><?php echo number_format($order['TotalAmt'], 0)?></td>
 						<td><?php echo $order['items']?></td>
 					</tr>
 					
@@ -88,7 +88,7 @@
 							
 						<td><?php echo $order['year']?></td>
 						<td><?php echo $order['NumberOfOrders']?></td>
-						<td><?php echo $order['TotalAmt']?></td>
+						<td><?php echo number_format($order['TotalAmt'],0)?></td>
 						<td><?php echo $order['items']?></td>
 					</tr>
 					

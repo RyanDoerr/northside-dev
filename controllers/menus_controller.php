@@ -40,7 +40,7 @@
     public static function makeMenu()
     {
       if ($_SESSION["user"] == 1){
-      print "<nav class='navbar'>";
+      print "<nav class='menu drop-down-menu'>";
         foreach ( MenusController::$displayNames['Menu'] as $menuItem)
         {
           print "<a href='?controller=menus&action=mainMenu&subMenu=$menuItem'>$menuItem</a><br>";
@@ -50,10 +50,12 @@
 
               print "&nbsp;&nbsp;&nbsp;&nbsp<a href='?controller=".strtolower($menuItem)."&action=".strtolower(str_replace(' ', '', $subMenuItem))."'>$subMenuItem</a>";
             }
-            print "<nav class='subnavbar'>";
+            print "<nav class='drop-down-menu'>";
+
           }
         }
       }
+
       else if ($_SESSION["user"] == 3){
         MenusController::makeEmployeeMenu();
       }

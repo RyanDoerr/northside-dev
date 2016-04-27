@@ -37,9 +37,9 @@
 						</td>
 						<td><?php echo $sale['employee_id']?></td>
 						<td><?php echo $sale['order_date']?></td>
-						<td><?php echo $sale['subtotal']?></td>
-						<td><?php echo $sale['tax_amount']?></td>
-						<td><?php echo $sale['total_price']?></td>
+						<td><?php echo number_format($sale['subtotal'],2)?></td>
+						<td><?php echo number_format($sale['tax_amount'],2)?></td>
+						<td><?php echo number_format($sale['total_price'],2)?></td>
 					</tr>
 					
 				<?php } ?>
@@ -56,7 +56,7 @@
 							
 						<td><?php echo $sale['day']?></td>
 						<td><?php echo $sale['NumberOfOrders']?></td>
-						<td><?php echo $sale['TotalAmt']?></td>
+						<td><?php echo number_format($sale['TotalAmt'],2)?></td>
 					</tr>
 					
 				<?php } ?>
@@ -73,7 +73,7 @@
 							
 						<td><?php echo $sale['week']?></td>
 						<td><?php echo $sale['NumberOfOrders']?></td>
-						<td><?php echo $sale['TotalAmt']?></td>
+						<td><?php echo number_format($sale['TotalAmt'],2)?></td>
 					</tr>
 					
 				<?php } ?>
@@ -90,7 +90,7 @@
 							
 						<td><?php echo $sale['month']?></td>
 						<td><?php echo $sale['NumberOfOrders']?></td>
-						<td><?php echo $sale['TotalAmt']?></td>
+						<td><?php echo number_format($sale['TotalAmt'],2)?></td>
 					</tr>
 					
 				<?php } ?>
@@ -107,7 +107,7 @@
 							
 						<td><?php echo $sale['year']?></td>
 						<td><?php echo $sale['NumberOfOrders']?></td>
-						<td><?php echo $sale['TotalAmt']?></td>
+						<td><?php echo number_format($sale['TotalAmt'],2)?></td>
 					</tr>
 					
 				<?php } ?>
@@ -127,7 +127,7 @@
 						<td><?php echo $sale['employee_id']?></td>
 						<td><?php echo $sale['first_name'] . " " . $sale['last_name'];?></td>
 						<td><?php echo $sale['NumberOfOrders']?></td>
-						<td><?php echo $sale['TotalAmt']?></td>
+						<td><?php echo number_format($sale['TotalAmt'],2)?></td>
 					</tr>
 					
 				<?php } ?>
@@ -169,8 +169,8 @@
 							<td><?php echo $custom['order_id']?></td>
 							<td><?php echo $custom['first_name'] . ' ' . $custom['last_name'];?></td>
 							<td><?php echo $custom['order_date']?></td>
-							<td><?php echo $custom['price_estimation']?></td>
-							<td><?php echo $custom['total_price']?></td>
+							<td><?php echo number_format($custom['price_estimation'],2)?></td>
+							<td><?php echo number_format($custom['total_price'],2)?></td>
 
 
 						</tr>
@@ -189,7 +189,7 @@
 							
 						<td><?php echo $sale['day']?></td>
 						<td><?php echo $sale['NumberOfOrders']?></td>
-						<td><?php echo $sale['TotalAmt']?></td>
+						<td><?php echo number_format($sale['TotalAmt'],2)?></td>
 					</tr>
 					
 				<?php } ?>
@@ -206,7 +206,7 @@
 							
 						<td><?php echo $sale['week']?></td>
 						<td><?php echo $sale['NumberOfOrders']?></td>
-						<td><?php echo $sale['TotalAmt']?></td>
+						<td><?php echo number_format($sale['TotalAmt'],2)?></td>
 					</tr>
 					
 				<?php } ?>
@@ -223,7 +223,7 @@
 							
 						<td><?php echo $sale['month']?></td>
 						<td><?php echo $sale['NumberOfOrders']?></td>
-						<td><?php echo $sale['TotalAmt']?></td>
+						<td><?php echo number_format($sale['TotalAmt'],2)?></td>
 					</tr>
 					
 				<?php } ?>
@@ -240,7 +240,7 @@
 							
 						<td><?php echo $sale['year']?></td>
 						<td><?php echo $sale['NumberOfOrders']?></td>
-						<td><?php echo $sale['TotalAmt']?></td>
+						<td><?php echo number_format($sale['TotalAmt'],2)?></td>
 					</tr>
 					
 				<?php } ?>
@@ -292,7 +292,7 @@
 							<td><?php echo $gift['first_name'] . ' ' . $gift['last_name'];?></td>
 							<td><?php echo $gift['rec_first_name'] . ' ' . $gift['rec_last_name'];?></td>
 							<td><?php echo $gift['order_date']?></td>
-							<td><?php echo $gift['total_price']?></td>
+							<td><?php echo number_format($gift['total_price'],2)?></td>
 
 
 						</tr>
@@ -311,7 +311,7 @@
 							
 						<td><?php echo $gift['day']?></td>
 						<td><?php echo $gift['NumberOfOrders']?></td>
-						<td><?php echo $gift['TotalAmt']?></td>
+						<td><?php echo number_format($gift['TotalAmt'],2)?></td>
 					</tr>
 					
 				<?php } ?>
@@ -329,7 +329,7 @@
 							
 						<td><?php echo $gift['week']?></td>
 						<td><?php echo $gift['NumberOfOrders']?></td>
-						<td><?php echo $gift['TotalAmt']?></td>
+						<td><?php echo number_format($gift['TotalAmt'],2)?></td>
 					</tr>
 					
 				<?php } ?>
@@ -346,7 +346,7 @@
 							
 						<td><?php echo $gift['month']?></td>
 						<td><?php echo $gift['NumberOfOrders']?></td>
-						<td><?php echo $gift['TotalAmt']?></td>
+						<td><?php echo number_format($gift['TotalAmt'],2)?></td>
 					</tr>					
 				<?php } ?>
 				</table>
@@ -362,7 +362,7 @@
 							
 						<td><?php echo $gift['year']?></td>
 						<td><?php echo $gift['NumberOfOrders']?></td>
-						<td><?php echo $gift['TotalAmt']?></td>
+						<td><?php echo number_format($gift['TotalAmt'],2)?></td>
 					</tr>
 					
 				<?php } ?>
@@ -380,7 +380,7 @@
 						<td><?php echo $gift['gift_id']?></td>
 						<td><?php echo $gift['street_number']. ' ' . $gift['street_name'] . ' ' . $gift['street_type'].' '.$gift['major_municipality'].' '.$gift['governing_district'].' '.$gift['zip'];?></td>
 						<td><?php echo $gift['first_name'].' '.$gift['last_name']?></td>
-						<td><?php echo $gift['shipping_cost']?></td>
+						<td><?php echo number_format($gift['shipping_cost'],2)?></td>
 					</tr>
 					
 				<?php } ?>

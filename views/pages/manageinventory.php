@@ -23,7 +23,7 @@
 						</form>
 					</td>
 					<td><?php echo $material['material_id']?></td>
-					<td><?php echo $material['unit_price']?></td>
+					<td><?php echo number_format($material['unit_price'],2)?></td>
 				</tr>
 				
 			<?php } ?>
@@ -49,7 +49,7 @@
 					</form>
 					</td>
 					<td><?php echo $craft['craft_id']?></td>
-					<td><?php echo $material['unit_price']?></td>
+					<td><?php echo number_format($material['unit_price'],2)?></td>
 				</tr>
 	
 			<?php } ?>
@@ -78,7 +78,7 @@
 					</td>
 					<td><?php echo $return['return_id']?></td>
 					<td><?php echo $return['item_id']?></td>
-					<td><?php echo $return['current_price']?></td>
+					<td><?php echo number_format($return['current_price'],2)?></td>
 				</tr>
 	
 			<?php } ?>
