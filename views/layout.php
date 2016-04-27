@@ -1,7 +1,7 @@
 <?php
 	session_start();	
 	$_SESSION['date'] = date('Y-m-d');
-	$_SESSION['vardump'] = 1;
+	$_SESSION['vardump'] = 0;
 	if ($_SESSION['vardump']){
 		echo "<pre>";
 		print_r($_SESSION);
