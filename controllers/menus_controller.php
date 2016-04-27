@@ -26,16 +26,54 @@
           break;
       }
     }
+    /*
+    public static function chooseMenu(){
+      if ($_SESSION["user"] == 1){
+        MenusController::makeAdminMenu();
+      }
+      if ($_SESSION["user"] == 3){
+        MenusController::makeEmployeeMenu();
+      }
+    }
+    */
     //This function prints a menu and a sub menu if the $_GET[subMenu] is set
     public static function makeMenu()
     {
-      print "<nav class='navbar'>";
+      if ($_SESSION["user"] == 1){
+      
+      print "<nav class='menu drop-down-menu'>";
         foreach ( MenusController::$displayNames['Menu'] as $menuItem)
         {
           print "<a href='?controller=menus&action=mainMenu&subMenu=$menuItem'>$menuItem</a><br>";
           if ((isset($_GET['subMenu'])) && $_GET['subMenu']== $menuItem){
             print "<nav class='subnavbar'>";
             foreach ( MenusController::$subMenuNames[$menuItem] as $subMenuItem){
+
+              print "<a href='?controller=".strtolower($menuItem)."&action=".strtolower(str_replace(' ', '', $subMenuItem))."'>$subMenuItem</a>";
+            }
+            print "</nav>";
+            print "</nav>";
+
+            print"<nav class='drop-down-menu'>";
+
+          }
+        }
+      }
+      else if ($_SESSION["user"] == 3){
+        MenusController::makeEmployeeMenu();
+      }
+    }
+    public static function makeEmployeeMenu()
+    {
+      $employeeMenu    = array('Menu'   => ['Order']);
+      $employeeSubMenu = array('Order'  => ['Enter Order', 'Look Up Order', 'Return Order']);
+      print "<nav class='navbar'>";
+        foreach ( $employeeMenu['Menu'] as $menuItem)
+        {
+          print "<a href='?controller=menus&action=mainMenu&subMenu=$menuItem'>$menuItem</a><br>";
+          if ((isset($_GET['subMenu'])) && $_GET['subMenu']== $menuItem){
+            print "<nav class='subnavbar'>";
+            foreach ( $employeeSubMenu['Order'] as $subMenuItem){
 
               print "&nbsp;&nbsp;&nbsp;&nbsp<a href='?controller=".strtolower($menuItem)."&action=".strtolower(str_replace(' ', '', $subMenuItem))."'>$subMenuItem</a>";
             }

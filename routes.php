@@ -37,23 +37,42 @@
 			case 'inventory' :
 				$controller = new InventoryController();
 				break;
+			case 'suppliers' :
+				$controller = new SuppliersController();
 		}
 
 		//call the action
 		$controller->{ $action }();
 	}
+	//$controllers = array('pages' 	=> ['login', 'errors', 'menu','success', 'startSession', 'verify', 'stage']);
 
 	//just a list of the controllers we have and their actions
 	//actions are "pages", but also functions that might be needed within the page class
 	//for example startSession is not a page, but is included on pages to keep a user's session alive
-	$controllers = array('pages' 	=> ['login', 'errors', 'menu','success', 'startSession', 'verify'], 
-						 'reports' 	=> [],
+	//
+	//
+	$controllers = array('pages' 	=> ['login', 'errors', 'menu','success', 'startSession', 'verify', 'stage'], 
+						 'reports' 	=> ['makeReport','orders','inventory','generateOrderReports','generateInventoryReport','keyindicator','generateKeyIndicator','viewSale','viewCustom','suppliers','generateSupplierReport','viewGift','viewSupplyOrder'],
 						 'forms' 	=> [],
-						 'menus' 	=> ['mainMenu', 'subMenu'],
-						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm','manageorders','editGift'],
-						 'employees' => ['addemployee'],
-						'inventory' => ['ordermaterials', 'getMaterials','submitOrder','InsertOrder','manageinventory','addCraft','addMaterial','editMaterial']
+						 'menus' 	=> ['mainMenu', 'subMenu', 'makeMenu', 'makeEmployeeMenu'],
+						 'order'	=> ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm','manageorders','editGift', 'editCustom','viewOrder','updateGift','updateCustomOrder','returnItem', 'filter'],
+						 'employees' => ['addemployee','editemployee','getEmployee','insertEmployee','updateEmployee'],
+						'inventory' => ['ordermaterials', 'getMaterials','submitOrder','InsertOrder','manageinventory','addCraft','addMaterial','editMaterial','editCraft','editReturn','displayinventorysheet','recordinventory','updateMaterial','insertMaterial','updateCraft','deleteMaterial','insertCraft','addCraftMaterial','updateReturn','updateItemInventory','editQoh','updateQoh'],
+						'suppliers' => ['managesuppliers','addSupplier','editSupplier','managediscounts','addDiscount','editDiscount','getMaterials','insertSupplier','insertDiscount','updateSupplier','updateDiscount','deleteDiscount']
+						
+
 						);
+	/*
+	else if ($_SESSION["user"] == 3){
+		$controllers = array(
+								'order' => ['enterorder', 'lookuporder', 'findorder', 'returnorder', 'submitForm','confirm','manageorders','editGift'],
+
+								'menus' => ['makeMenu', 'mainMenu', 'subMenu', 'chooseMenu', 'makeEmployeeMenu'],
+							);
+	}*/
+//}
+
+
 
 	//Check if action and controller are allowed
 	//with failure redirect to error page
