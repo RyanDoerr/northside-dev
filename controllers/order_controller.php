@@ -125,6 +125,7 @@
 		//This function is not a page, and handles requests by specific page functions
 		public function enterorder()
 		{
+			$_SESSION['redirect'] = 0;
 
 			$stageDBO = DatabaseObjectFactory::build('Item');
 			$arr = ['item_id','name'];
@@ -146,6 +147,11 @@
 		//This function grabs all the data from the 3 order forms, and calls the appropriate method in the order model.
 		public function submitForm()
 		{
+			if ($_SESSION['redirect'] == 1){
+				$_SESSION['redirect'] = 0;
+				header('Location:?controller=order&action=enterorder');
+				//self::enterorder();
+			}
 			require_once('models/validate.php');
 			require_once('models/order.php');   //Get the Orders model
 			$model = new Order();
@@ -196,12 +202,18 @@
 					$i++;
 				}
 				$i = 0;
-				foreach(self::$OrderDetailsColumns['item_id'] as $item){
+				//echo "duplicateItem";
+				//print_r($duplicateItem);
+				//echo "duplicateItem";
+				//foreach(self::$OrderDetailsColumns['item_id'] as $item){
+				foreach($duplicateItem as $key => $value){
 					$_SESSION['order_details'][$i] = array(
-														'order_id' => '',
-														'item_id' => $item,
-														'item_price' => self::$OrderDetailsColumns['item_price'][$i],
-														'qty' => $duplicateItem[$item],
+														'order_id' => NULL,
+														//'item_id' => $item,
+														'item_id' => $key, 
+														//'item_price' => self::$OrderDetailsColumns['item_price'][$i],
+														'item_price' => (double)$model->getPrice($key),
+														'qty' => $value,
 
 												);
 					$i++;
@@ -318,7 +330,7 @@
 								}
 							
 
-							
+								/*
 								$i = 0;
 								foreach(self::$OrderDetailsColumns['item_id'] as $item)
 								{
@@ -332,6 +344,18 @@
 												);
 								$i++;
 								}
+								*/
+							foreach($duplicateItem as $key => $value){
+								$_SESSION['order_details'][$i] = array(
+									'order_id' => NULL,
+									//'item_id' => $item,
+									'item_id' => $key, 
+									//'item_price' => self::$OrderDetailsColumns['item_price'][$i],
+									'item_price' => $model->getPrice($key),
+									'qty' => $value,
+								);
+								$i++;
+							}
 							
 							$_SESSION['gift_order'] = array(
 													'order_id'       => NULL,
@@ -517,6 +541,7 @@
 		
 		public function confirm()
 		{
+
 			require_once('models/order.php');
 			if ($_SESSION['orderType'] == 'sale'){
 				Order::insertSale();

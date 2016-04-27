@@ -1,7 +1,7 @@
 <?php
 	session_start();	
 	$_SESSION['date'] = date('Y-m-d');
-	$_SESSION['vardump'] = 0;
+	$_SESSION['vardump'] = 1;
 	if ($_SESSION['vardump']){
 		echo "<pre>";
 		print_r($_SESSION);
@@ -20,6 +20,7 @@
 	}
 	set_error_handler("ErrorHandler");
 	*/
+
 ?>
 <!DOCTYPE html>
 	<html>
@@ -44,6 +45,7 @@
 			<!-- links to the style sheet -->
 		</head>
 		<body>
+
 
 			<!--<header>
 			<!-- <a href="http://localhost:4750/northside-dev/?controller=menus&action=mainMenu">Main Menu</a> -->	
