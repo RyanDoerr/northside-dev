@@ -342,7 +342,7 @@
 
 							$_SESSION['customer'] = array(
 													'last_name'    => self::$Customer['last_name'],
-													'first_name'   => self::$Customer['last_name'],
+													'first_name'   => self::$Customer['first_name'],
 													'phone_number' => self::$Customer['phone_number'],
 													'email'        => self::$Customer['email']
 							);
