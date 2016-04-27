@@ -309,8 +309,9 @@ class SaleInsertObject extends OrderDetailsDatabaseObject {
 		//$i = 0;
 		//count returns a number based on 0, sql counts from 1
 		//
-		$data = $this->database_db->select("order","order_id",[ "ORDER" => "order_id DESC"]);
+		$data = $this->database_db->select("order","order_id",[ "ORDER" => "order.order_id DESC"]);
 		$this->orderNumber = $data[0];
+		//echo $this->orderNumber;
 		$this->insertArray['order_details'] += $orderDetailsInsertArray;
 
   		//echo "<pre><br>===============================insertArray<br>";
@@ -321,11 +322,15 @@ class SaleInsertObject extends OrderDetailsDatabaseObject {
 	public function commitInsert(){
 		$this->database_db->insert('order', $this->insertArray['order']);
 		$i = 0;
+		$data = $this->database_db->select("order","order_id",[ "ORDER" => "order.order_id DESC"]);
+		$this->orderNumber = $data[0];
 		foreach ($this->insertArray['order_details'] as $separateInsert){
 			$separateInsert['order_id'] = $this->orderNumber;
 			//print_r($separateInsert);
 			$this->database_db->insert('order_details', $separateInsert);
 		}
+		$_SESSION['order']            = NULL;
+		$_SESSION['order_details']    = NULL;
 		
 
 	}
@@ -352,9 +357,9 @@ class GiftInsertObject extends SaleInsertObject {
 
 		$data = $this->database_db->select('order','order_id',[ 'ORDER' => 'order_id DESC']);
 		$this->insertArray['order_details'] += $orderDetailsInsertArray;
-  		echo "<pre><br>===============================insertArray<br>";
-		print_r($this->insertArray['order_details'][0]);
-		echo "</pre>"; 
+  		//echo "<pre><br>===============================insertArray<br>";
+		//print_r($this->insertArray['order_details'][0]);
+		//echo "</pre>"; 
 		//var_dump($insertArray);
 
 	}
@@ -446,7 +451,15 @@ class GiftInsertObject extends SaleInsertObject {
 		//print_r($this->insertArray);
 		//echo "</pre>";
 		$this->database_db->pdo->commit();
-		
+		$_SESSION['order']            = NULL;
+		$_SESSION['order_details']    = NULL;
+		$_SESSION['gift_order']       = NULL;
+		$_SESSION['custom_order']     = NULL;
+		$_SESSION['customer']         = NULL;
+		$_SESSION['gift_shipping']    = NULL;
+		$_SESSION['ship_cost']        = NULL;
+		$_SESSION['customerAddress']  = NULL;
+		$_SESSION['recipientAddress'] = NULL;
 		}
 
 		catch(PDOException $e)
@@ -541,6 +554,7 @@ class CustomInsertObject extends SaleInsertObject{
 			//print_r($this->insertArray['materials']);
 			//echo "</pre>";
 			$this->database_db->pdo->commit();
+
 			foreach($this->insertArray['materials'] as $separateMaterial){
 				$separateMaterial['craft_id'] = $craftID;
 				//grab the material id of the item we're using
@@ -548,6 +562,15 @@ class CustomInsertObject extends SaleInsertObject{
 				print_r($separateMaterial);
 				$this->database_db->insert('craft_materials', $separateMaterial);
 			}
+			$_SESSION['order']            = NULL;
+			$_SESSION['order_details']    = NULL;
+			$_SESSION['gift_order']       = NULL;
+			$_SESSION['custom_order']     = NULL;
+			$_SESSION['customer']         = NULL;
+			$_SESSION['gift_shipping']    = NULL;
+			$_SESSION['ship_cost']        = NULL;
+			$_SESSION['customerAddress']  = NULL;
+			$_SESSION['recipientAddress'] = NULL;
 		}
 
 		catch(PDOException $e){$this->database_db->pdo->rollback();}

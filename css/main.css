@@ -6,6 +6,10 @@ Gray-Ramey
 Includes: This style sheet contains the css for the login page and red
 and blue buttons.
 *********************************************************************/
+input:required:focus {
+  border: 3px #006699;
+
+}
 body {
   /******************************************************************
   This contains the font, Internet Explorer fall back options and 

@@ -103,7 +103,7 @@
 		public static $CraftMaterials = array(
 					'craft_id' => NULL,
 					'material_id' => NULL
-					);
+					); 
 					
 
 
@@ -125,12 +125,6 @@
 		//This function is not a page, and handles requests by specific page functions
 		public function enterorder()
 		{
-			if (!empty(self::$error)){
-			foreach (self::$error as $anotherError){
-				echo $anotherError."<br>";
-			}
-			echo '<a href=?controller=order&action=enterorder>Please Try Again.</a>';
-			}
 
 			$stageDBO = DatabaseObjectFactory::build('Item');
 			$arr = ['item_id','name'];
@@ -175,7 +169,10 @@
 					$index++;
 
 				}
+				$duplicateCheck = self::$OrderDetailsColumns;
 				
+
+
 				self::$orderColumns['subtotal']   = self::calculateSubtotal(self::$OrderDetailsColumns['item_price'],self::$OrderDetailsColumns['qty']);  //calculates the subtotal based on items and their quantities
 				self::$orderColumns['tax_amount'] = self::$orderColumns['subtotal'] * self::$TAX_RATE;
 				self::$orderColumns['total']      = self::$orderColumns['subtotal'] + self::$orderColumns['tax_amount'];
@@ -184,27 +181,33 @@
 
 
  				$_SESSION['order'] = array(
-													'employee_id' => $_SESSION['employee_id'],
+													'employee_id' => $_SESSION['employee'],
 													'order_date'  => $_SESSION['date'],
 													'subtotal'    => self::$orderColumns['subtotal'],
 													'tax_amount'  => self::$orderColumns['tax_amount'],
 													'total_price' => self::$orderColumns['total'],
 													'order_type'  => 'sale'
 					);
+ 				
 				$i = 0;
-				foreach(self::$OrderDetailsColumns['item_id'] as $item)
-				{
-					
+				$duplicateItem = [];
+				foreach(self::$OrderDetailsColumns['item_id'] as $item){
+					$duplicateItem[$item] +=  (int)self::$OrderDetailsColumns['qty'][$i];
+					$i++;
+				}
+				$i = 0;
+				foreach(self::$OrderDetailsColumns['item_id'] as $item){
 					$_SESSION['order_details'][$i] = array(
 														'order_id' => '',
 														'item_id' => $item,
 														'item_price' => self::$OrderDetailsColumns['item_price'][$i],
-														'qty' => self::$OrderDetailsColumns['qty'][$i]
+														'qty' => $duplicateItem[$item],
 
 												);
 					$i++;
 				}
 			}
+			
 			
 			else if(self::$orderType == 'gift') //Grab all the fields from the gift order form, then call the Order model.
 			{
@@ -307,6 +310,12 @@
 													'order_type'  => 'gift'
 
 							);
+								$i = 0;
+								$duplicateItem = [];
+								foreach(self::$OrderDetailsColumns['item_id'] as $item){
+									$duplicateItem[$item] +=  (int)self::$OrderDetailsColumns['qty'][$i];
+									$i++;
+								}
 							
 
 							
@@ -319,7 +328,7 @@
 														'order_id' => NULL,
 														'item_id' => $item,
 														'item_price' => self::$OrderDetailsColumns['item_price'][$i],
-														'qty' => self::$OrderDetailsColumns['qty'][$i]
+														'qty' => $duplicateItem[$item]
 												);
 								$i++;
 								}
@@ -425,6 +434,7 @@
 				//order_details
 				////convert order_details to craft_materials
 				$i = 0;
+	
 				foreach(self::$CraftMaterials['material_id'] as $material)
 				{
 					
