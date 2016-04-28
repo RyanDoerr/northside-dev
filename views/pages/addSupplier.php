@@ -1,4 +1,7 @@
 
+<div class='content'>
+<a href='?controller=suppliers&action=managesuppliers'><input type='button' class = 'blueButton' value='Back'/></a>
+
 <h3>Add Supplier</h3>
 <form action = "?controller=suppliers&action=insertSupplier" method = "post">
 	<label>Company Name <input required type="text" name="companyName" value = '<?php if(!empty($companyName))echo $companyName?>'></label><br>
@@ -45,7 +48,8 @@
 					}
 					else if(FormsController::$AddressForm[$index]['element'] == 'select') //IF THE ELEMENT IS A SELECT
 					{	
-						print "<label>Address Type </label><select name='" . FormsController::$AddressForm[$index]['name'] . "'>"; 
+
+						print "<label>Address Type </label><br><select name='" . FormsController::$AddressForm[$index]['name'] . "'>"; 
 							for($i = 0; $i < count(FormsController::$AddressForm[$index]['options']); $i++)
 							{
 								$selected='';
@@ -56,7 +60,8 @@
 								print "<h3>THE SELECTED OPTION IS </h3>". $name[$index];
  								print "<option ".$selected.">" .FormsController::$AddressForm[$index]['options'][$i] ."</option>"; 
 							}	
-							print "</select><br>";		
+
+							print "</select><br><br>";		
 					}
 				}?>
 
@@ -67,3 +72,6 @@
 	<input type = "submit" value="Add" class = "button blueButton">
 </form>
 
+
+
+</div>

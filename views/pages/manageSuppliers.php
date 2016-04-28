@@ -1,3 +1,7 @@
+
+<div class='content'>
+
+
 <h3>Manage Suppliers</h3>
 			<form action = "?controller=suppliers&action=addSupplier" method="post">
 				<input style="width:160px;"class="button blueButton" type="submit" value="Add Supplier">
@@ -18,4 +22,7 @@
 				</tr>
 				
 			<?php } ?>
+
 			</table>
+</div>
+

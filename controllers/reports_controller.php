@@ -247,14 +247,15 @@
 			$report = ''; //Makes the general reports defaulted in the html
 
 			$stageDBO = DatabaseObjectFactory::build('order');
-			// $stageDBO->SetJoin(['[><]item' => 'item_id', '[><]supplier' => 'supplier_id']);
+
 			$arr = ['order_id','employee_id','order_date','subtotal','tax_amount','total_price'];
 			$sales = $stageDBO->getRecords($arr,['order_type' => 'sale']);
 
 			$stageDBO = DatabaseObjectFactory::build('custom_order');
 			$stageDBO->SetJoin(['[><]order' => 'order_id', '[><]employee' => 'employee_id']);
 			$arr = ['custom_order_id','order_id','employee_id','order_date','total_price','price_estimation','first_name','last_name'];
-			$customs = $stageDBO->getRecords($arr,['order_type' => 'order']);
+
+			$customs = $stageDBO->getRecords($arr,['order_type' => 'custom']);
 
 
 			$stageDBO = DatabaseObjectFactory::build('order');
@@ -287,10 +288,12 @@
 		{
 			$giftID = $_POST['gift_id'];
 
+
 			$stageDBO = DatabaseObjectFactory::build('gift_order');
 			$arr = ['gift_id', 'order.order_id','street_type', 'street_name', 'street_number','shipping_cost','major_municipality','governing_district','zip', 'rec_last_name','rec_first_name','order_date','last_name','first_name','total_price'];
 			$stageDBO->SetJoin(['[><]order' => 'order_id', '[><]address' => 'address_id', '[><]customer' => 'customer_id', '[><]gift_shipping' => 'gift_id','[><]ship_cost' => 'ship_id']);
 			$gifts = $stageDBO->getRecords($arr,['gift_id' => $giftID]);
+
 
 			$stageDBO = DatabaseObjectFactory::build('item');
 			$stageDBO->SetJoin(['[><]order_details' => 'item_id', '[><]order' => 'order_id']);
@@ -423,7 +426,8 @@
 				$stageDBO = DatabaseObjectFactory::build('custom_order');		
 				$stageDBO->SetJoin(['[><]order' => 'order_id', '[><]employee' => 'employee_id']);	
 				$arr = ['order_id','employee_id','order_date','subtotal','tax_amount','total_price'];
-				$customs = $stageDBO->makeQuery("SELECT COUNT(order_id) AS NumberOfOrders, day(order_date) AS day, SUM(total_price) AS TotalAmt FROM `order` WHERE order_type = 'order' AND year(order_date) = year(current_date) GROUP BY day(order_date)");
+
+				$customs = $stageDBO->makeQuery("SELECT COUNT(order_id) AS NumberOfOrders, day(order_date) AS day, SUM(total_price) AS TotalAmt FROM `order` WHERE order_type = 'custom' AND year(order_date) = year(current_date) GROUP BY day(order_date)");
 
 				print "<script>$(document).ready(function() {
       				  $( '#tabs' ).tabs({ active: 1 });
@@ -435,7 +439,8 @@
 				$stageDBO = DatabaseObjectFactory::build('custom_order');		
 				$stageDBO->SetJoin(['[><]order' => 'order_id', '[><]employee' => 'employee_id']);	
 				$arr = ['order_id','employee_id','order_date','subtotal','tax_amount','total_price'];
-				$customs = $stageDBO->makeQuery("SELECT COUNT(order_id) AS NumberOfOrders, WEEK(order_date) AS week, SUM(total_price) AS TotalAmt FROM `order` WHERE order_type = 'order' AND year(order_date) = year(current_date) GROUP BY WEEK(order_date)");
+
+				$customs = $stageDBO->makeQuery("SELECT COUNT(order_id) AS NumberOfOrders, WEEK(order_date) AS week, SUM(total_price) AS TotalAmt FROM `order` WHERE order_type = 'custom' AND year(order_date) = year(current_date) GROUP BY WEEK(order_date)");
 
 				print "<script>$(document).ready(function() {
       				  $( '#tabs' ).tabs({ active: 1 });
@@ -447,7 +452,8 @@
 				$stageDBO = DatabaseObjectFactory::build('custom_order');		
 				$stageDBO->SetJoin(['[><]order' => 'order_id', '[><]employee' => 'employee_id']);	
 				$arr = ['order_id','employee_id','order_date','subtotal','tax_amount','total_price'];
-				$customs = $stageDBO->makeQuery("SELECT COUNT(order_id) AS NumberOfOrders, month(order_date) AS month, SUM(total_price) AS TotalAmt FROM `order` WHERE order_type = 'order' AND year(order_date) = year(current_date) GROUP BY month(order_date)");
+
+				$customs = $stageDBO->makeQuery("SELECT COUNT(order_id) AS NumberOfOrders, month(order_date) AS month, SUM(total_price) AS TotalAmt FROM `order` WHERE order_type = 'custom' AND year(order_date) = year(current_date) GROUP BY month(order_date)");
 
 				print "<script>$(document).ready(function() {
       				  $( '#tabs' ).tabs({ active: 1 });
@@ -459,7 +465,8 @@
 				$stageDBO = DatabaseObjectFactory::build('custom_order');		
 				$stageDBO->SetJoin(['[><]order' => 'order_id', '[><]employee' => 'employee_id']);	
 				$arr = ['order_id','employee_id','order_date','subtotal','tax_amount','total_price'];
-				$customs = $stageDBO->makeQuery("SELECT COUNT(order_id) AS NumberOfOrders, year(order_date) AS year, SUM(total_price) AS TotalAmt FROM `order` WHERE order_type = 'order'  GROUP BY year(order_date)");
+
+				$customs = $stageDBO->makeQuery("SELECT COUNT(order_id) AS NumberOfOrders, year(order_date) AS year, SUM(total_price) AS TotalAmt FROM `order` WHERE order_type = 'custom'  GROUP BY year(order_date)");
 
 				print "<script>$(document).ready(function() {
       				  $( '#tabs' ).tabs({ active: 1 });
@@ -595,9 +602,10 @@
 			else if($report == 'discountedOrders')
 			{
 				$stageDBO = DatabaseObjectFactory::build('order_materials');
-				//$stageDBO->SetJoin(['[><]supplier_order_id' => 'supplier_order_id']);
+
+				$stageDBO->SetJoin(['[><]supplier_order' => 'supplier_order_id']);
 				$arr = ['supplier_order_id','material_id','qty','discount_amount'];
-				$suppliers = $stageDBO->getRecords($arr);
+				$suppliers = $stageDBO->getRecords($arr,['discount_amount[>]' => 0]);
 
 				
 
@@ -617,12 +625,16 @@
 			$arr = ['supplier_order_id','material_id','qty','discount_amount'];
 			$orderDetails = $stageDBO->getRecords($arr,['supplier_order_id' => $supplierOrderID]);
 
-			print "Supplier Order Details<br><table>";
+
+			print "<div class='content'>Supplier Order Details<br><table>";
 			print "<th>Supplier Order ID</th><th>Material ID</th><th>Quantity</th><th>Discount Amount</th>";
 			foreach($orderDetails AS $order)
 			{
 				print "<tr><td>".$order['supplier_order_id']."</td><td>".$order['material_id']."</td><td>".$order['qty']."</td><td>" . $order['discount_amount']."</td></tr>";
 			}
+
+
+			print "</div>";
 
 
 

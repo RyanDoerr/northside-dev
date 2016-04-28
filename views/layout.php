@@ -1,14 +1,15 @@
 <?php
 	session_start();	
 	$_SESSION['date'] = date('Y-m-d');
-	$_SESSION['vardump'] = 0;
-	if ($_SESSION['vardump']){
-		echo "<pre>";
-		print_r($_SESSION);
-		print_r($_POST);
-		echo "</pre>";
-		echo "===SESSION ==========================================================";
-	}
+
+	// $_SESSION['vardump'] = 1;
+	// if ($_SESSION['vardump']){
+	// 	echo "<pre>";
+	// 	print_r($_SESSION);
+	// 	print_r($_POST);
+	// 	echo "</pre>";
+	// 	echo "===SESSION ==========================================================";
+	// }
 	/*
 	function ErrorHandler($errno, $errstr, $errline, $errfile, $customMessage) {
   		$writeMessage = "<br><b>Error: Line: $errfile in $errline</b> [$errno] $errstr<br>";
@@ -46,16 +47,23 @@
 		<body>
 
 
-			<!--<header>
-			<!-- <a href="http://localhost:4750/northside-dev/?controller=menus&action=mainMenu">Main Menu</a> -->	
-			<!--</header>
-			<!--
-			<nav>
-				<a style="float:left;" href="?controller=menus&action=mainMenu">Main Menu</a>
-			</nav><br>
-			-->
+			
 			<div class='wrapper'>
-			<a href='?controller=menus&action=mainMenu'>Main Menu</a>
+			<?php 
+			if (isset($_GET['controller'])) 
+			{
+				$controller = $_GET['controller'];
+			}
+			else {
+				$controller = 'login';
+			}
+
+			if($controller != 'menus' && $controller != 'login')
+			{ ?>
+			<a href='?controller=menus&action=makeMenu'><input type='button' class = 'blueButton' value='Main Menu'/></a><br><br>
+			<?php } ?>
+
+
 				<?php require_once('routes.php'); ?>
 			</div>
 

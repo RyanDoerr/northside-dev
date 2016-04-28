@@ -1,4 +1,6 @@
 
+<div class='content'>
+
 			<form action = "?controller=suppliers&action=addDiscount" method="post">
 				<input style="width:160px;"class="button blueButton" type="submit" value="Add Discount">
 			</form>
@@ -27,4 +29,7 @@
 				</tr>
 				
 			<?php } ?>
+
 			</table>
+</div>
+

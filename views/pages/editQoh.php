@@ -1,3 +1,6 @@
+<div class='content'>
+<a href='?controller=inventory&action=recordinventory'><input type='button' class = 'blueButton' value='Back'/></a>
+
 <h3>Editing Item <?php echo $itemID . ': '  . $item[0]['name']?> </h3>
 
 <form action = "?controller=inventory&action=updateQoh" method = "post">
@@ -12,3 +15,4 @@
 		
 	<input type = "submit" value="Update" class = "button blueButton">
 </form>
+</div>

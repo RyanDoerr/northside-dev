@@ -1,11 +1,16 @@
+
+<div class='content'>
+
 		<h3>Suppliers Inventory</h3>
 			<form action="?controller=reports&action=generateSupplierReport" method='post'>
 			<select name = 'reportType'>
 				<option value='genSuppliers'>General Suppliers Report</option>
 				<option value='recentSupplierOrders' <?php if ($report == 'recentSupplierOrders') echo 'selected="selected"'; ?> >Recent Orders to Suppliers</option>
 				<option value='discountedOrders' <?php if ($report == 'discountedOrders') echo 'selected="selected"'; ?>>Orders with Discounts</option>
-			</select>
-			<input type ='submit' value='Generate' class='button'>
+
+			</select><br><br>
+			<input type ='submit' value='Generate' class='blueButton'>
+
 			</form>
 
 			<?php if(!empty($suppliers) && $report != 'recentSupplierOrders' && $report != 'discountedOrders')
@@ -46,7 +51,10 @@
 						<td><?php echo $supplier['supplier_id']?></td>
 						<td><?php echo $supplier['first_name'] . ' ' . $supplier['last_name'];?></td>
 						<td><?php echo $supplier['order_date']?></td>
+
 						<td><?php echo number_format($supplier['total_price'],2)?></td>
+
+
 					</tr>
 					
 				<?php } ?>
@@ -66,7 +74,9 @@
 						<td><?php echo $supplier['supplier_order_id']?></td>
 						<td><?php echo $supplier['material_id'];?></td>
 						<td><?php echo $supplier['qty']?></td>
+
 						<td><?php echo number_format($supplier['discount_amount'],2)?></td>
+
 					</tr>
 					
 				<?php } ?>
@@ -76,4 +86,7 @@
 
 			else { ?>
 				<p>No results found</p>
+
 			<?php } ?>	
+</div>
+

@@ -1,3 +1,5 @@
+<div class='content'>
+<a href='?controller=order&action=manageorders'><input type='button' class = 'blueButton' value='Back'/></a>
 <h3>Manage Orders - Edit Gift Order</h3>
 
 <h4>Editing Gift ID <?php echo $gift_id; ?></h4>
@@ -31,3 +33,4 @@
 	<input type="submit" class="button blueButton" value="Update">
 	
 </form>
+</div>

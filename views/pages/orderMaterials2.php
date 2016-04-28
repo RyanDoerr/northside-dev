@@ -1,11 +1,16 @@
 
+<div class='content'>
+<a href='?controller=inventory&action=ordermaterials'><input type='button' class = 'blueButton' value='Back'/></a>
+
+
+
 
 <!--Once a supplier is selected, this screen will show up for them to select the materials-->
 <h3>Order Materials</h3>
 
-<h4>Select Materials</h4>
+<h4>Select Materials</h4><br>
 <form action = "?controller=inventory&action=submitOrder" method="post">
-	<label class='selectItems'>Select Materials
+	<label class='selectItems'>Select Materials<br>
 	<select name = "material[]">
 		<?php $index = 0; foreach($materials as $material) { ?>
 			<option value="<?php echo $material['material_id'];?>"><?php echo $material['material_id']; ?></option>
@@ -19,7 +24,9 @@
 		<br> 
 	</label>
 		<?php if(count($materials) >1){ ?>
-			 <input name="otherAdd" type='button' class="button" id='addNew' value='Add New +'/>
+
+			 <input name="otherAdd" type='button' class="blueButton button" id='addNew' value='Add New +'/>
+
 		<?php } ?>
 	<br>
 	<?php if(!empty($errorMessage['duplicates'])) echo $errorMessage['duplicates'];?><br>
@@ -37,3 +44,6 @@ else{
 	?>
 	<p>No discounts are available for this material.</p>
 	<?php } ?>
+
+</div>
+

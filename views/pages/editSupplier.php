@@ -1,4 +1,6 @@
-<h3>Editing Supplier ID <?php echo $supplierID;?> </h3>
+
+<div class='content'>
+<a href='?controller=suppliers&action=managesuppliers'><input type='button' class = 'blueButton' value='Back'/></a><h3>Editing Supplier ID <?php echo $supplierID;?> </h3>
 <form action = "?controller=suppliers&action=updateSupplier" method = "post">
 	<label>Company Name <input type="text" name="companyName" value='<?php echo $supplier[0]['company_name'];?>'></label><br>
 	<label>Company Phone Number <input type="text" name="phone" value='<?php echo $supplier[0]['company_phone'];?>'></label><?php if(!empty($errorMessage['phoneError'])) echo $errorMessage['phoneError'];?><br>
@@ -31,4 +33,6 @@
 	<input type = "submit" value="Update" class = "button blueButton">
 </form>
 
+
 			
+</div>	

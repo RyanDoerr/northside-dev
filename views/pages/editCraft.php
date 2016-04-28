@@ -1,3 +1,7 @@
+
+<div class='content'>
+<a href='?controller=inventory&action=manageinventory'><input type='button' class = 'blueButton' value='Back'/></a>
+
 <!--This page allows the user to edit a craft for the Edit button that they clicked for a particular craft-->
 <h3>Editing Craft ID <?php echo $craftID;?> </h3>
 <form action = "?controller=inventory&action=updateCraft" method = "post">
@@ -49,4 +53,5 @@
 			<input type='hidden' name='craft_id' value='<?php echo$craftID;?>'>
 		</form>	
 
+</div>
 	

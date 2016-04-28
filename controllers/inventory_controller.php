@@ -22,7 +22,8 @@
 			$supplier_id = $_POST['supplierID'];
 			
 			$stageDBO = DatabaseObjectFactory::build('material');
-			$arr = ['material_id','supplier_id','unit_price'];
+			$arr = ['material_id','supplier_id','unit_price','name'];
+			$stageDBO->SetJoin(['[><]item' => 'item_id']);
 			$materials = $stageDBO->getRecords($arr, ['supplier_id' => $supplier_id]);
 
 			$stageDBO = DatabaseObjectFactory::build('supplier_discount');
@@ -49,12 +50,12 @@
 			{
 				$unitPrice = $stageDBO->getRecords($arr, ['material_id' => $supplyOrder['material'][$index]]);
 				$supplyOrder['unitPrice'][$index] = $unitPrice[0]['unit_price'];
-				//print_r($supplyOrder['unitPrice'][$index]);
+
 			}
 			
 			$supplyOrder['quantity'] = $_POST['quantity'];
 			$supplyOrder['supplier_id'] = $_POST['supplierID'];
-			//print_r($supplyOrder['material']);
+
 			//FIND DUPLICATE MATERIAL ENTRIES
 			$duplicates = array_count_values($supplyOrder['material']);
 
@@ -106,7 +107,8 @@
 
 				$taxAmount = (self::$TAX_RATE * $subtotal);
 				$total = $subtotal - $discountTotal + $taxAmount;
-				print "<br>Materials Ordered for Supplier " . $supplier_id;
+
+				print "<div class='content'><br>Materials Ordered for Supplier " . $supplier_id;
 				for($i = 0; $i < count($supplyOrder['material']); $i++)
 				{
 					print "<br> Material ID " . $supplyOrder['material'][$i] . ", Unit Price: " . $supplyOrder['unitPrice'][$i] . ', Qty: ' . $supplyOrder['quantity'][$i];
@@ -117,11 +119,12 @@
 				print "<br>TAX AMOUNT: $" . number_format($taxAmount,2);
 				print "<br>TOTAL: $" . number_format($total,2);
 				print "<br><input type='button' class='button' value='Print'>";
-				print "<a href='?controller=inventory&action=ordermaterials'><input type='button' class='button' value='Back to Order Materials'></a>";
+
+				print "<a href='?controller=inventory&action=ordermaterials'><input type='button' class='button' value='Back to Order Materials'></a></div>";
 
 				//INSERT DATA HERE
 				$supplierOrderData['supplier_order_id'] = NULL;
-				$supplierOrderData['employee_id'] = 0;
+				$supplierOrderData['employee_id'] = $_SESSION['employee_id'];
 				$supplierOrderData['supplier_id'] = $supplier_id;
 				$supplierOrderData['order_date'] = date("Y-m-d");
 				$supplierOrderData['subtotal'] = $subtotal;
@@ -246,7 +249,11 @@
 				$itemUpdates['qoh'] = $qoh;
 				$itemUpdates['calculated_qoh'] = $qoh;
 				$stageDBO->updateRecord($itemUpdates,['item_id' => $itemID]);
-				print "Item " . $itemID . ' was successfully updated.';
+
+
+				$successMessage = "Item " . $itemID . ' was successfully updated.';
+				$back = '?controller=inventory&action=recordinventory';
+				require_once('views/pages/success.php');
 			}
 
 
@@ -281,8 +288,9 @@
 			$stageDBO = DatabaseObjectFactory::build('item');
 			$stageDBO->updateRecord($itemUpdates,['item_id' => $itemID]);
 
-			print $item[0]['name']. ' has a new quantity of ' . $qoh;
-			//print "<br><a class='button' href='?controller=inventory&action=recordinventory>Back to Record Inventory</a>";
+
+			$successMessage =  $item[0]['name']. ' has a new quantity of ' . $qoh;
+			require_once('views/pages/success.php');
 
 		}
 		
@@ -341,7 +349,8 @@
 
 			for($index = 0; $index < count($duplicates); $index++)
 			{
-				if($duplicates[$index] > 1)
+
+				if($duplicates[$items[$index]] > 1)
 				{
 					$errorMessage['duplicates'] = 'ERROR: Duplicate Materials.';
 				}
@@ -365,23 +374,30 @@
 			{
 				$stageDBO = DatabaseObjectFactory::build('item');
 				$stageDBO->setRecords('item', $itemData);
-				print_r($itemData);
+
 
 				//GRAB THE ITEM ID THAT WAS INSERTED
-				$itemID = $stageDBO->getLastInsert();
-
-				$stageDBO = DatabaseObjectFactory::build('item');
-				$stageDBO->setRecords('item', $itemData);
-			
+				$itemID = $stageDBO->getLastInsert();	
 
 				//MATERIAL DATA
-				$materialData['material_id'] = NULL;
-				$materialData['item_id'] = $itemID;
-				$materialData['supplier_id'] = $_POST['supplier'];
-				$materialData['unit_price'] = $_POST['unitPrice'];
+				$craftData['craft_id'] = NULL;
+				$craftData['item_id'] = $itemID;
 
-				$stageDBO = DatabaseObjectFactory::build('material');
-				$stageDBO->setRecords('material', $materialData);
+				$stageDBO = DatabaseObjectFactory::build('craft');
+				$stageDBO->setRecords('craft', $craftData);
+				$craftID = $stageDBO->getLastInsert();
+
+				for($i = 0; $i < count($items); $i++)
+				{
+					$craftMaterialsData['craft_id'] = $craftID;
+					$craftMaterialsData['material_id'] = $items[$i];
+					$stageDBO->setRecords('craft_materials', $craftMaterialsData);
+
+				}
+
+				$successMessage = 'Craft successfully added.';
+				require_once('views/pages/success.php');
+				
 			}
 
 
@@ -449,14 +465,10 @@
 			{
 				$stageDBO = DatabaseObjectFactory::build('item');
 				$stageDBO->setRecords('item', $itemData);
-				print_r($itemData);
+
 
 				//GRAB THE ITEM ID THAT WAS INSERTED
-				$itemID = $stageDBO->getLastInsert();
-
-				$stageDBO = DatabaseObjectFactory::build('item');
-				$stageDBO->setRecords('item', $itemData);
-			
+				$itemID = $stageDBO->getLastInsert();		
 
 				//MATERIAL DATA
 				$materialData['material_id'] = NULL;
@@ -466,6 +478,11 @@
 
 				$stageDBO = DatabaseObjectFactory::build('material');
 				$stageDBO->setRecords('material', $materialData);
+
+
+				$successMessage = 'Material was successfully added. ';
+				$back = '?controller=inventory&action=manageinventory';
+				require_once('views/pages/success.php');
 			}
 
 
@@ -495,6 +512,8 @@
 			$itemUpdates = array();
 			$materialUpdates = array();
 			$materialID = $_POST['material_id'];
+
+			$success = false;
 
 			//GET DATA FROM DATABASE TO COMPARE TO EDIT FORM
 			$stageDBO = DatabaseObjectFactory::build('material');
@@ -535,6 +554,7 @@
 			{
 				$stageDBO = DatabaseObjectFactory::build('item');
 				$stageDBO->updateRecord($itemUpdates, ['item_id' => $materials[0]['item_id']]);
+				$success = true;
 			}
 
 			//WHEN ERROR MESSAGES, SEND BACK TO FILE
@@ -549,12 +569,23 @@
 			{
 				$stageDBO = DatabaseObjectFactory::build('material');
 				$stageDBO->updateRecord($materialUpdates, ['material_id' => $materialID]);
+
+				$success = true;
+
 			}
 
 			//IF NOTHING CHANGED, PRINT NO CHANGES MADE
 			else if(count($itemUpdates) == 0 && count($materialUpdates) == 0)
 			{
-				print "No changes were made.";
+
+				print "<div class='content'>No changes were made.</div>";
+			}
+
+			if($success == true)
+			{
+				$successMessage = 'Material was successfully updated.';
+				$back = '?controller=inventory&action=manageinventory';
+				require_once('views/pages/success.php');
 			}
 
 		}
@@ -624,6 +655,9 @@
 												"craft_id" => $craftID,
 												"material_id" => $materialID
 											]]);
+
+				$successMessage = 'Material successfully removed from craft.';
+				require_once('views/pages/success.php');
 			}
 		}
 
@@ -642,7 +676,7 @@
 
 			if(count($alreadyExists) == 1)
 			{
-				print "This material is already part of this craft. ";
+				print "<div class='content'>This material is already part of this craft. </div>";
 				//require_once('views/pages/editCraft.php');
 			}
 
@@ -652,6 +686,10 @@
 				$craftMaterialsData['craft_id'] = $craftID;
 				$craftMaterialsData['material_id'] = $materialID;
 				$stageDBO->setRecords('craft_materials',$craftMaterialsData);
+
+				$successMessage = 'Material successfully added to craft.';
+				$back = '?controller=inventory&action=manageinventory';
+				require_once('views/pages/success.php');
 			}
 		}
 
@@ -661,7 +699,7 @@
 			$errorMessage = array();
 			$itemUpdates = array();
 			$craftID = $_POST['craft_id'];
-			print "CRAFT ID IS " . $craftID . ' <br>';
+
 
 			//GET DATA FROM DATABASE TO COMPARE TO EDIT FORM
 			$stageDBO = DatabaseObjectFactory::build('craft');
@@ -698,7 +736,10 @@
 			{
 				$stageDBO = DatabaseObjectFactory::build('item');
 				$stageDBO->updateRecord($itemUpdates, ['item_id' => $craft[0]['item_id']]);
-				print 'Successfully Updated' . ' ' . $itemUpdates['name'] . ', Item ID: '  .$craft[0]['item_id'];
+
+				$successMessage = 'Successfully Updated' . ' ' . $itemData['name'] . ', Item ID: '  .$craft[0]['item_id'];
+				$back = '?controller=inventory&action=manageinventory';
+				require_once('views/pages/success.php');
 			}
 
 			//WHEN ERROR MESSAGES, SEND BACK TO FILE
@@ -772,7 +813,10 @@
 			{
 				$stageDBO = DatabaseObjectFactory::build('item');
 				$stageDBO->updateRecord($itemUpdates, ['item_id' => $return[0]['item_id']]);
-				print "Successfully Updated. <a href='?controller=inventory&action=manageinventory'>Back to Manage Inventory</a>";
+
+				$back = '?controller=inventory&action=manageinventory';
+				$successMessage = 'Return successfully updated.';
+				require_once('views/pages/success.php');
 			}
 
 			//WHEN ERROR MESSAGES, SEND BACK TO FILE

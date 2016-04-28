@@ -1,3 +1,6 @@
+
+<div class='content'>
+
 <a href='?controller=reports&action=orders'><input type='button' class = 'blueButton' value='Back'/></a>
 <h3>Details for Order ID <?php echo $sales[0]['order_id'];?></h3>
 
@@ -16,4 +19,7 @@
 			<td><?php echo $item['qty'] ?> </td>
 		</tr>
 
+
 <?php	} ?>
+</div>
+

@@ -1,3 +1,7 @@
+
+<div class='content'>
+<a href='?controller=employees&action=editemployee'><input type='button' class = 'blueButton back' value='Back'/></a>
+
 <h3>Editing Employee ID <?php echo $employeeID;?> </h3>
 
 
@@ -31,8 +35,12 @@
 					}
 				} ?>
 
-	<a href="?controller=employees&action=editemployee"><input type = "button" value="Cancel" class = "button redButton"></a>
+
+	
 
 		
-	<input type = "submit" value="Update" class = "button blueButton">
+	
+	<a href="?controller=employees&action=editemployee"><input type = "button" value="Cancel" class = "button redButton"></a>
+	<input type = "submit" value="Update" class = "button blueButton"><br>
 </form>
+</div>

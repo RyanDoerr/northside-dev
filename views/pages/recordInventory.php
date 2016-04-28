@@ -4,7 +4,9 @@
 		$supplierID = $_POST['supplier'];
 	}
 ?>
-<div id="tabs">
+
+<div class='content' id="tabs">
+
   <ul>
     <li><a href="#tabs-1">Record Inventory Shipments</a></li>
     <li><a href="#tabs-2">Update Inventory</a></li>
@@ -28,7 +30,9 @@
   				 <option <?php echo $selected ?> value="<?php echo $supplier['supplier_id']; ?>"><?php echo $supplier['company_name']; ?></option>
   			<?php } ?>
   		</select>
-  		<input type="submit" value="Next" class="button">
+
+  		<input type="submit" value="Next" class="blueButton">
+
   	</form>
 
   	<?php if(!empty($supplierID))
