@@ -138,7 +138,7 @@
 
 
 			$db = databaseConnection::getInstance();
-			$materials = $db->query("SELECT name, material.material_id, item.item_id FROM Material, Item WHERE Material.item_id = Item.item_id")->fetchAll();
+			$materials = $db->query("SELECT name, material.material_id, item.item_id FROM material, item WHERE material.item_id = item.item_id")->fetchAll();
 			
 			if (empty(self::$error)){
 				require_once('views/pages/enterorder.php');

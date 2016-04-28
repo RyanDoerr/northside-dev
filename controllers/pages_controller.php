@@ -3,6 +3,23 @@
 	{
 		//private $employee_id;
 //This will insert sessionstart into necessary pages
+	public static function redirect($url)
+	{
+    	if (!headers_sent())
+   	    {    
+        	header('Location: '.$url);
+        exit;
+        }
+    	else
+        {  
+        	echo '<script type="text/javascript">';
+        	echo 'window.location.href="'.$url.'";';
+        	echo '</script>';
+        	echo '<noscript>';
+        	echo '<meta http-equiv="refresh" content="0;url='.$url.'" />';
+        	echo '</noscript>'; exit;
+    	}
+	}
 		public function session($set)
 		{
 			switch($set)
@@ -36,18 +53,12 @@
 			$_SESSION['employee'] = $dataset[0]['employee_id'];
 			if (password_verify($password, $hashed)){
 				$_SESSION["employee_id"] = $dataset[0]["employee_id"];
-				if ($userLevel == 3){
-					$_SESSION["user"] = 3;
-					header('Location:?controller=menus&action=makeMenu');
-				}
-				else if ($userLevel == 1){
-					$_SESSION["user"] = 1;
-					header('Location:?controller=menus&action=makeMenu');
-				}
-
+					$_SESSION['user'] = $userLevel;
+					PagesController::redirect('?controller=menus&action=makeMenu');
 			}
 			else{
 				$error = "error";
+				echo 'noVerify';
 				PagesController::login($error);
 			}
 		}
