@@ -260,6 +260,8 @@ class GiftShippingDatabaseObject extends DatabaseObject {
 	function __construct(){
 		parent::__construct();
 		$this->field_set = array('ship_id','address_id', 'gift_id');
+
+		$this->setTable('gift_shipping');
 	}
 }
 //19
@@ -317,9 +319,9 @@ class SaleInsertObject extends OrderDetailsDatabaseObject {
 		//echo $this->orderNumber;
 		$this->insertArray['order_details'] = $orderDetailsInsertArray;
 
-  		echo "<pre><br>===============================insertArray<br>";
-		print_r($this->insertArray['order_details']);
-		echo "</pre>"; 
+  		//echo "<pre><br>===============================insertArray<br>";
+		//print_r($this->insertArray['order_details']);
+		//echo "</pre>"; 
 
 	}
 	public function commitInsert(){
@@ -331,7 +333,7 @@ class SaleInsertObject extends OrderDetailsDatabaseObject {
 		$i = 0;
 		$data = $this->database_db->select("order","order_id",[ "ORDER" => "order.order_id DESC"]);
 		$this->orderNumber = $data[0];
-		echo 'thisordernumber='.$this->orderNumber;
+		//echo 'thisordernumber='.$this->orderNumber;
 		foreach ($this->insertArray['order_details'] as $separateInsert){
 			$separateInsert['order_id'] = $this->orderNumber;
 			$data2 = $this->database_db->select('item', 'calculated_qoh', ['item_id' => $separateInsert['item_id']]);
@@ -339,7 +341,8 @@ class SaleInsertObject extends OrderDetailsDatabaseObject {
 			$itemQOH =  $itemQOH - $separateInsert['qty'];
 			$this->database_db->update('item', ['calculated_qoh' => $itemQOH], ['item_id' => $separateInsert['item_id']]);
 			$this->database_db->insert('order_details', $separateInsert);
-			echo "shit.--";var_dump($separateInsert);
+			
+
 		}
 		//$this->database_db->pdo->commit();
 
@@ -430,10 +433,10 @@ class GiftInsertObject extends SaleInsertObject {
 		//now that we have an order, we can do our order_details inserts
 		//and just to be dirty we'll decrement item.qoh here
 		foreach ($this->insertArray['order_details'] as $separateInsert){
-			echo "<br>===============================separateInsert<br>";
+			//echo "<br>===============================separateInsert<br>";
 			$separateInsert['order_id'] = $orderID;
 			//$this->insertArray['order_details']['order_id'] = $orderID;
-			print_r($separateInsert);
+			//print_r($separateInsert);
 			$data = $this->database_db->select('item', 'calculated_qoh', ['item_id' => $separateInsert['item_id']]);
 			$itemQOH = $data[0];
 			$itemQOH =  $itemQOH - $separateInsert['qty'];

@@ -1,3 +1,6 @@
+
+<div class='content'>
+
 <table>
 <th>Item ID</th><th>Item Name</th><th>Quantity on Hand</th><th>Calculated Quantity On Hand</th>
 
@@ -11,4 +14,7 @@
 	</tr>
 <?php } ?>
 
+
 </table>
+</div>
+

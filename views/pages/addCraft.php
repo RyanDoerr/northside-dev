@@ -1,3 +1,5 @@
+
+<div class='content'>
 <a href='?controller=inventory&action=manageinventory'><input type='button' class = 'blueButton' value='Back'/></a>
 <!--This is the page for the Add Craft form, which is located on the Manage Inventory page-->
 <h3>Add Craft</h3>
@@ -32,4 +34,5 @@
 		
 	<input  type = "submit" value="Add" class = "button blueButton">
 </form>		
+</div>
 		

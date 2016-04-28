@@ -1,3 +1,5 @@
+<div class='content'>
+<a href='?controller=menus&action=makeMenu'><input type='button' class = 'blueButton' value='Main Menu'/></a>
 <!-- This is the confirm order screen, used for all 3 types of orders.-->
 <table>
 <th>Items</th><th>Item Price</th><th>Quantity</th>
@@ -37,4 +39,6 @@
 <form action="?controller=order&action=confirm" method="post">
 <a href="?controller=order&action=enterorder"><input  class = 'button redButton' type='button' value='Cancel'/></a>
 <input class='button blueButton' type='submit' value='Confirm'/>
+
 </form>
+</div>

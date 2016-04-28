@@ -1,3 +1,5 @@
+
+<div class='content'>
 <h3>Select an Employee to Edit</h3>
 
 <h4>Administrators</h4>
@@ -46,3 +48,4 @@
 <?php } ?>
 
 </table>
+</div>

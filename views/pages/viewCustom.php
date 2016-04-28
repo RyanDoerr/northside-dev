@@ -1,3 +1,6 @@
+
+<div class='content'>
+
 <a href='?controller=reports&action=orders'><input type='button' class = 'blueButton' value='Back'/></a>
 <h3>Details for Custom Order <?php echo $customs[0]['custom_order_id'];?></h3>
 
@@ -20,4 +23,6 @@
 	<td><?php echo $material['unit_price'];?></td>
 	</tr>
 <?php }  ?>
+
+</div>
 

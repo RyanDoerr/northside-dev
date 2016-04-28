@@ -1,3 +1,5 @@
+
+<div class='content'>
 <a href='?controller=suppliers&action=managediscounts'><input type='button' class = 'blueButton' value='Back'/></a>
 
 <h3>Add Discount</h3>
@@ -11,6 +13,8 @@
 	</select><br><br>
 	<a href="?controller=suppliers&action=managediscounts"><input type = "button" value="Cancel" class = "button redButton"></a><input type = "submit" value="Next" class = "button blueButton">
 </form>
+
+</div>
 
 				
 		

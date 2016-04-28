@@ -1,3 +1,7 @@
+
+<div class='content'>
+<a href='?controller=inventory&action=manageinventory'><input type='button' class = 'blueButton' value='Back'/></a>
+
 <!--This page allows the user to edit a return item -->
 <h3>Editing Return ID <?php echo $returnID;?> </h3>
 <form action = "?controller=inventory&action=updateReturn" method = "post">
@@ -14,4 +18,5 @@
 		
 	<input type = "submit" value="Update" class = "button blueButton">
 </form>		
-		
+
+</div>

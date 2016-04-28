@@ -247,6 +247,7 @@
 				
 				//
 				// INFORMATION
+
 				
 					self::$GiftOrder['rec_last_name'] = $_POST['recLastName'];
 				
@@ -254,7 +255,6 @@
 				
 				
 				//GRAB ADDRESS INFO HERE (2 times, one for customer and for 
-				//). Parsing it seems....difficult. E
 				
 				self::$customerAddress['street_number']      = $_POST['streetNumber'];
 				self::$customerAddress['street_name']        = $_POST['streetName'];
@@ -541,8 +541,9 @@
 		
 		public function confirm()
 		{
-
+			require_once('views/pages/success.php');
 			require_once('models/order.php');
+			$successMessage = 'Order Successful!';
 			if ($_SESSION['orderType'] == 'sale'){
 				Order::insertSale();
 			}
@@ -640,7 +641,8 @@
 
 			else if(count($order) > 1) //With multiple results usually found on Order Date or Name searches. 
 			{
-				print "<table><th>Order ID</th><th>Customer Name</th><th>Order Date</th><th>Total Price</th>";
+
+				print "<div class='content'><table><th>Order ID</th><th>Customer Name</th><th>Order Date</th><th>Total Price</th>";
 				foreach($order as $o)
 				{
 					print "<tr><td>
@@ -654,7 +656,8 @@
 					
 				}
 
-				print "</table>";
+
+				print "</table></div>";
 			}
 
 			else  //For when the order returned is only 1.
@@ -768,12 +771,13 @@
 			$index = 0;
 			foreach ($formidnames as $formidname){
 		  		print $formidname;
-		  		print "<input type='text' name='".$formNames[$index]."'><br>";
+
+		  		print "  <input type='text' name='".$formNames[$index]."'><br>";
 		  		$index++;
   			}
   			print "<a href='?controller=menus&action=mainMenu&subMenu=Order'><input type='button' class = 'button redButton' value='Cancel'/></a> ";
-  			print "<input type='submit' class='button blueButton' value='Find Order'>";
-			print "</form>";
+  			print "<input type='submit' class='button blueButton' value='Find Order'><br>";
+			print "</form></div>";
 		}
 
 		public function returnorder()
@@ -800,6 +804,7 @@
 			print "</form>";
 		}
 
+	
 		public static function returnItem()
 		{
 			$orderID = $_POST['order_id'];
@@ -807,81 +812,88 @@
 			$damaged = $_POST['damaged'];
 			$refundable = $_POST['refundable'];
 			$qty = $_POST['qty'];
+			$item = array();
 
 			$stageDBO = DatabaseObjectFactory::build('order_details');
 			$arr = ['order_id', 'item_id','qty'];
 			$item = $stageDBO->getRecords($arr, ["AND" => [
-												"order_id" => $orderID,
+												"order_details.order_id" => $orderID,
 												"item_id" => $itemID
 											]]);
+	
 
-			if($refundable == 'yes' && $qty < $item[0]['qty']) //Return item to returns inventory.
+			if(count($item) > 0)
 			{
-				$returnsInventory['return_id'] = NULL;
-				$returnsInventory['order_id'] = $orderID;
-				$returnsInventory['return_date'] = date("Y-m-d");
-
-				$stageDBO = DatabaseObjectFactory::build('returns_inventory');
-				$arr = ['order_id','return_id'];
-				$return = $stageDBO->getRecords($arr,['order_id' => $orderID]);
-
-				if(count($return) > 0)  //When order already has a return, only insert into return_details
+				if($refundable == 'yes' && $qty <= $item[0]['qty']) //Return item to returns inventory.
 				{
-					print "Order already has at least one return : " . $return[0]['return_id'] . '<br>';
-					$returnDetails['return_id'] = $return[0]['return_id'];
-					$returnDetails['item_id'] = $itemID;
-					$returnDetails['qty'] = $qty;
+					$returnsInventory['return_id'] = NULL;
+					$returnsInventory['order_id'] = $orderID;
+					$returnsInventory['return_date'] = date("Y-m-d");
 
-					$stageDBO = DatabaseObjectFactory::build('return_details');
-					$arr = ['return_id','item_id'];
-					$returnItem = $stageDBO->getRecords($arr,["AND" => [
-												"return_id" => $return[0]['return_id'],
-												"item_id" => $itemID
-											]]);
+					$stageDBO = DatabaseObjectFactory::build('returns_inventory');
+					$arr = ['order_id','return_id'];
+					$return = $stageDBO->getRecords($arr,['order_id' => $orderID]);
 
-
-					print_r($itemID);
-
-					if(count($returnItem) == 0) //When item has not been returned.
+					if(count($return) > 0)  //When order already has a return, only insert into return_details
 					{
-						$stageDBO->setRecords('return_details', $returnDetails);
-						print "Item not returned, and has been inserted successfully.";
-					}
+						print "Order already has at least one return : " . $return[0]['return_id'] . '<br>';
+						$returnDetails['return_id'] = $return[0]['return_id'];
+						$returnDetails['item_id'] = $itemID;
+						$returnDetails['qty'] = $qty;
 
-					else if(count($returnItem)==1)
+						$stageDBO = DatabaseObjectFactory::build('return_details');
+						$arr = ['return_id','item_id'];
+						$returnItem = $stageDBO->getRecords($arr,["AND" => [
+													"return_id" => $return[0]['return_id'],
+													"item_id" => $itemID
+												]]);
+
+
+						if(count($returnItem) == 0) //When item has not been returned.
+						{
+							$stageDBO->setRecords('return_details', $returnDetails);
+							print "<div class='content'>Item not returned, and has been inserted successfully.</div>";
+						}
+
+						else if(count($returnItem)==1)
+						{
+							print "<div class='content'>Item already returned.</div>";
+						}
+
+					}
+					
+					else  //Insert into both returnsInventory and Details.
 					{
-						print "Item already returned.";
-					}
+										
+						
+						//INSERT
+						$stageDBO->setRecords('returns_inventory',$returnsInventory);	
+						$returnID = $stageDBO->getLastInsert();
+						//GET INSERT INFO FOR RETURN DETAILS
+						$returnDetails['return_id'] = $returnID;
+						$returnDetails['item_id'] = $itemID;
+						$returnDetails['qty'] = $qty;
 
+						//INSERT
+						$stageDBO->setRecords('return_details',$returnDetails);
+						print "<div class='content'>Item successfully returned.</div>";
+					}
 				}
 
-				else  //Insert into both returnsInventory and Details.
+			if($qty > $item[0]['qty'])
 				{
-					print "Order has not returns, been inserted!";
-					print_r($returnDetails);
-					//INSERT
-					$stageDBO->setRecords('returns_inventory',$returnsInventory);	
-
-					//GET INSERT INFO FOR RETURN DETAILS
-					$returnDetails['return_id'] = $stageDBO->getLastInsert();
-					$returnDetails['order_id'] = $orderID;
-					$returnDetails['item_id'] = $itemID;
-					$returnDetails['qty'] = $qty;
-
-					//INSERT
-					$stageDBO->setRecords('return_details',$returnDetails);
+					print "<div class='content'>Quantity is higher than the amount on the order.</div>";
 				}
 			}
 
 			if(count($item) == 0) //When an item does not exist on an order.
 			{
-				print "Item does not exist on this order.";
+				print "<div class='content'>Item does not exist on this order.</div>";
 			}
 
-			if($qty > $item[0]['qty'])
-			{
-				print "Quantity is higher than the amount on the order.";
-			}
+
+
+			
 		}
 		public static function filter(){
 			$filterText = '';
@@ -970,6 +982,8 @@
 			$giftID = $_POST['gift_id'];
 			$customerID = $_POST['customer_id'];
 			$errorMessage = array();
+
+			$success = false;
 
 			//GET ADDRESS DATA TO COMPARE TO FORM
 			$stageDBO = DatabaseObjectFactory::build('address');
@@ -1083,12 +1097,16 @@
 			{
 				$stageDBO = DatabaseObjectFactory::build('gift_order');
 				$stageDBO->updateRecord($recUpdates, ['gift_id' => $giftID]);
+
+				$success = true;
 			}
 
 			if(count($customerUpdates) > 0 && count($errorMessage) == 0)
 			{
 				$stageDBO = DatabaseObjectFactory::build('customer');
 				$stageDBO->updateRecord($customerUpdates, ['customer_id' => $customerID]);
+
+				$success = true;
 			}
 
 			else if(count($errorMessage) > 0)
@@ -1105,11 +1123,20 @@
 			{
 				$stageDBO = DatabaseObjectFactory::build('address');
 				$stageDBO->updateRecord($addressUpdates, ['address_id' => $addressData['address_id']]);
+
+				$success = true;
 			}
 
 			else if(count($addressUpdates) == 0 && count($recUpdates) == 0 && count($customerUpdates) == 0)
 			{
-				print "No changes were made.";
+
+				print "<div class='content'>No changes were made.</div>";
+			}
+
+			if($success == true)
+			{
+				$successMessage = 'Gift successfully updated.';
+				require_once('views/pages/success.php');
 			}
 
 		}
@@ -1118,6 +1145,8 @@
 		{
 			$customID = $_POST['custom_order_id'];
 			$errorMessage = array();
+
+			$success = false;
 
 			//GET GIFT INFORMATION TO COMPARE TO FORM
 			$stageDBO = DatabaseObjectFactory::build('order');
@@ -1157,12 +1186,16 @@
 			{
 				$stageDBO = DatabaseObjectFactory::build('customer');
 				$stageDBO->updateRecord($customerUpdates, ['customer_id' => $custom[0]['customer_id']]);
+
+				$success = true;
 			}
 
 			if(count($customUpdates) > 0 && count($errorMessage) == 0)
 			{
 				$stageDBO = DatabaseObjectFactory::build('custom_order');
 				$stageDBO->updateRecord($customUpdates, ['custom_order_id' => $customID]);
+
+				$success = true;
 			}
 
 			else if(count($errorMessage) > 0)
@@ -1178,7 +1211,14 @@
 			
 			else if(count($customerUpdates) == 0 && count($customUpdates) == 0)
 			{
-				print "No changes were made.";
+
+				print "<div class='content'>No changes were made.</div>";
+			}
+
+			if($success == true)
+			{
+				$successMessage = 'Changes successfully submitted';
+				require_once('views/pages/success.php');
 			}
 
 		}

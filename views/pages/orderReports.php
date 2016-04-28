@@ -16,9 +16,11 @@
 				<option value='MonthlySales' <?php if ($report == 'MonthlySales') echo 'selected="selected"'; ?>>Monthly</option>
 				<option value='AnnualSales' <?php if ($report == 'AnnualSales') echo 'selected="selected"'; ?>>Annual</option>
 				<option value='SalesByEmployee' <?php if ($report == 'SalesByEmployee') echo 'selected="selected"'; ?>>Sales By Employee</option>
-			</select>
-			<input type ='submit' value='Generate' class='button'>
-			</form>
+
+			</select><br><br>
+			<input type ='submit' value='Generate' class='blueButton'>
+			</form><br><br>
+
 
 			<?php if(!empty($sales) && empty($weeklySales) && empty($dailySales) && empty($monthlySales) && empty($annualSales) && empty($employeeSales))
 			{ ?>
@@ -37,9 +39,11 @@
 						</td>
 						<td><?php echo $sale['employee_id']?></td>
 						<td><?php echo $sale['order_date']?></td>
+
 						<td><?php echo number_format($sale['subtotal'],2)?></td>
 						<td><?php echo number_format($sale['tax_amount'],2)?></td>
 						<td><?php echo number_format($sale['total_price'],2)?></td>
+
 					</tr>
 					
 				<?php } ?>
@@ -56,7 +60,9 @@
 							
 						<td><?php echo $sale['day']?></td>
 						<td><?php echo $sale['NumberOfOrders']?></td>
+
 						<td><?php echo number_format($sale['TotalAmt'],2)?></td>
+
 					</tr>
 					
 				<?php } ?>
@@ -73,7 +79,9 @@
 							
 						<td><?php echo $sale['week']?></td>
 						<td><?php echo $sale['NumberOfOrders']?></td>
+
 						<td><?php echo number_format($sale['TotalAmt'],2)?></td>
+
 					</tr>
 					
 				<?php } ?>
@@ -90,7 +98,9 @@
 							
 						<td><?php echo $sale['month']?></td>
 						<td><?php echo $sale['NumberOfOrders']?></td>
+
 						<td><?php echo number_format($sale['TotalAmt'],2)?></td>
+
 					</tr>
 					
 				<?php } ?>
@@ -107,7 +117,9 @@
 							
 						<td><?php echo $sale['year']?></td>
 						<td><?php echo $sale['NumberOfOrders']?></td>
+
 						<td><?php echo number_format($sale['TotalAmt'],2)?></td>
+
 					</tr>
 					
 				<?php } ?>
@@ -127,7 +139,9 @@
 						<td><?php echo $sale['employee_id']?></td>
 						<td><?php echo $sale['first_name'] . " " . $sale['last_name'];?></td>
 						<td><?php echo $sale['NumberOfOrders']?></td>
+
 						<td><?php echo number_format($sale['TotalAmt'],2)?></td>
+
 					</tr>
 					
 				<?php } ?>
@@ -148,9 +162,11 @@
 				<option value='WeeklyCustoms' <?php if ($report == 'WeeklyCustoms') echo 'selected="selected"'; ?> >Weekly</option>
 				<option value='MonthlyCustoms' <?php if ($report == 'MonthlyCustoms') echo 'selected="selected"'; ?>>Monthly</option>
 				<option value='AnnualCustoms' <?php if ($report == 'AnnualCustoms') echo 'selected="selected"'; ?>>Annual</option>
-			</select>
-			<input type ='submit' value='Generate' class='button'>
-			</form>
+
+			</select><br><br>
+			<input type ='submit' value='Generate' class='blueButton'>
+			</form><br><br>
+
 
 			<?php if(!empty($customs) && ($report != 'WeeklyCustoms' && $report != 'DailyCustoms' && $report != 'MonthlyCustoms' && $report != 'AnnualCustoms'))
 			{ ?>
@@ -169,8 +185,10 @@
 							<td><?php echo $custom['order_id']?></td>
 							<td><?php echo $custom['first_name'] . ' ' . $custom['last_name'];?></td>
 							<td><?php echo $custom['order_date']?></td>
+
 							<td><?php echo number_format($custom['price_estimation'],2)?></td>
 							<td><?php echo number_format($custom['total_price'],2)?></td>
+
 
 
 						</tr>
@@ -189,7 +207,9 @@
 							
 						<td><?php echo $sale['day']?></td>
 						<td><?php echo $sale['NumberOfOrders']?></td>
+
 						<td><?php echo number_format($sale['TotalAmt'],2)?></td>
+
 					</tr>
 					
 				<?php } ?>
@@ -206,7 +226,9 @@
 							
 						<td><?php echo $sale['week']?></td>
 						<td><?php echo $sale['NumberOfOrders']?></td>
+
 						<td><?php echo number_format($sale['TotalAmt'],2)?></td>
+
 					</tr>
 					
 				<?php } ?>
@@ -223,7 +245,9 @@
 							
 						<td><?php echo $sale['month']?></td>
 						<td><?php echo $sale['NumberOfOrders']?></td>
+
 						<td><?php echo number_format($sale['TotalAmt'],2)?></td>
+
 					</tr>
 					
 				<?php } ?>
@@ -240,7 +264,9 @@
 							
 						<td><?php echo $sale['year']?></td>
 						<td><?php echo $sale['NumberOfOrders']?></td>
+
 						<td><?php echo number_format($sale['TotalAmt'],2)?></td>
+
 					</tr>
 					
 				<?php } ?>
@@ -270,9 +296,11 @@
 				<option value='MonthlyGifts' <?php if ($report == 'MonthlyGifts') echo 'selected="selected"'; ?>>Monthly</option>
 				<option value='AnnualGifts' <?php if ($report == 'AnnualGifts') echo 'selected="selected"'; ?>>Annual</option>
 				<option value='GiftShipping' <?php if ($report == 'GiftShipping') echo 'selected="selected"'; ?>>Gift Shipping</option>
-			</select>
-			<input type ='submit' value='Generate' class='button'>
-			</form>
+
+			</select><br><br>
+			<input type ='submit' value='Generate' class='blueButton'>
+			</form><br><br>
+
 
 			<?php if(!empty($gifts) && ($report != 'WeeklyGifts' && $report != 'DailyGifts' && $report != 'MonthlyGifts' && $report != 'AnnualGifts' && $report != 'GiftShipping'))
 			{ ?>
@@ -292,7 +320,9 @@
 							<td><?php echo $gift['first_name'] . ' ' . $gift['last_name'];?></td>
 							<td><?php echo $gift['rec_first_name'] . ' ' . $gift['rec_last_name'];?></td>
 							<td><?php echo $gift['order_date']?></td>
+
 							<td><?php echo number_format($gift['total_price'],2)?></td>
+
 
 
 						</tr>
@@ -311,7 +341,9 @@
 							
 						<td><?php echo $gift['day']?></td>
 						<td><?php echo $gift['NumberOfOrders']?></td>
+
 						<td><?php echo number_format($gift['TotalAmt'],2)?></td>
+
 					</tr>
 					
 				<?php } ?>
@@ -329,7 +361,10 @@
 							
 						<td><?php echo $gift['week']?></td>
 						<td><?php echo $gift['NumberOfOrders']?></td>
+
 						<td><?php echo number_format($gift['TotalAmt'],2)?></td>
+
+
 					</tr>
 					
 				<?php } ?>
@@ -346,7 +381,9 @@
 							
 						<td><?php echo $gift['month']?></td>
 						<td><?php echo $gift['NumberOfOrders']?></td>
+
 						<td><?php echo number_format($gift['TotalAmt'],2)?></td>
+
 					</tr>					
 				<?php } ?>
 				</table>
@@ -362,7 +399,9 @@
 							
 						<td><?php echo $gift['year']?></td>
 						<td><?php echo $gift['NumberOfOrders']?></td>
+
 						<td><?php echo number_format($gift['TotalAmt'],2)?></td>
+
 					</tr>
 					
 				<?php } ?>
@@ -380,7 +419,9 @@
 						<td><?php echo $gift['gift_id']?></td>
 						<td><?php echo $gift['street_number']. ' ' . $gift['street_name'] . ' ' . $gift['street_type'].' '.$gift['major_municipality'].' '.$gift['governing_district'].' '.$gift['zip'];?></td>
 						<td><?php echo $gift['first_name'].' '.$gift['last_name']?></td>
+
 						<td><?php echo number_format($gift['shipping_cost'],2)?></td>
+
 					</tr>
 					
 				<?php } ?>

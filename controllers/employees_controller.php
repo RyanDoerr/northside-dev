@@ -119,10 +119,10 @@
 					$stageDBO = DatabaseObjectFactory::build('user');
 					$stageDBO->setRecords('user', $userData);
 
-					print "<p>Employee " . $employeeData['first_name'] . ' ' . $employeeData['last_name'] . ' was successfully added.</p>';
-					print "Employee ID is " . $employeeID;
 
-					//header('Location: ?controller=suppliers&action=managesuppliers');
+					$successMessage = 'Employee ' . $employeeData['first_name'] . ' ' . $employeeData['last_name'] . ' was successfully added. <br> Employee ID is ' . $employeeID;
+					
+					require_once('views/pages/success.php');
 				}
 			}
 			
@@ -189,6 +189,8 @@
 			{
 				$employeeID = $_POST['employee_id'];
 
+				$success = false;
+
 				$stageDBO = DatabaseObjectFactory::build('employee');
 				$arr = ['first_name','last_name','hire_date','phone_number','address_id','accessLevel'];
 				$stageDBO->SetJoin(["[><]user" => "employee_id"]);
@@ -246,14 +248,17 @@
 				{
 					$stageDBO = DatabaseObjectFactory::build('employee');
 					$stageDBO->updateRecord($employeeUpdates, ['employee_id' => $employeeID]);
+
+					$success = true;
 				}
 
 				if(count($userData) > 0)
 				{
 					$stageDBO = DatabaseObjectFactory::build('user');
 					$stageDBO->updateRecord($userData, ['employee_id' => $employeeID]);
-				}
 
+					$success = true;
+				}
 
 
 			$stageDBO = DatabaseObjectFactory::build('address');
@@ -334,25 +339,26 @@
 			{
 				$stageDBO = DatabaseObjectFactory::build('address');
 				$stageDBO->updateRecord($addressUpdates, ['address_id' => $addressData['address_id']]);
+
+				$success = true;
 			}
 
 			else if(count($addressUpdates) == 0 && count($employeeUpdates) == 0 && count($userData) == 0)
 			{
-				print "No changes were made.<br>";
+
+				print "<div class='content'>No changes were made.<br>";
 				print "<form action = '?controller=employees&action=getEmployee' method='post'>
 							<input type='hidden'  name = 'employee_id' value= '".$employeeID."'>
 							<input type='submit' value='Back to Edit' class='button'>
-						</form>";
+						</form></div>";
 			}
 
-			if(count($addressUpdates) > 0 || count($employeeUpdates) > 0 || count($userData) > 0)
-			{
-				print "Changes have been successfully submitted.<br>";
-				print "<form action = '?controller=employees&action=editemployee' method='post'>
-							<input type='submit' value='Back to Edit Employee' class='button'>
-						</form>";
-
-			}
+			if($success == true)
+				{
+					$successMessage = 'Employee ' . $employee[0]['first_name'] . ' ' . $employee[0]['last_name'] . ' was successfully updated. <br> Employee ID is ' . $employeeID;
+					
+					require_once('views/pages/success.php');
+				}
 
 			}
 	}

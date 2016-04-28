@@ -40,6 +40,7 @@
     public static function makeMenu()
     {
       if ($_SESSION["user"] == 1){
+
       print "<nav class='menu drop-down-menu'>";
         foreach ( MenusController::$displayNames['Menu'] as $menuItem)
         {
@@ -48,14 +49,16 @@
             print "<nav class='subnavbar'>";
             foreach ( MenusController::$subMenuNames[$menuItem] as $subMenuItem){
 
-              print "&nbsp;&nbsp;&nbsp;&nbsp<a href='?controller=".strtolower($menuItem)."&action=".strtolower(str_replace(' ', '', $subMenuItem))."'>$subMenuItem</a>";
+              print "<a href='?controller=".strtolower($menuItem)."&action=".strtolower(str_replace(' ', '', $subMenuItem))."'>$subMenuItem</a>";
             }
-            print "<nav class='drop-down-menu'>";
+            print "</nav>";
+            print "</nav>";
+
+            print"<nav class='drop-down-menu'>";
 
           }
         }
       }
-
       else if ($_SESSION["user"] == 3){
         MenusController::makeEmployeeMenu();
       }
@@ -74,10 +77,12 @@
 
               print "&nbsp;&nbsp;&nbsp;&nbsp<a href='?controller=".strtolower($menuItem)."&action=".strtolower(str_replace(' ', '', $subMenuItem))."'>$subMenuItem</a>";
             }
-            print "<nav class='subnavbar'>";
+            print "<nav class='drop-down-menu'>";
+
           }
         }
-    }
+      }
+
     public static function mainMenu()
     {
       require('views/pages/menu.php');

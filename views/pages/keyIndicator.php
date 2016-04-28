@@ -1,5 +1,7 @@
 
-			<form id="form" class="form-horizontal multiple-form-group" action="?controller=reports&action=generateKeyIndicator" method='post'>
+<div class='content'>
+			<form id="form" action="?controller=reports&action=generateKeyIndicator" method='post'>
+
 			<label for="inventory" class="col-xs-offset-2 col-xs-2 control-label">Key Indicator</label>
 			<div class='form-group'>
 			
@@ -9,30 +11,38 @@
 				<option value='Weekly' <?php if ($report == 'Weekly') echo 'selected="selected"'; ?> >Weekly</option>
 				<option value='Monthly' <?php if ($report == 'Monthly') echo 'selected="selected"'; ?>>Monthly</option>
 				<option value='Annual' <?php if ($report == 'Annual') echo 'selected="selected"'; ?>>Annual</option>
-			</select>
+
+			</select><br><br>
+
 			<input type ='submit' value='Generate' class='button'>
 
 
 			</div>
-			</div>
+
+		
+
 			
 			</form>
 
 			
 			<?php if(!empty($daily) && empty($weekly) && empty($monthly) && empty($annual))
 			{ ?>
-				<div class="wrapper">
+
+			
 				<table class="reportTable">
 					<tr class='row header'>
 					<th class='cell'>Day</th><th class='cell'>Number of Orders</th><th class='cell'>Items Sold</th><th class='cell'>Total Sales</th>
-				</div>
+				
+
 						<?php foreach($daily AS $order)
 						{  ?>
 						<tr class='row'>
 							
 						<td class='cell'><?php echo $order['day']?></td>
 						<td class='cell'><?php echo $order['NumberOfOrders']?></td>
+
 						<td class='cell'><?php echo number_format($order['TotalAmt'],0)?></td>
+
 						<td class='cell'><?php echo $order['items']?></td>
 					</tr>
 					
@@ -52,7 +62,9 @@
 							
 						<td><?php echo $order['week']?></td>
 						<td><?php echo $order['NumberOfOrders']?></td>
+
 						<td><?php echo number_format($order['TotalAmt'],0)?></td>
+
 						<td><?php echo $order['items']?></td>
 					</tr>
 					
@@ -70,7 +82,9 @@
 							
 						<td><?php echo $order['month']?></td>
 						<td><?php echo $order['NumberOfOrders']?></td>
+
 						<td><?php echo number_format($order['TotalAmt'], 0)?></td>
+
 						<td><?php echo $order['items']?></td>
 					</tr>
 					
@@ -88,7 +102,9 @@
 							
 						<td><?php echo $order['year']?></td>
 						<td><?php echo $order['NumberOfOrders']?></td>
+
 						<td><?php echo number_format($order['TotalAmt'],0)?></td>
+
 						<td><?php echo $order['items']?></td>
 					</tr>
 					
@@ -101,4 +117,7 @@
 			else { ?>
 				<p>No results found</p>
 			<?php } ?>				
+
+
+</div>
 

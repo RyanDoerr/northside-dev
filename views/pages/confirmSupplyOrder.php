@@ -1,3 +1,4 @@
+<a href='?controller=inventory&action=ordermaterials'><input type='button' class = 'blueButton' value='Back'/></a>
 <!-- This is the confirm order screen for the Order Materials section -->
 <h3>Order for Supplier ID <?php echo $_SESSION['supplier_id']; ?></h3>
 <th>Material ID </th><th> Cost </th><th> Quantity</th>

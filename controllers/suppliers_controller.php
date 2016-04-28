@@ -116,7 +116,10 @@
 					$stageDBO = DatabaseObjectFactory::build('supplier');
 					$stageDBO->setRecords('supplier', $supplierData);
 
-				//header('Location: ?controller=suppliers&action=managesuppliers');
+
+					$successMessage = 'Supplier was successfully created. ';
+					require_once('views/pages/success.php');
+
 			}
 		}
 
@@ -134,8 +137,10 @@
 			$errorMessage = array();
 			$supplierID = $_POST['supplier_id'];
 
+			$success = false;
+
 			$stageDBO = DatabaseObjectFactory::build('supplier');
-			$arr = ['company_name','company_phone','contact_name','contact_phone','email','contact_job_title'];
+			$arr = ['address_id','company_name','company_phone','contact_name','contact_phone','email','contact_job_title'];
 			$supplier = $stageDBO->getRecords($arr, ['supplier_id' => $supplierID]);
 
 
@@ -193,9 +198,6 @@
 			{
 				$updates['email']= $form['email'];
 			}
-
-			
-
 
 
 			$stageDBO = DatabaseObjectFactory::build('address');
@@ -273,6 +275,8 @@
 			{
 				$stageDBO = DatabaseObjectFactory::build('supplier');
 				$stageDBO->updateRecord($updates, ['supplier_id' => $supplierID]);
+
+				$success = true;
 			}
 
 			else if(count($errorMessage) > 0)
@@ -285,11 +289,23 @@
 			{
 				$stageDBO = DatabaseObjectFactory::build('address');
 				$stageDBO->updateRecord($addressUpdates, ['address_id' => $addressData['address_id']]);
+
+				$success = true;
 			}
 
 			else if(count($addressUpdates) == 0 && count($updates) == 0)
 			{
-				print "No changes were made.";
+
+				print "<div class='content'>No changes were made.";
+				print "<form action = '?controller=suppliers&action=managesuppliers' method='post'>
+							<input style='width:150px;' type='submit' value='Back to Edit Supplier' class='button'>
+						</form></div>";
+			}
+
+			if($success == true)
+			{
+			   $successMessage = 'Supplier successfully updated.';
+			   require_once('views/pages/success.php');	
 			}
 
 
@@ -435,6 +451,10 @@
 			{
 				$stageDBO = DatabaseObjectFactory::build('supplier_discount');
 				$stageDBO->updateRecord($discountUpdates,['AND' => ['supplier_id' => $supplierID, 'material_id' => $materialID]]);
+
+				$successMessage = 'Discount successfully updated.';
+				$back = '?controller=suppliers&action=managediscounts';
+			    require_once('views/pages/success.php');	
 			}
 
 			else if(count($errorMessage) >0)
@@ -445,7 +465,8 @@
 
 		}
 
-		public static function editAddressForm($supplierID)
+
+			public static function editAddressForm($supplierID)
 			{	
 				$stageDBO = DatabaseObjectFactory::build('supplier');
 				$arr = ['supplier_id', 'address_id','street_number','street_name','street_type','address_type','major_municipality','governing_district','iso_country_code','zip'];
@@ -458,11 +479,12 @@
 					if(FormsController::$AddressForm[$index]['element'] == 'input')  //FOR INPUT TAGS
 						print "<label>" . FormsController::$AddressForm[$index]['label'] . " <input type = '". FormsController::$AddressForm[$index]['type'] . "'name = '".FormsController::$AddressForm[$index]['name'] . "' value='" . $supplier[0][FormsController::$AddressForm[$index]['value']]."'></label><br>";
 					else if(FormsController::$AddressForm[$index]['element'] == 'select') //IF THE ELEMENT IS A SELECT
-					{		print "<label>Address Type </label><select name='" . FormsController::$AddressForm[$index]['name'] . "'>"; 
+
+					{		print "<label>Address Type </label><br><select name='" . FormsController::$AddressForm[$index]['name'] . "'>"; 
 							for($i = 0; $i < count(FormsController::$AddressForm[$index]['options']); $i++)
 								print "<option>" .FormsController::$AddressForm[$index]['options'][$i] ."</option>"; 
 								
-							print "</select><br>";		
+							print "</select><br><br>";		
 					}
 				}
 				

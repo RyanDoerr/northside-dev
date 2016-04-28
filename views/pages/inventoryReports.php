@@ -13,9 +13,11 @@
 				<option value='genMaterials'>General Materials Report</option>
 				<option value='lowStockMaterials' <?php if ($report == 'lowStockMaterials') echo 'selected="selected"'; ?> >Low Stock Materials Report</option>
 				<option value='outStockMaterials' <?php if ($report == 'outStockMaterials') echo 'selected="selected"'; ?>>Out of Stock Materials Report</option>
-			</select>
-			<input type ='submit' value='Generate' class='button'>
-			</form>
+
+			</select><br><br>
+			<input type ='submit' value='Generate' class='blueButton'>
+			</form><br><br>
+
 
 			<?php if(!empty($materials))
 			{ ?>
@@ -30,7 +32,9 @@
 						<td><?php echo $material['name']?></td>
 						<td><?php echo $material['company_name']?></td>
 						<td><?php echo $material['calculated_qoh']?></td>
+
 						<td><?php echo number_format($material['unit_price'],2)?></td>
+
 					</tr>
 					
 				<?php } ?>
@@ -49,9 +53,11 @@
 				<option value='genCrafts'>General Crafts Report</option>
 				<option value='lowStockCrafts' <?php if ($report == 'lowStockCrafts') echo 'selected="selected"'; ?> >Low Stock Crafts Report</option>
 				<option value='outStockCrafts' <?php if ($report == 'outStockCrafts') echo 'selected="selected"'; ?>>Out of Stock Crafts Report</option>
-			</select>
-			<input type ='submit' value='Generate' class='button'>
-			</form>
+
+			</select><br><br>
+			<input type ='submit' value='Generate' class='blueButton'>
+			</form><br><br>
+
 
 			<?php if(!empty($crafts))
 			{ ?>
@@ -92,9 +98,11 @@
 				<option value='genReturns'>General Returns Report</option>
 				<option value='lowStockReturns' <?php if ($report == 'lowStockReturns') echo 'selected="selected"'; ?> >Low Stock Returns Report</option>
 				<option value='outStockReturns' <?php if ($report == 'outStockReturns') echo 'selected="selected"'; ?>>Out of Stock Returns Report</option>
-			</select>
-			<input type ='submit' value='Generate' class='button'>
-			</form>
+
+			</select><br><br>
+			<input type ='submit' value='Generate' class='blueButton'>
+			</form><br><br>
+
 
 			
 					<?php 

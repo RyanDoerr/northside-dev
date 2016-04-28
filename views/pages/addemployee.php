@@ -1,13 +1,13 @@
-<?php
- //EmployeesController::drawForm();
- 
-?>
 
+<div class="addEmployee">
+
+<br>
 <h3>Add Employee</h3>
 <form action='?controller=employees&action=insertEmployee' method='post'>
 <h4>Employee Information</h4>
-<input required type="radio" name="accessLevel" value="1" <?php if(!empty($accessLevel)) if($accessLevel==1)echo 'checked';?>>Administrator <br>
-<input required type="radio" name="accessLevel" value="3" <?php if(!empty($accessLevel)) if($accessLevel==3)echo 'checked';?> > Sales Employee <br>
+<input required type="radio" name="accessLevel" value="1" <?php if(!empty($accessLevel)) if($accessLevel==1)echo 'checked';?>>  Administrator <br>
+<input required type="radio" name="accessLevel" value="3" <?php if(!empty($accessLevel)) if($accessLevel==3)echo 'checked';?> > Sales Employee <br><br>
+
 
 <label>First Name <input required type = 'text'name = 'firstName' required value= '<?php if(!empty($firstName)) echo $firstName;?>'></label><br>
 <label>Last Name <input required type = 'text'name = 'lastName' required value= '<?php if(!empty($lastName)) echo $lastName;?>'></label><br>
@@ -30,7 +30,7 @@
 <label>State <input required type = 'text'name = 'state' value = '<?php if(!empty($state)) echo $state;?>'></label><br>
 <label>Zip <input required type = 'text'name = 'zip'value = '<?php if(!empty($zip)) echo $zip;?>'></label> <?php if(!empty($errorMessage['zipError'])) echo $errorMessage['zipError'];?><br>
 <label>Country <input required type = 'text'name = 'country' value = '<?php if(!empty($country)) echo $country;?>'></label><br>
-<a href="?controller=menus&action=mainMenu"><input type='button' class = 'button redButton' value='Cancel'/></a> <input class='button blueButton' type='submit' value='Add'/></form>
-
+<a href="?controller=menus&action=mainMenu"><input type='button' class = 'button redButton' value='Cancel'/></a> <input class='button blueButton' type='submit' value='Add'/></form><br><br>
+</div>
 				
 		

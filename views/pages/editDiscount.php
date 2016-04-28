@@ -1,4 +1,5 @@
 
+<div class='content'>
 <a href='?controller=suppliers&action=managediscounts'><input type='button' class = 'blueButton' value='Back'/></a>
 <h3>Editing Discount for Supplier ID <?php echo $supplierID;?> and Material ID <?php echo $materialID; ?> </h3>
 
@@ -13,3 +14,6 @@
 		
 	<input type = "submit" value="Update" class = "button blueButton">
 </form>
+
+</div>
+
