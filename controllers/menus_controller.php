@@ -40,6 +40,7 @@
     public static function makeMenu()
     {
 
+
         echo '<a href="?controller=order&action=enterorder"><img src="images/pixel.jpg" border="0" accessKey="o" alt=" " width="1" height="1"></a>'; 
       
       if ($_SESSION["user"] == 1){
@@ -59,6 +60,7 @@
             print "</nav>";
 
             print"<nav class='drop-down-menu'>";
+
 
           }
 

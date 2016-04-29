@@ -50,6 +50,13 @@
 
 		</head>
 		<body>
+		<!--EXTREME TEST-->
+		<script>
+		  $(function() {
+    		$( "#draggable" ).draggable();
+ 		 });
+ 		 </script>
+		<!--EXTREME TEST-->
 		<?php
 			if($controller != 'login' && $controller != 'pages' && $action != 'verify')
 			{ ?>
