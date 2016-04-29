@@ -19,6 +19,19 @@ $(document).ready(function(){
 							
 							
 						});
+						$('input[name=delete]').click(function(){
+							var activeIndex = $("#tabs").tabs('option', 'active');
+								activeIndex++; //Make it start at 1, not 0
+							
+									if ($('#tabs-'+activeIndex + ' .selectItems').size() > 1){
+										$('#tabs-'+activeIndex + ' .selectItems').last().remove();
+									}
+								
+					
+
+							
+							
+						});
 
 								
 								//This also adds items or materials, but it is used on pages without tabs.

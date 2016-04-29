@@ -90,7 +90,8 @@
 												"material_id" => $supplyOrder['material'][$index]
 											]]);
 					
-					if(!empty($discount) && count($discount[0]) > 0)
+					//if(!empty($discount) && count($discount[0]) > 0)
+					if(!empty($discount) && $supplyOrder['quantity'][$index] >= $discount[$index]['min_qty'])
 					{
 
 						$discountAmount[$index] = ($discount[0]['discount_percent']/100) * ($supplyOrder['unitPrice'][$index] * $supplyOrder['quantity'][$index]);
@@ -172,7 +173,8 @@
 			$materials = $stageDBO->getRecords($arr);
 			
 			$stageDBO = DatabaseObjectFactory::build('craft');
-			$arr = ['craft_id'];
+			$arr = ['craft_id','calculated_qoh'];
+			$stageDBO->SetJoin(['[><]item' => 'item_id']);
 			$crafts = $stageDBO->getRecords($arr);
 
 			$stageDBO = DatabaseObjectFactory::build('return_details');

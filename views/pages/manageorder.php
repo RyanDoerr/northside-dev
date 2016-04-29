@@ -1,5 +1,5 @@
 
-<div id="tabs">
+<div id="tabs" class="content">
   <ul>
     <li><a href="#tabs-1">Gift Orders</a></li>
     <li><a href="#tabs-2">Custom Orders</a></li>
@@ -47,7 +47,7 @@ foreach($gifts as $gift)
 		<td><?php echo $gift['rec_first_name'] . " " . $gift['rec_last_name'];?></td>
 		<td><?php echo $gift['first_name'] . " " . $gift['last_name'];?></td>
 		<td><?php echo $gift['order_date'];?></td>
-		<td><?php echo $gift['total_price'];?></td>
+		<td><?php echo number_format($gift['total_price'],2);?></td>
 	</tr>
 	
 <?php } }?>
@@ -86,7 +86,7 @@ foreach($customs AS $custom)
 		<td><?php echo $custom['custom_order_id']?></td>
 		<td><?php echo $custom['order_id']?></td>
 		<td><?php echo $custom['comment'];?></td>
-		<td><?php echo $custom['price_estimation'];?></td>
+		<td><?php echo number_format($custom['price_estimation'],2);?></td>
 		
 	</tr>
 	

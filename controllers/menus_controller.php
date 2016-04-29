@@ -39,12 +39,16 @@
     //This function prints a menu and a sub menu if the $_GET[subMenu] is set
     public static function makeMenu()
     {
-      if ($_SESSION["user"] == 1){
 
+        echo '<a href="?controller=order&action=enterorder"><img src="images/pixel.jpg" border="0" accessKey="o" alt=" " width="1" height="1"></a>'; 
+      
+      if ($_SESSION["user"] == 1){
+        $i = 0;
       print "<nav class='menu drop-down-menu'>";
         foreach ( MenusController::$displayNames['Menu'] as $menuItem)
         {
-          print "<a href='?controller=menus&action=mainMenu&subMenu=$menuItem'>$menuItem</a><br>";
+          $i++;
+          print "<a href='?controller=menus&action=mainMenu&subMenu=$menuItem' accessKey='$i'>$menuItem</a><br>";
           if ((isset($_GET['subMenu'])) && $_GET['subMenu']== $menuItem){
             print "<nav class='subnavbar'>";
             foreach ( MenusController::$subMenuNames[$menuItem] as $subMenuItem){
@@ -57,6 +61,7 @@
             print"<nav class='drop-down-menu'>";
 
           }
+
         }
       }
       else if ($_SESSION["user"] == 3){

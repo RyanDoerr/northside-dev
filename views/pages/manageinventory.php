@@ -49,7 +49,7 @@
 					</form>
 					</td>
 					<td><?php echo $craft['craft_id']?></td>
-					<td><?php echo $material['unit_price']?></td>
+					<td><?php echo $craft['calculated_qoh']?></td>
 				</tr>
 	
 			<?php } ?>

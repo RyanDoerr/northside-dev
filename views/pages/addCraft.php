@@ -14,9 +14,8 @@
 		<?php } ?>
 	</select>
 	
-	<label>Quantity</label>
-		<input type='text' name='quantity[]' value=1> <br> 
-	</label><?php if(!empty($errorMessage['duplicates'])) echo $errorMessage['duplicates']; ?>
+ <br> 
+<?php if(!empty($errorMessage['duplicates'])) echo $errorMessage['duplicates']; ?>
 	<input name = "otherAdd" type='button' class="button" id='addNew' value='Add New +'/><br><!--The name attribute on this input is important for the addItem.js -->
 	
 	<h3>Item Information</h3>

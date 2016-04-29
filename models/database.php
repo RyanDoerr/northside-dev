@@ -16,6 +16,7 @@ class DatabaseObject {
 	protected $columns;
 	protected $where;
 	protected $lastInsertId;
+	protected $reciept = [];
 	//array to be inserted, each class will define their own, 
 	protected $insertArray = [];
 	public function __construct(){
@@ -23,6 +24,29 @@ class DatabaseObject {
 	}
 	public static function errAlert($errormessage){
 		$_POST['error'] = 1;
+	}
+	public function recieptAdd($lineOfReciept){
+		if (is_array($this->reciept)){
+			$this->reciept[] = (string)$lineOfReciept;
+		}
+		else if (!(is_array($this->reciept))){
+			$this->reciept = (string)$lineOfReciept;
+		}
+
+	}
+	public function recieptGet(){
+		$returnableReciept = $this->reciept;
+		return $returnableReciept;
+	}
+	public function recieptEcho(){
+		if (is_array($this->reciept)){
+			foreach($this->reciept as $separateLine){
+				echo $separateLine;
+			}
+		}
+		else if (!(is_array($this->reciept))){
+			echo $this->$reciept;
+		}
 	}
 	public function getRecords($columns, $where = "") {
 		$this->columns = $columns;
@@ -333,6 +357,7 @@ class SaleInsertObject extends OrderDetailsDatabaseObject {
 		$i = 0;
 		$data = $this->database_db->select("order","order_id",[ "ORDER" => "order.order_id DESC"]);
 		$this->orderNumber = $data[0];
+		$this->recieptAdd('Thank you, your Order ID is :'.$data[0].'!');
 		//echo 'thisordernumber='.$this->orderNumber;
 		foreach ($this->insertArray['order_details'] as $separateInsert){
 			$separateInsert['order_id'] = $this->orderNumber;
@@ -430,6 +455,8 @@ class GiftInsertObject extends SaleInsertObject {
 		//now we can grab an order id for our order details
 		$data = $this->database_db->select('order','order_id',['ORDER' => 'order.order_id DESC']);
 		$orderID = $data[0];
+		$this->orderNumber = $orderID;
+		$this->recieptAdd('Thank you, your Order ID is :'.$orderID.'!');
 		//now that we have an order, we can do our order_details inserts
 		//and just to be dirty we'll decrement item.qoh here
 		foreach ($this->insertArray['order_details'] as $separateInsert){
@@ -463,7 +490,7 @@ class GiftInsertObject extends SaleInsertObject {
 		$giftID = $data[0];//['gift_id'];
 		//now that we've got the gift id we can start preparing gift_shipping
 		$this->insertArray['gift_shipping']['gift_id'] = $giftID;
-		$this->insertArray['gift_shipping']['address_id'] = $recipientAddressID;
+		//changing//$this->insertArray['gift_shipping']['address_id'] = $recipientAddressID;
 		//now we can roll in the gift_shipping record
 		$this->database_db->insert('gift_shipping', $this->insertArray['gift_shipping']);
 		//now that we have a gift_shipping record we can start preparing ship_cost
@@ -558,6 +585,8 @@ class CustomInsertObject extends SaleInsertObject{
 			$data = $this->database_db->select('order', 'order_id',['ORDER' => 'order.order_id DESC']);
 			//store it
 			$orderID = $data[0];
+			$this->orderNumber = $orderID;
+			$this->recieptAdd($this->orderNumber);
 			//now we can prepare order_details and custom_order
 			//now we'll prepare custom order
 			$this->insertArray['custom_order']['order_id'] = $orderID;
@@ -590,7 +619,7 @@ class CustomInsertObject extends SaleInsertObject{
 				$separateMaterial['craft_id'] = $craftID;
 				//grab the material id of the item we're using
 				//now push each craft_materials record
-				print_r($separateMaterial);
+				//print_r($separateMaterial);
 				$this->database_db->insert('craft_materials', $separateMaterial);
 			}
 

@@ -51,7 +51,7 @@
 
 			//GET GENERAL RETURNS STUFF HERE
 			$stageDBO = DatabaseObjectFactory::build('returns_inventory');
-			$stageDBO->SetJoin(['[><]order' => 'order_id','[><]Return_Details' => 'return_id', '[><]item' => 'item_id']);
+			$stageDBO->SetJoin(['[><]order' => 'order_id','[><]return_details' => 'return_id', '[><]item' => 'item_id']);
 			$arr = ['item_id' , 'name' , 'order_id' , 'calculated_qoh' , 'current_price'];
 			$returns = $stageDBO->getRecords($arr);
 
@@ -80,7 +80,7 @@
 
 			//GET GENERAL RETURNS STUFF HERE
 			$stageDBO = DatabaseObjectFactory::build('returns_inventory');
-			$stageDBO->SetJoin(['[><]order' => 'order_id','[><]Return_Details' => 'return_id', '[><]item' => 'item_id']);
+			$stageDBO->SetJoin(['[><]order' => 'order_id','[><]return_details' => 'return_id', '[><]item' => 'item_id']);
 			$arr = ['item_id' , 'name' , 'order_id' , 'calculated_qoh' , 'current_price'];
 			$returns = $stageDBO->getRecords($arr);
 
@@ -159,7 +159,7 @@
 			else if($report == 'genReturns')  //Does the same thing as the inventory function above
 			{
 				$stageDBO = DatabaseObjectFactory::build('returns_inventory');
-				$stageDBO->SetJoin(['[><]order' => 'order_id','[><]Return_Details' => 'return_id', '[><]item' => 'item_id']);
+				$stageDBO->SetJoin(['[><]order' => 'order_id','[><]return_details' => 'return_id', '[><]item' => 'item_id']);
 				$arr = ['item_id' , 'name' , 'order_id' , 'calculated_qoh' , 'current_price'];
 				$returns = $stageDBO->getRecords($arr);
 				print "<script>$(document).ready(function() {
@@ -170,7 +170,7 @@
 			else if($report == 'lowStockReturns')
 			{
 				$stageDBO = DatabaseObjectFactory::build('returns_inventory');
-				$stageDBO->SetJoin(['[><]order' => 'order_id','[><]Return_Details' => 'return_id', '[><]item' => 'item_id']);
+				$stageDBO->SetJoin(['[><]order' => 'order_id','[><]return_details' => 'return_id', '[><]item' => 'item_id']);
 				$arr = ['item_id' , 'name' , 'order_id' , 'calculated_qoh' , 'current_price'];
 				//Second argument is a where clause with 2 conditions, which requires the AND
 				$returns = $stageDBO->getRecords($arr, ["AND" => [
@@ -184,7 +184,7 @@
 			else if($report == 'outStockReturns')
 			{
 				$stageDBO = DatabaseObjectFactory::build('returns_inventory');
-				$stageDBO->SetJoin(['[><]order' => 'order_id','[><]Return_Details' => 'return_id', '[><]item' => 'item_id']);
+				$stageDBO->SetJoin(['[><]order' => 'order_id','[><]return_details' => 'return_id', '[><]item' => 'item_id']);
 				$arr = ['item_id' , 'name' , 'order_id' , 'calculated_qoh' , 'current_price'];
 
 				//Second argument is a where clause with only one condition.
@@ -254,8 +254,7 @@
 			$stageDBO = DatabaseObjectFactory::build('custom_order');
 			$stageDBO->SetJoin(['[><]order' => 'order_id', '[><]employee' => 'employee_id']);
 			$arr = ['custom_order_id','order_id','employee_id','order_date','total_price','price_estimation','first_name','last_name'];
-
-			$customs = $stageDBO->getRecords($arr,['order_type' => 'custom']);
+			$customs = $stageDBO->getRecords($arr);
 
 
 			$stageDBO = DatabaseObjectFactory::build('order');
@@ -322,7 +321,7 @@
 		public static function generateOrderReports()
 		{
 			$report = $_POST['reportType'];
-
+			//print_r($_POST);
 			$stageDBO = DatabaseObjectFactory::build('order');
 			$arr = ['order_id','employee_id','order_date','subtotal','tax_amount','total_price'];
 			$sales = $stageDBO->getRecords($arr,['order_type' => 'sale']);
@@ -340,7 +339,7 @@
 			if($report == 'GeneralSales')
 			{
 				$stageDBO = DatabaseObjectFactory::build('order');
-				// $stageDBO->SetJoin(['[><]item' => 'item_id', '[><]supplier' => 'supplier_id']);
+				//$stageDBO->SetJoin(['[><]item' => 'item_id', '[><]supplier' => 'supplier_id']);
 				$arr = ['order_id','employee_id','order_date','subtotal','tax_amount','total_price'];
 				$sales = $stageDBO->getRecords($arr,['order_type' => 'sale']);
 
@@ -354,7 +353,8 @@
 				$stageDBO = DatabaseObjectFactory::build('order');			
 				$arr = ['order_id','employee_id','order_date','subtotal','tax_amount','total_price'];
 				$dailySales = $stageDBO->makeQuery("SELECT COUNT(order_id) AS NumberOfOrders, day(order_date) AS day, SUM(total_price) AS TotalAmt FROM `order` WHERE order_type = 'sale' GROUP BY day(order_date)");
-
+				//$DBO = DatabaseConnection::getInstance();
+				//$dailySales = $DBO->query("SELECT COUNT(order_id) AS NumberOfOrders, day(order_date) AS day, SUM(total_price) AS TotalAmt FROM `order` WHERE order_type = 'sale' GROUP BY day(order_date)");
 				print "<script>$(document).ready(function() {
       				  $( '#tabs' ).tabs({ active: 0 });
 						});</script>";
@@ -368,7 +368,8 @@
 				$stageDBO = DatabaseObjectFactory::build('order');			
 				$arr = ['order_id','employee_id','order_date','subtotal','tax_amount','total_price'];
 				$weeklySales = $stageDBO->makeQuery("SELECT COUNT(order_id) AS NumberOfOrders, WEEK(order_date) AS week, SUM(total_price) AS TotalAmt FROM `order` WHERE order_type = 'sale' GROUP BY WEEK(order_date)");
-
+				//$DBO = DatabaseConnection::getInstance();
+				//$dailySales = $DBO->query("SELECT COUNT(order_id) AS NumberOfOrders, WEEK(order_date) AS week, SUM(total_price) AS TotalAmt FROM `order` WHERE order_type = 'sale' GROUP BY WEEK(order_date)");
 				print "<script>$(document).ready(function() {
       				  $( '#tabs' ).tabs({ active: 0 });
 						});</script>";
@@ -427,7 +428,7 @@
 				$stageDBO->SetJoin(['[><]order' => 'order_id', '[><]employee' => 'employee_id']);	
 				$arr = ['order_id','employee_id','order_date','subtotal','tax_amount','total_price'];
 
-				$customs = $stageDBO->makeQuery("SELECT COUNT(order_id) AS NumberOfOrders, day(order_date) AS day, SUM(total_price) AS TotalAmt FROM `order` WHERE order_type = 'custom' AND year(order_date) = year(current_date) GROUP BY day(order_date)");
+				$customs = $stageDBO->makeQuery("SELECT COUNT(order.order_id) AS NumberOfOrders, day(order.order_date) AS day, SUM(order.total_price) AS TotalAmt FROM `order` WHERE order_type = 'custom' AND year(order.order_date) = year(current_date) GROUP BY day(order.order_date)");
 
 				print "<script>$(document).ready(function() {
       				  $( '#tabs' ).tabs({ active: 1 });
@@ -514,7 +515,7 @@
 				$stageDBO = DatabaseObjectFactory::build('custom_order');		
 				$stageDBO->SetJoin(['[><]order' => 'order_id', '[><]employee' => 'employee_id']);	
 				$arr = ['order_id','employee_id','order_date','subtotal','tax_amount','total_price'];
-				$gifts = $stageDBO->makeQuery("SELECT COUNT(order_id) AS NumberOfOrders, month(order_date) AS month, SUM(total_price) AS TotalAmt FROM `order` WHERE order_type = 'order' AND year(order_date) = year(current_date) GROUP BY month(order_date)");
+				$gifts = $stageDBO->makeQuery("SELECT COUNT(order_id) AS NumberOfOrders, month(order_date) AS month, SUM(total_price) AS TotalAmt FROM `order` WHERE order_type = 'gift' AND year(order_date) = year(current_date) GROUP BY month(order_date)");
 
 				print "<script>$(document).ready(function() {
       				  $( '#tabs' ).tabs({ active: 2 });
@@ -526,7 +527,7 @@
 				$stageDBO = DatabaseObjectFactory::build('custom_order');		
 				$stageDBO->SetJoin(['[><]order' => 'order_id', '[><]employee' => 'employee_id']);	
 				$arr = ['order_id','employee_id','order_date','subtotal','tax_amount','total_price'];
-				$gifts = $stageDBO->makeQuery("SELECT COUNT(order_id) AS NumberOfOrders, year(order_date) AS year, SUM(total_price) AS TotalAmt FROM `order` WHERE order_type = 'order'  GROUP BY year(order_date)");
+				$gifts = $stageDBO->makeQuery("SELECT COUNT(order_id) AS NumberOfOrders, year(order_date) AS year, SUM(total_price) AS TotalAmt FROM `order` WHERE order_type = 'gift'  GROUP BY year(order_date)");
 
 				print "<script>$(document).ready(function() {
       				  $( '#tabs' ).tabs({ active: 2 });
@@ -536,9 +537,9 @@
 			else if($report == 'GiftShipping')
 			{
 				$gifts = $stageDBO->makeQuery("SELECT gift_order.gift_id, street_number, street_name, street_type, major_municipality, governing_district, zip, shipping_cost, first_name, last_name
-					FROM Gift_order, address, gift_shipping, ship_cost, customer,`order`
-					WHERE Gift_order.gift_id = Gift_shipping.gift_id AND Gift_order.address_id = address.address_id
-					AND Gift_order.order_id = `order`.order_id AND `order`.customer_id = `customer`.customer_id and `gift_shipping`.ship_id = `ship_cost`.ship_id");
+					FROM gift_order, address, gift_shipping, ship_cost, customer,`order`
+					WHERE gift_order.gift_id = gift_shipping.gift_id AND gift_order.address_id = address.address_id
+					AND gift_order.order_id = `order`.order_id AND `order`.customer_id = `customer`.customer_id and `gift_shipping`.ship_id = `ship_cost`.ship_id");
 
 				print "<script>$(document).ready(function() {
       				  $( '#tabs' ).tabs({ active: 2 });
@@ -591,7 +592,7 @@
 				$stageDBO = DatabaseObjectFactory::build('supplier_order');
 				$stageDBO->SetJoin(['[><]employee' => 'employee_id']);
 				$arr = ['supplier_order_id','supplier_id','first_name','last_name','order_date','total_price', 'total_discount'];
-				$suppliers = $stageDBO->getRecords($arr,["ORDER" => ['order_date desc']]);
+				$suppliers = $stageDBO->getRecords($arr,["ORDER" => ['supplier_order_id DESC']]);
 
 				//Second argument is a where clause with 2 conditions, which requires the AND
 				//$suppliers = $stageDBO->getRecords($arr, ["AND" => [

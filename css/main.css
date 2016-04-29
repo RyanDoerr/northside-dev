@@ -245,6 +245,7 @@ for the form to search for the orders
   text-align: left;
 }
 
+
 .findOrder input[type=text]:focus {
   border: 1px solid #a8a8a8;
 }
@@ -347,6 +348,7 @@ material id, cost, and quantity.
   resize: none;
   text-align: left;
 }
+
 
 .submitOrder input[type=text]:focus {
   border: 1px solid #a8a8a8;
@@ -597,6 +599,16 @@ menu and a text box which asks for the quantity of the order.
   resize: none;
   text-align: left;
 }
+.enterOrder input[type=email] {
+  width: 25%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: none;
+  text-align: left;
+}
 
 .enterOrder input[type=text]:focus {
   border: 1px solid #a8a8a8;
@@ -664,6 +676,16 @@ Below is the code for the gift order page which includes several
 drop down menus, text fields, and submit buttons.
 ******************************************************************/
 .giftOrder input[type=text] {
+  width: 35%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: none;
+  text-align: left;
+}
+.giftOrder input[type=email] {
   width: 35%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -815,7 +837,6 @@ a background to each of the pages.
 
 
 
-
 .editButton {
   -moz-box-shadow: inset 0px -3px 7px 0px #29bbff;
   -webkit-box-shadow: inset 0px -3px 7px 0px #29bbff;
@@ -846,4 +867,7 @@ a background to each of the pages.
 
 .back {
   float:left;
+}
+.subnavbar a:hover {
+color:white;
 }

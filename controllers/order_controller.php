@@ -372,7 +372,7 @@
 							);
 							$_SESSION['gift_shipping'] = array(
 													'ship_id'	 =>	NULL,
-													'address_id' => NULL,
+												//	'address_id' => NULL,
 													'gift_id'    => NULL
 													
 							);
@@ -541,19 +541,21 @@
 		
 		public function confirm()
 		{
-			require_once('views/pages/success.php');
+			
 			require_once('models/order.php');
 			$successMessage = 'Order Successful!';
 			if ($_SESSION['orderType'] == 'sale'){
-				Order::insertSale();
+				$successMessage = Order::insertSale();
 			}
 			else if ($_SESSION['orderType'] == 'gift'){
-				Order::insertGiftOrder();
+				//Order::insertGiftOrder();
+				$successMessage = Order::insertGiftOrder();
 			}
 			else if ($_SESSION['orderType'] == 'custom'){
-				Order::insertCustomOrder();
+				//Order::insertCustomOrder();
+				$successMessage = Order::insertCustomOrder();
 			}
-			
+			require_once('views/pages/success.php');
 		}
 	
 	
@@ -565,7 +567,11 @@
 			$orderID = $_POST['order_id'];
 			$lastName = $_POST['last_name'];
 			$order_date = $_POST['order_date'];
+			//$stageDBO = databaseConnection::getInstance();
+			//$data = $stageDBO->select('order_type', 'order',['order_id' => $orderID]);
+			//if ($data[0] != NULL){
 
+			//}
 			//CHECKING WHAT FILTERS ARE APPLIED
 			if(!empty($orderID) && !empty($lastName) && !empty($order_date))
 			{
@@ -620,8 +626,11 @@
 
 			require_once('views/pages/findorder.php');
 			$stageDBO = DatabaseObjectFactory::build('order');
-			$arr = ['order_id','customer_id','first_name','last_name','order_date','total_price'];
-			$stageDBO->SetJoin(['[><]customer' => 'customer_id']);
+			$arr = ['order_id','order_date','total_price'];
+			if (!empty($lastName)){
+				$arr = ['order_id','customer_id','first_name','last_name','order_date','total_price'];
+				$stageDBO->SetJoin(['[><]customer' => 'customer_id']);
+			}
 			if(count($filter) > 1) //More than one filter needs an AND statement
 			{
 				$order = $stageDBO->getRecords($arr, ["AND" => $filter]);
@@ -642,7 +651,7 @@
 			else if(count($order) > 1) //With multiple results usually found on Order Date or Name searches. 
 			{
 
-				print "<div class='content'><table><th>Order ID</th><th>Customer Name</th><th>Order Date</th><th>Total Price</th>";
+				print "<table><th>Order ID</th><th>Customer Name</th><th>Order Date</th><th>Total Price</th>";
 				foreach($order as $o)
 				{
 					print "<tr><td>
@@ -719,7 +728,7 @@
 			}
 
 			
-
+			echo '</div>';
 
 		}
 		
@@ -761,6 +770,13 @@
 		//look up order page action
 		public function lookuporder()
 		{
+			echo '
+			<script>
+				$(function() {
+				$( "#datepicker" ).datepicker({ dateFormat: "yy-mm-dd" });
+				});
+			</script>
+			';
 			//make array for form id names
 			$formidnames = ['Order ID','Customer Last Name','Order Date'];
 			$formNames = ['order_id','last_name', 'order_date'];
@@ -771,12 +787,16 @@
 			$index = 0;
 			foreach ($formidnames as $formidname){
 		  		print $formidname;
-
-		  		print "  <input type='text' name='".$formNames[$index]."'><br>";
+		  		if ($index == 2){
+		  			print "  <input type='text' id='datepicker' tabindex='".($index+1)."'name='".$formNames[$index]."'><br>";
+		  		}
+		  		else {
+		  			print "  <input type='text' tabindex='".($index+1)."'name='".$formNames[$index]."'><br>";
+		  		}
 		  		$index++;
   			}
-  			print "<a href='?controller=menus&action=mainMenu&subMenu=Order'><input type='button' class = 'button redButton' value='Cancel'/></a> ";
-  			print "<input type='submit' class='button blueButton' value='Find Order'><br>";
+  			print "<a href='?controller=menus&action=mainMenu&subMenu=Order'><input type='button' class = 'button redButton' accessKey='q' value='Cancel'/></a> ";
+  			print "<input type='submit' class='button blueButton'  value='Find Order'><br>";
 			print "</form></div>";
 		}
 
@@ -908,7 +928,7 @@
 			self::manageorders($filterArray);
 		}
 		
-		public function manageorders($filter = NULL)
+		public static function manageorders($filter = NULL)
 		{
 
 			require_once('models/filterDraw.php');

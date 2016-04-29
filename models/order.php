@@ -62,6 +62,7 @@ class Order
 		$insertDBO->setOrderInsert($_SESSION['order']);
 		$insertDBO->setOrderDetailsInsert($_SESSION['order_details']);
 		$insertDBO->commitInsert();
+		return $insertDBO->recieptGet();
 
 	}
 	
@@ -77,6 +78,7 @@ class Order
 		$insertDBO->setShipCostInsert($_SESSION['ship_cost']);
 		$insertDBO->setCustomerInsert($_SESSION['customer']);
 		$insertDBO->commitInsert();
+		return $insertDBO->recieptGet();
 	}
 	public static function insertCustomOrder()
 	{
@@ -89,5 +91,6 @@ class Order
 		$insertDBO->setCustomOrderInsert($_SESSION['custom_order']);
 		$insertDBO->setItemInsert($_SESSION['item']);
 		$insertDBO->commitInsert();
+		return $insertDBO->recieptGet();
 	}
 }

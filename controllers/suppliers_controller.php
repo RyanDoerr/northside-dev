@@ -54,7 +54,7 @@
 				$errorMessage['phoneError'] = 'Invalid Phone Number';
 			}
 
-			$contactName = filter_input(INPUT_POST,'companyName', FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
+			$contactName = filter_input(INPUT_POST,'contactName', FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
 			$contactPhoneNumber = $_POST['contactPhone'];
 
 
@@ -382,7 +382,8 @@
 				$stageDBO = DatabaseObjectFactory::build('supplier_discount');
 				$stageDBO->setRecords('supplier_discount', $insertData);
 
-				header('Location: ?controller=suppliers&action=managediscounts');
+				//header('Location: ?controller=suppliers&action=managediscounts');
+				PagesController::redirect('?controller=suppliers&action=managediscounts');
 			}
 		}
 

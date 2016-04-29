@@ -33,6 +33,10 @@
 					break;
 			}
 		}
+		public static function logout(){
+			session_unset();
+			PagesController::login();
+		}
 		public static function verify()
 		{
 			$_SESSION["user"] = 0;
@@ -58,12 +62,12 @@
 			}
 			else{
 				$error = "error";
-				echo 'noVerify';
+				//echo 'noVerify';
 				PagesController::login($error);
 			}
 		}
 		
-		public function login($error = "")
+		public static function login($error = "")
 		{
 			$_SESSION["user"] = 0;
 			require_once('views/pages/login.php');

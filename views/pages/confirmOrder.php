@@ -6,11 +6,14 @@
 <?php
 	
 	$index = 0;
+	$stageDBO = DatabaseConnection::getInstance();
+	$stageDBO->select("item", "name",['item_id' => $item]);
 	if(self::$orderType != 'custom') //The gift and sale orders by have their items in result sets.
 	{
 		foreach(self::$OrderDetailsColumns['item_id'] as $item)    //Relates each quantity to that particular item.
 		{
-			echo '<tr><td>'.$item.'</td><td>'.number_format(self::$OrderDetailsColumns['item_price'][$index],2).'</td><td>'.self::$OrderDetailsColumns['qty'][$index].'</td></tr><br>';
+			$db_Item_Name = $stageDBO->select("item", "name",['item_id' => $item]);
+			echo '<tr><td>'.$db_Item_Name[0].'</td><td>'.number_format(self::$OrderDetailsColumns['item_price'][$index],2).'</td><td>'.self::$OrderDetailsColumns['qty'][$index].'</td></tr><br>';
 			$index++;
 		}
 		
